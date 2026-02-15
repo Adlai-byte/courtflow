@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import type { Court, Booking } from '@/lib/types'
+import { WaitlistButton } from './waitlist-button'
 
 interface BookingCalendarProps {
   court: Court
@@ -147,18 +148,30 @@ export function BookingCalendar({ court, tenantId, slug }: BookingCalendarProps)
           <p className="text-sm text-muted-foreground">No slots available for this day.</p>
         ) : (
           <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-6">
-            {slots.map((slot) => (
-              <Button
-                key={slot.start}
-                variant={slot.available ? 'outline' : 'ghost'}
-                size="sm"
-                disabled={!slot.available || booking}
-                className={slot.available ? 'hover:bg-primary hover:text-primary-foreground' : 'opacity-40 line-through'}
-                onClick={() => slot.available && handleBook(slot.start, slot.end)}
-              >
-                {slot.start}
-              </Button>
-            ))}
+            {slots.map((slot) =>
+              slot.available ? (
+                <Button
+                  key={slot.start}
+                  variant="outline"
+                  size="sm"
+                  disabled={booking}
+                  className="hover:bg-primary hover:text-primary-foreground"
+                  onClick={() => handleBook(slot.start, slot.end)}
+                >
+                  {slot.start}
+                </Button>
+              ) : (
+                <WaitlistButton
+                  key={slot.start}
+                  courtId={court.id}
+                  tenantId={tenantId}
+                  date={dateStr}
+                  startTime={slot.start}
+                  endTime={slot.end}
+                  slug={slug}
+                />
+              )
+            )}
           </div>
         )}
         <div className="mt-4 flex items-center gap-4 text-xs text-muted-foreground">
