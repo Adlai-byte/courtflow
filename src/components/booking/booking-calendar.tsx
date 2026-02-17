@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import type { Court, Booking } from '@/lib/types'
@@ -131,12 +131,14 @@ export function BookingCalendar({ court, tenantId, slug, closureDates }: Booking
     <Card>
       <CardHeader>
         <div className="flex items-center justify-between">
-          <CardTitle className="text-lg">Book a Slot</CardTitle>
+          <span className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
+            Book a Slot
+          </span>
           <div className="flex items-center gap-2">
             <Button variant="outline" size="icon" onClick={() => navigateDay(-1)}>
               <ChevronLeft className="h-4 w-4" />
             </Button>
-            <span className="min-w-[140px] text-center text-sm font-medium">
+            <span className="min-w-[140px] text-center font-mono text-sm font-medium">
               {selectedDate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
             </span>
             <Button variant="outline" size="icon" onClick={() => navigateDay(1)}>
@@ -159,7 +161,7 @@ export function BookingCalendar({ court, tenantId, slug, closureDates }: Booking
                   variant="outline"
                   size="sm"
                   disabled={booking}
-                  className="hover:bg-primary hover:text-primary-foreground"
+                  className="font-mono text-sm hover:bg-primary hover:text-primary-foreground"
                   onClick={() => handleBook(slot.start, slot.end)}
                 >
                   {slot.start}
@@ -178,9 +180,9 @@ export function BookingCalendar({ court, tenantId, slug, closureDates }: Booking
             )}
           </div>
         )}
-        <div className="mt-4 flex items-center gap-4 text-xs text-muted-foreground">
+        <div className="mt-4 flex items-center gap-4 font-mono text-xs text-muted-foreground">
           <span className="flex items-center gap-1">
-            <div className="h-3 w-3 rounded border" /> Available
+            <div className="h-3 w-3 rounded border border-border" /> Available
           </span>
           <span className="flex items-center gap-1">
             <div className="h-3 w-3 rounded bg-muted" /> Booked

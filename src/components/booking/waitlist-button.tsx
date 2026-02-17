@@ -46,7 +46,7 @@ export function WaitlistButton({ courtId, tenantId, date, startTime, endTime, sl
 
   if (joined) {
     return (
-      <Button variant="secondary" size="sm" disabled className="text-xs">
+      <Button variant="secondary" size="sm" disabled className="font-mono text-xs">
         On Waitlist
       </Button>
     )
@@ -58,7 +58,7 @@ export function WaitlistButton({ courtId, tenantId, date, startTime, endTime, sl
       size="sm"
       disabled={joining}
       onClick={handleJoinWaitlist}
-      className="text-xs opacity-60 hover:opacity-100"
+      className="font-mono text-xs opacity-60 hover:opacity-100"
     >
       Waitlist
     </Button>
