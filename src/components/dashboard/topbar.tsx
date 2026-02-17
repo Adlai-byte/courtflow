@@ -8,9 +8,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { MobileSidebar } from '@/components/dashboard/sidebar'
 import type { Profile, Tenant } from '@/lib/types'
 
-export function Topbar({ profile, tenant }: { profile: Profile; tenant: Tenant }) {
+export function Topbar({ profile, tenant, slug }: { profile: Profile; tenant: Tenant; slug: string }) {
   async function signOut() {
     'use server'
     const supabase = await createClient()
@@ -26,18 +27,23 @@ export function Topbar({ profile, tenant }: { profile: Profile; tenant: Tenant }
     .slice(0, 2)
 
   return (
-    <header className="flex h-14 items-center justify-between border-b bg-card px-6">
-      <h2 className="text-sm font-medium text-muted-foreground">{tenant.name}</h2>
+    <header className="flex h-14 items-center justify-between border-b bg-card px-4 md:px-6">
+      <div className="flex items-center gap-3">
+        <MobileSidebar slug={slug} tenantName={tenant.name} />
+        <span className="section-label hidden sm:inline">{tenant.name}</span>
+      </div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="relative h-8 w-8 rounded-full">
             <Avatar className="h-8 w-8">
-              <AvatarFallback>{initials}</AvatarFallback>
+              <AvatarFallback className="bg-primary/10 text-primary text-xs font-mono">
+                {initials}
+              </AvatarFallback>
             </Avatar>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuItem className="text-xs text-muted-foreground">
+          <DropdownMenuItem className="text-xs text-muted-foreground font-mono">
             {profile.full_name}
           </DropdownMenuItem>
           <DropdownMenuItem asChild>

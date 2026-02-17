@@ -14,10 +14,10 @@ export default async function DashboardLayout({
 
   return (
     <div className="flex h-screen">
-      <Sidebar slug={slug} />
+      <Sidebar slug={slug} tenantName={tenant.name} />
       <div className="flex flex-1 flex-col overflow-hidden">
-        <Topbar profile={profile} tenant={tenant} />
-        <main className="flex-1 overflow-y-auto p-6">
+        <Topbar profile={profile} tenant={tenant} slug={slug} />
+        <main className="flex-1 overflow-y-auto bg-background p-4 md:p-6">
           {children}
         </main>
       </div>
