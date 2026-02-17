@@ -9,6 +9,7 @@ import {
   CalendarDays,
   Users,
   Crown,
+  ClipboardList,
   Settings,
   BarChart3,
   Menu,
@@ -27,6 +28,7 @@ const navItems = [
   { label: 'Bookings', href: '/bookings', icon: CalendarDays },
   { label: 'Customers', href: '/customers', icon: Users },
   { label: 'Tiers', href: '/members/tiers', icon: Crown },
+  { label: 'Requests', href: '/members/requests', icon: ClipboardList },
   { label: 'Analytics', href: '/analytics', icon: BarChart3 },
   { label: 'Settings', href: '/settings', icon: Settings },
 ]
