@@ -7,6 +7,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import type { Court, Booking } from '@/lib/types'
 import { WaitlistButton } from './waitlist-button'
+import { createSingleBooking, createRecurringBooking } from '@/app/[slug]/courts/[id]/actions'
 
 interface BookingCalendarProps {
   court: Court
@@ -61,6 +62,9 @@ export function BookingCalendar({ court, tenantId, slug, closureDates }: Booking
   const [selectedDate, setSelectedDate] = useState(new Date())
   const [bookings, setBookings] = useState<Booking[]>([])
   const [booking, setBooking] = useState(false)
+  const [recurring, setRecurring] = useState(false)
+  const [totalWeeks, setTotalWeeks] = useState(4)
+  const [recurringResult, setRecurringResult] = useState<{ booked: number; waitlisted: number } | null>(null)
 
   const dateStr = selectedDate.toISOString().split('T')[0]
   const dayOfWeek = dayNames[selectedDate.getDay()]
@@ -85,6 +89,7 @@ export function BookingCalendar({ court, tenantId, slug, closureDates }: Booking
 
   async function handleBook(start: string, end: string) {
     setBooking(true)
+    setRecurringResult(null)
     const supabase = createClient()
     const { data: { user } } = await supabase.auth.getUser()
 
@@ -93,20 +98,27 @@ export function BookingCalendar({ court, tenantId, slug, closureDates }: Booking
       return
     }
 
-    const { error } = await supabase.from('bookings').insert({
-      tenant_id: tenantId,
-      court_id: court.id,
-      customer_id: user.id,
-      date: dateStr,
-      start_time: start,
-      end_time: end,
-    })
+    if (recurring) {
+      const result = await createRecurringBooking(court.id, slug, dateStr, start, end, totalWeeks)
+      if (result.error) {
+        alert(result.error)
+      } else {
+        setRecurringResult({ booked: result.booked!, waitlisted: result.waitlisted! })
+        const { data } = await supabase
+          .from('bookings')
+          .select('*')
+          .eq('court_id', court.id)
+          .eq('date', dateStr)
+          .eq('status', 'confirmed')
+        setBookings((data || []) as Booking[])
+      }
+      setBooking(false)
+      return
+    }
 
-    if (error) {
-      alert(error.message.includes('overlaps')
-        ? 'Sorry, this slot was just booked. Please try another.'
-        : error.message
-      )
+    const result = await createSingleBooking(court.id, slug, dateStr, start, end)
+    if (result.error) {
+      alert(result.error)
     } else {
       const { data } = await supabase
         .from('bookings')
@@ -180,6 +192,48 @@ export function BookingCalendar({ court, tenantId, slug, closureDates }: Booking
             )}
           </div>
         )}
+        {!isClosed && slots.length > 0 && (
+          <div className="mt-4 flex items-center gap-4 rounded-lg border border-border bg-muted/30 p-3">
+            <label className="flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-muted-foreground cursor-pointer">
+              <input
+                type="checkbox"
+                checked={recurring}
+                onChange={(e) => {
+                  setRecurring(e.target.checked)
+                  setRecurringResult(null)
+                }}
+                className="rounded"
+              />
+              Repeat weekly
+            </label>
+            {recurring && (
+              <label className="flex items-center gap-2 font-mono text-xs text-muted-foreground">
+                for
+                <input
+                  type="number"
+                  min={2}
+                  max={52}
+                  value={totalWeeks}
+                  onChange={(e) => setTotalWeeks(Number(e.target.value))}
+                  className="w-16 rounded border border-border bg-background px-2 py-1 text-center font-mono text-sm"
+                />
+                weeks
+              </label>
+            )}
+          </div>
+        )}
+
+        {recurringResult && (
+          <div className="mt-2 rounded-lg border border-primary/20 bg-primary/5 p-3 font-mono text-xs">
+            <p className="text-primary">
+              Created {recurringResult.booked} booking{recurringResult.booked !== 1 ? 's' : ''}
+              {recurringResult.waitlisted > 0 && (
+                <>, joined waitlist for {recurringResult.waitlisted} conflicting slot{recurringResult.waitlisted !== 1 ? 's' : ''}</>
+              )}
+            </p>
+          </div>
+        )}
+
         <div className="mt-4 flex items-center gap-4 font-mono text-xs text-muted-foreground">
           <span className="flex items-center gap-1">
             <div className="h-3 w-3 rounded border border-border" /> Available
