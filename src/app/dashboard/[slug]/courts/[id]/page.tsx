@@ -1,9 +1,10 @@
 import { requireTenantOwner } from '@/lib/tenant'
 import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import type { Court } from '@/lib/types'
+import { Card, CardContent } from '@/components/ui/card'
+import type { Court, CourtClosure } from '@/lib/types'
+import { OperatingHoursEditor } from '@/components/dashboard/operating-hours-editor'
+import { ClosuresEditor } from '@/components/dashboard/closures-editor'
 
 export default async function CourtDetailPage({
   params,
@@ -26,39 +27,51 @@ export default async function CourtDetailPage({
 
   const typedCourt = court as Court
 
+  const { data: closures } = await supabase
+    .from('court_closures')
+    .select('*')
+    .eq('court_id', id)
+    .order('date', { ascending: true })
+
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold tracking-tight">{typedCourt.name}</h1>
-        <Badge variant={typedCourt.is_active ? 'default' : 'secondary'}>
-          {typedCourt.is_active ? 'Active' : 'Inactive'}
-        </Badge>
+      <div>
+        <span className="section-label block">[ COURT SETTINGS ]</span>
+        <h1 className="mt-2 text-2xl font-bold tracking-tight">{typedCourt.name}</h1>
+        <p className="mt-1 text-sm text-muted-foreground">
+          {typedCourt.sport_type} · {typedCourt.booking_mode === 'fixed_slot' ? `${typedCourt.slot_duration_minutes}min slots` : 'Flexible duration'}
+        </p>
       </div>
-      <div className="grid gap-4 md:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-sm font-medium">Details</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2 text-sm">
-            <p><span className="font-medium">Sport:</span> {typedCourt.sport_type}</p>
-            <p><span className="font-medium">Booking Mode:</span> {typedCourt.booking_mode === 'fixed_slot' ? 'Fixed Slots' : 'Flexible Duration'}</p>
-            {typedCourt.booking_mode === 'fixed_slot' ? (
-              <p><span className="font-medium">Slot Duration:</span> {typedCourt.slot_duration_minutes} minutes</p>
-            ) : (
-              <p><span className="font-medium">Duration Range:</span> {typedCourt.min_duration_minutes}-{typedCourt.max_duration_minutes} minutes</p>
-            )}
-            {typedCourt.description && <p>{typedCourt.description}</p>}
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-sm font-medium">Today&apos;s Schedule</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-muted-foreground">Booking schedule will be displayed here.</p>
-          </CardContent>
-        </Card>
-      </div>
+
+      <Card>
+        <CardContent className="p-4 md:p-6">
+          <span className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
+            Operating Hours
+          </span>
+          <div className="mt-4">
+            <OperatingHoursEditor
+              courtId={typedCourt.id}
+              slug={slug}
+              initialHours={typedCourt.operating_hours}
+            />
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardContent className="p-4 md:p-6">
+          <span className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
+            Closure Dates
+          </span>
+          <div className="mt-4">
+            <ClosuresEditor
+              courtId={typedCourt.id}
+              slug={slug}
+              initialClosures={(closures || []) as CourtClosure[]}
+            />
+          </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }
