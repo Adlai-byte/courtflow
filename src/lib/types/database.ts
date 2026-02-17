@@ -55,6 +55,7 @@ export interface Booking {
   end_time: string
   status: BookingStatus
   membership_id: string | null
+  recurring_series_id: string | null
   created_at: string
 }
 
@@ -110,6 +111,31 @@ export interface CourtClosure {
   date: string
   reason: string | null
   created_at: string
+}
+
+export type MembershipRequestStatus = 'pending' | 'approved' | 'rejected'
+
+export interface RecurringSeries {
+  id: string
+  tenant_id: string
+  court_id: string
+  customer_id: string
+  day_of_week: number
+  start_time: string
+  end_time: string
+  total_weeks: number
+  created_at: string
+}
+
+export interface MembershipRequest {
+  id: string
+  tenant_id: string
+  tier_id: string
+  customer_id: string
+  status: MembershipRequestStatus
+  owner_notes: string | null
+  created_at: string
+  updated_at: string
 }
 
 export interface CustomerNote {
