@@ -63,6 +63,11 @@ export default async function BookingsPage({
                           <span className={`inline-flex rounded-full border px-2.5 py-0.5 text-xs font-medium ${statusColors[booking.status] || ''}`}>
                             {booking.status}
                           </span>
+                          {booking.recurring_series_id && (
+                            <span className="ml-1 inline-flex rounded-full border border-primary/20 bg-primary/5 px-2 py-0.5 text-xs font-medium text-primary">
+                              recurring
+                            </span>
+                          )}
                         </td>
                         <td className="p-4">
                           {booking.status === 'confirmed' && (
@@ -79,9 +84,16 @@ export default async function BookingsPage({
                   <div key={booking.id} className="rounded-lg border bg-card p-3 space-y-1">
                     <div className="flex items-center justify-between">
                       <span className="text-sm font-medium">{booking.profiles?.full_name || 'Unknown'}</span>
-                      <span className={`inline-flex rounded-full border px-2 py-0.5 text-xs font-medium ${statusColors[booking.status] || ''}`}>
-                        {booking.status}
-                      </span>
+                      <div className="flex items-center gap-1">
+                        <span className={`inline-flex rounded-full border px-2 py-0.5 text-xs font-medium ${statusColors[booking.status] || ''}`}>
+                          {booking.status}
+                        </span>
+                        {booking.recurring_series_id && (
+                          <span className="inline-flex rounded-full border border-primary/20 bg-primary/5 px-2 py-0.5 text-xs font-medium text-primary">
+                            recurring
+                          </span>
+                        )}
+                      </div>
                     </div>
                     <p className="text-xs text-muted-foreground">{booking.courts?.name}</p>
                     <p className="font-mono text-xs text-muted-foreground">{booking.date} · {booking.start_time}–{booking.end_time}</p>
