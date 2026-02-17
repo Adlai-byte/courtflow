@@ -102,3 +102,12 @@ export interface WaitlistEntry {
   expires_at: string | null
   created_at: string
 }
+
+export interface CustomerNote {
+  id: string
+  tenant_id: string
+  profile_id: string
+  note: string
+  created_at: string
+  created_by: string
+}
