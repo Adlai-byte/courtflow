@@ -21,6 +21,7 @@ export interface Tenant {
   logo_url: string | null
   description: string | null
   owner_id: string
+  cancellation_hours: number
   created_at: string
 }
 
@@ -100,6 +101,14 @@ export interface WaitlistEntry {
   status: WaitlistStatus
   notified_at: string | null
   expires_at: string | null
+  created_at: string
+}
+
+export interface CourtClosure {
+  id: string
+  court_id: string
+  date: string
+  reason: string | null
   created_at: string
 }
 
