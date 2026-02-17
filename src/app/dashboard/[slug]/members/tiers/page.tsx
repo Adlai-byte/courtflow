@@ -26,12 +26,15 @@ export default async function TiersPage({
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold tracking-tight">Membership Tiers</h1>
+        <div>
+          <span className="section-label mb-2 block">[ MEMBERSHIP TIERS ]</span>
+          <h1 className="text-2xl font-bold tracking-tight">Membership Tiers</h1>
+        </div>
         <Dialog>
           <DialogTrigger asChild>
             <Button>
               <Plus className="mr-2 h-4 w-4" />
-              Create Tier
+              <span className="font-mono text-xs uppercase tracking-wider">Create Tier</span>
             </Button>
           </DialogTrigger>
           <DialogContent>
@@ -50,7 +53,7 @@ export default async function TiersPage({
           </CardContent>
         </Card>
       ) : (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {(tiers as MembershipTier[]).map((tier) => (
             <Card key={tier.id}>
               <CardHeader>

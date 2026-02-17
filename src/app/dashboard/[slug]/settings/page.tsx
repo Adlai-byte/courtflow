@@ -21,7 +21,8 @@ export default async function SettingsPage({
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold tracking-tight">Settings</h1>
+      <span className="section-label mb-2 block">[ SETTINGS ]</span>
+      <h1 className="text-2xl font-bold tracking-tight">Settings</h1>
 
       <Card className="max-w-2xl">
         <CardHeader>
@@ -41,7 +42,7 @@ export default async function SettingsPage({
               <Label htmlFor="description">Description</Label>
               <Textarea id="description" name="description" defaultValue={tenant.description || ''} rows={3} />
             </div>
-            <Button type="submit">Save Changes</Button>
+            <Button type="submit"><span className="font-mono text-xs uppercase tracking-wider">Save Changes</span></Button>
           </form>
         </CardContent>
       </Card>
