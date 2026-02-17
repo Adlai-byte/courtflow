@@ -1,20 +1,24 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { DM_Sans, JetBrains_Mono } from "next/font/google";
+
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const dmSans = DM_Sans({
+  variable: "--font-sans",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-mono",
   subsets: ["latin"],
+  weight: ["400", "500"],
 });
 
 export const metadata: Metadata = {
-  title: 'CourtFLOW - Court Booking Made Simple',
-  description: 'The all-in-one platform for court facility owners to manage bookings and memberships.',
+  title: "CourtFLOW - Court Booking Made Simple",
+  description:
+    "The all-in-one platform for court facility owners to manage bookings and memberships.",
 };
 
 export default function RootLayout({
@@ -25,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${dmSans.variable} ${jetbrainsMono.variable} font-sans antialiased`}
       >
         {children}
       </body>
