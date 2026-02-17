@@ -1,7 +1,5 @@
 import { getTenantBySlug } from '@/lib/tenant'
 import { createClient } from '@/lib/supabase/server'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
 import Link from 'next/link'
 import type { Court } from '@/lib/types'
 
@@ -22,7 +20,7 @@ export default async function BusinessPage({
     .order('name')
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">{tenant.name}</h1>
         {tenant.description && (
@@ -30,38 +28,37 @@ export default async function BusinessPage({
         )}
       </div>
 
-      <h2 className="text-xl font-semibold">Available Courts</h2>
-
-      {(!courts || courts.length === 0) ? (
-        <p className="text-muted-foreground">No courts available at this time.</p>
-      ) : (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {(courts as Court[]).map((court) => (
-            <Link key={court.id} href={`/${slug}/courts/${court.id}`}>
-              <Card className="cursor-pointer transition-shadow hover:shadow-md">
-                <CardHeader>
-                  <CardTitle className="text-lg">{court.name}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex items-center gap-2">
-                    <Badge variant="outline">{court.sport_type}</Badge>
-                    <Badge variant="outline">
+      <div>
+        <span className="section-label block">[ AVAILABLE COURTS ]</span>
+        {(!courts || courts.length === 0) ? (
+          <p className="mt-4 text-sm text-muted-foreground">No courts available at this time.</p>
+        ) : (
+          <div className="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {(courts as Court[]).map((court) => (
+              <Link key={court.id} href={`/${slug}/courts/${court.id}`}>
+                <div className="rounded-lg border border-border bg-card p-4 transition-colors hover:border-primary/30">
+                  <h3 className="font-semibold tracking-tight">{court.name}</h3>
+                  <div className="mt-2 flex items-center gap-2">
+                    <span className="inline-flex rounded border border-border px-2 py-0.5 font-mono text-xs text-muted-foreground">
+                      {court.sport_type}
+                    </span>
+                    <span className="inline-flex rounded border border-border px-2 py-0.5 font-mono text-xs text-muted-foreground">
                       {court.booking_mode === 'fixed_slot'
                         ? `${court.slot_duration_minutes}min slots`
                         : `${court.min_duration_minutes}-${court.max_duration_minutes}min`}
-                    </Badge>
+                    </span>
                   </div>
                   {court.description && (
                     <p className="mt-2 text-sm text-muted-foreground line-clamp-2">
                       {court.description}
                     </p>
                   )}
-                </CardContent>
-              </Card>
-            </Link>
-          ))}
-        </div>
-      )}
+                </div>
+              </Link>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   )
 }
