@@ -43,7 +43,7 @@ export function RevenueChart({ data }: RevenueChartProps) {
                     fontFamily: 'var(--font-mono)',
                     fontSize: '12px',
                   }}
-                  formatter={(value: number) => [`$${value.toFixed(2)}`, 'Revenue']}
+                  formatter={(value) => [`$${Number(value).toFixed(2)}`, 'Revenue']}
                 />
                 <Area
                   type="monotone"

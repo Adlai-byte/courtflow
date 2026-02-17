@@ -44,7 +44,7 @@ export function UtilizationChart({ data }: UtilizationChartProps) {
                     fontFamily: 'var(--font-mono)',
                     fontSize: '12px',
                   }}
-                  formatter={(value: number) => [`${value.toFixed(1)}%`, 'Utilization']}
+                  formatter={(value) => [`${Number(value).toFixed(1)}%`, 'Utilization']}
                 />
                 <Bar dataKey="utilization" fill="var(--chart-1)" radius={[4, 4, 0, 0]} />
               </BarChart>
