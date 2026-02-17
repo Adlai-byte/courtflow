@@ -27,6 +27,13 @@ export default async function CourtBookingPage({
 
   const typedCourt = court as Court
 
+  const { data: closures } = await supabase
+    .from('court_closures')
+    .select('date')
+    .eq('court_id', id)
+
+  const closureDates = (closures || []).map((c: { date: string }) => c.date)
+
   return (
     <div className="space-y-6">
       <div>
@@ -44,7 +51,7 @@ export default async function CourtBookingPage({
         )}
       </div>
 
-      <BookingCalendar court={typedCourt} tenantId={tenant.id} slug={slug} />
+      <BookingCalendar court={typedCourt} tenantId={tenant.id} slug={slug} closureDates={closureDates} />
     </div>
   )
 }

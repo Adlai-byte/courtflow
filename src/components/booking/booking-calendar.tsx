@@ -12,6 +12,7 @@ interface BookingCalendarProps {
   court: Court
   tenantId: string
   slug: string
+  closureDates?: string[]
 }
 
 function getTimeSlots(
@@ -56,7 +57,7 @@ function getTimeSlots(
 
 const dayNames = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
 
-export function BookingCalendar({ court, tenantId, slug }: BookingCalendarProps) {
+export function BookingCalendar({ court, tenantId, slug, closureDates }: BookingCalendarProps) {
   const [selectedDate, setSelectedDate] = useState(new Date())
   const [bookings, setBookings] = useState<Booking[]>([])
   const [booking, setBooking] = useState(false)
@@ -79,6 +80,7 @@ export function BookingCalendar({ court, tenantId, slug }: BookingCalendarProps)
     fetchBookings()
   }, [court.id, dateStr])
 
+  const isClosed = closureDates?.includes(dateStr) ?? false
   const slots = getTimeSlots(court, dayOfWeek, bookings)
 
   async function handleBook(start: string, end: string) {
@@ -144,7 +146,9 @@ export function BookingCalendar({ court, tenantId, slug }: BookingCalendarProps)
         </div>
       </CardHeader>
       <CardContent>
-        {slots.length === 0 ? (
+        {isClosed ? (
+          <p className="text-sm text-muted-foreground">Court is closed on this date.</p>
+        ) : slots.length === 0 ? (
           <p className="text-sm text-muted-foreground">No slots available for this day.</p>
         ) : (
           <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-6">
