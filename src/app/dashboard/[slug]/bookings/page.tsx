@@ -1,6 +1,7 @@
 import { requireTenantOwner } from '@/lib/tenant'
 import { createClient } from '@/lib/supabase/server'
 import { Card, CardContent } from '@/components/ui/card'
+import { OwnerCancelButton } from '@/components/dashboard/owner-cancel-button'
 
 const statusColors: Record<string, string> = {
   confirmed: 'bg-green/10 text-green border-green/20',
@@ -48,6 +49,7 @@ export default async function BookingsPage({
                       <th className="p-4 font-mono text-xs uppercase tracking-wider text-muted-foreground font-medium">Court</th>
                       <th className="p-4 font-mono text-xs uppercase tracking-wider text-muted-foreground font-medium">Customer</th>
                       <th className="p-4 font-mono text-xs uppercase tracking-wider text-muted-foreground font-medium">Status</th>
+                      <th className="p-4 font-mono text-xs uppercase tracking-wider text-muted-foreground font-medium">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -61,6 +63,11 @@ export default async function BookingsPage({
                           <span className={`inline-flex rounded-full border px-2.5 py-0.5 text-xs font-medium ${statusColors[booking.status] || ''}`}>
                             {booking.status}
                           </span>
+                        </td>
+                        <td className="p-4">
+                          {booking.status === 'confirmed' && (
+                            <OwnerCancelButton bookingId={booking.id} slug={slug} />
+                          )}
                         </td>
                       </tr>
                     ))}
@@ -78,6 +85,9 @@ export default async function BookingsPage({
                     </div>
                     <p className="text-xs text-muted-foreground">{booking.courts?.name}</p>
                     <p className="font-mono text-xs text-muted-foreground">{booking.date} · {booking.start_time}–{booking.end_time}</p>
+                    {booking.status === 'confirmed' && (
+                      <OwnerCancelButton bookingId={booking.id} slug={slug} />
+                    )}
                   </div>
                 ))}
               </div>
