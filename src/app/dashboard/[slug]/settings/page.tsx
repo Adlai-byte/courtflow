@@ -42,6 +42,21 @@ export default async function SettingsPage({
               <Label htmlFor="description">Description</Label>
               <Textarea id="description" name="description" defaultValue={tenant.description || ''} rows={3} />
             </div>
+            <div className="space-y-2">
+              <Label htmlFor="cancellation_hours">Cancellation Window (hours)</Label>
+              <p className="text-xs text-muted-foreground">
+                Customers can cancel bookings up to this many hours before the start time.
+              </p>
+              <Input
+                id="cancellation_hours"
+                name="cancellation_hours"
+                type="number"
+                min="0"
+                max="168"
+                defaultValue={tenant.cancellation_hours ?? 24}
+                className="w-32 font-mono"
+              />
+            </div>
             <Button type="submit"><span className="font-mono text-xs uppercase tracking-wider">Save Changes</span></Button>
           </form>
         </CardContent>
