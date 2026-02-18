@@ -1,8 +1,17 @@
-import Link from 'next/link'
 import { getTenantBySlug } from '@/lib/tenant'
 import { createClient } from '@/lib/supabase/server'
-import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import { LogOut } from 'lucide-react'
+import { redirect } from 'next/navigation'
+import { CartProviderWrapper } from '@/components/booking/cart-provider-wrapper'
+import { Toaster } from '@/components/ui/sonner'
+import { CustomerSidebar, CustomerMobileSidebar } from '@/components/customer/sidebar'
 
 export default async function BookingLayout({
   children,
@@ -33,40 +42,65 @@ export default async function BookingLayout({
     }
   }
 
+  async function signOut() {
+    'use server'
+    const supabase = await createClient()
+    await supabase.auth.signOut()
+    redirect(`/login?redirect=/${slug}`)
+  }
+
   return (
-    <div className="min-h-screen bg-background">
-      <header className="border-b border-border">
-        <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-4">
-          <Link href={`/${slug}`} className="font-mono text-sm font-medium tracking-tight">
-            {tenant.name}
-          </Link>
+    <div className="flex h-screen">
+      <CustomerSidebar
+        slug={slug}
+        tenantName={tenant.name}
+        isAuthenticated={!!user}
+        signOutAction={signOut}
+      />
+      <div className="flex flex-1 flex-col overflow-hidden">
+        <header className="flex h-14 items-center justify-between border-b bg-card px-4">
           <div className="flex items-center gap-3">
-            {user ? (
-              <>
-                <Link href={`/${slug}/my-bookings`}>
-                  <Button variant="ghost" size="sm" className="font-mono text-xs uppercase tracking-wider">
-                    My Bookings
-                  </Button>
-                </Link>
-                <Avatar className="h-8 w-8 border border-border">
-                  <AvatarFallback className="bg-primary/10 font-mono text-xs text-primary">
-                    {initials}
-                  </AvatarFallback>
-                </Avatar>
-              </>
-            ) : (
-              <Link href={`/login?redirect=/${slug}`}>
-                <Button size="sm" className="font-mono text-xs uppercase tracking-wider">
-                  Sign in
-                </Button>
-              </Link>
-            )}
+            <CustomerMobileSidebar
+              slug={slug}
+              tenantName={tenant.name}
+              isAuthenticated={!!user}
+              signOutAction={signOut}
+            />
+            <span className="font-mono text-sm font-medium tracking-tight md:hidden">
+              {tenant.name}
+            </span>
           </div>
-        </div>
-      </header>
-      <main className="mx-auto max-w-5xl px-4 py-8">
-        {children}
-      </main>
+          {user && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="focus:outline-none">
+                  <Avatar className="h-8 w-8 border border-border cursor-pointer transition-colors hover:border-primary/50">
+                    <AvatarFallback className="bg-primary/10 font-mono text-xs text-primary">
+                      {initials}
+                    </AvatarFallback>
+                  </Avatar>
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuItem asChild>
+                  <form action={signOut} className="w-full">
+                    <button type="submit" className="flex w-full items-center gap-2 cursor-pointer text-destructive">
+                      <LogOut className="h-4 w-4" />
+                      <span className="font-mono text-xs">Sign Out</span>
+                    </button>
+                  </form>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
+        </header>
+        <main className="flex-1 overflow-y-auto bg-background p-4 md:p-6">
+          <div className="mx-auto max-w-7xl">
+            <CartProviderWrapper slug={slug}>{children}</CartProviderWrapper>
+          </div>
+        </main>
+        <Toaster />
+      </div>
     </div>
   )
 }
