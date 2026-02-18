@@ -7,6 +7,8 @@ import {
   LayoutDashboard,
   Building2,
   Users,
+  CalendarDays,
+  Landmark,
   BarChart3,
   Menu,
 } from 'lucide-react'
@@ -22,6 +24,8 @@ const navItems = [
   { label: 'Overview', href: '/admin', icon: LayoutDashboard },
   { label: 'Tenants', href: '/admin/tenants', icon: Building2 },
   { label: 'Users', href: '/admin/users', icon: Users },
+  { label: 'Bookings', href: '/admin/bookings', icon: CalendarDays },
+  { label: 'Courts', href: '/admin/courts', icon: Landmark },
   { label: 'Analytics', href: '/admin/analytics', icon: BarChart3 },
 ]
 

@@ -78,6 +78,7 @@ export default async function AdminUsersPage({
                   <th className="px-4 py-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">Email</th>
                   <th className="px-4 py-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">Role</th>
                   <th className="px-4 py-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">Joined</th>
+                  <th className="px-4 py-3"></th>
                 </tr>
               </thead>
               <tbody>
@@ -91,11 +92,19 @@ export default async function AdminUsersPage({
                     <td className="px-4 py-3 text-sm font-mono text-muted-foreground">
                       {new Date(p.created_at).toLocaleDateString()}
                     </td>
+                    <td className="px-4 py-3">
+                      <Link
+                        href={`/admin/users/${p.id}`}
+                        className="font-mono text-xs text-primary transition-colors hover:text-primary/80"
+                      >
+                        Manage
+                      </Link>
+                    </td>
                   </tr>
                 ))}
                 {(profiles ?? []).length === 0 && (
                   <tr>
-                    <td colSpan={4} className="px-4 py-8 text-center text-sm text-muted-foreground">
+                    <td colSpan={5} className="px-4 py-8 text-center text-sm text-muted-foreground">
                       No users found
                     </td>
                   </tr>
@@ -110,7 +119,15 @@ export default async function AdminUsersPage({
               <div key={p.id} className="px-4 py-3">
                 <div className="flex items-center justify-between">
                   <p className="text-sm font-medium">{p.full_name ?? '—'}</p>
-                  <RoleBadge role={p.role} />
+                  <div className="flex items-center gap-2">
+                    <RoleBadge role={p.role} />
+                    <Link
+                      href={`/admin/users/${p.id}`}
+                      className="font-mono text-xs text-primary transition-colors hover:text-primary/80"
+                    >
+                      Manage
+                    </Link>
+                  </div>
                 </div>
                 <p className="mt-0.5 text-xs text-muted-foreground">{emailMap.get(p.id) ?? '—'}</p>
                 <p className="mt-0.5 font-mono text-xs text-muted-foreground">

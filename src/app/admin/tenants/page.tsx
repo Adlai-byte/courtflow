@@ -82,12 +82,20 @@ export default async function AdminTenantsPage() {
                       {new Date(t.created_at).toLocaleDateString()}
                     </td>
                     <td className="px-4 py-3">
-                      <Link
-                        href={`/${t.slug}`}
-                        className="inline-flex items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
-                      >
-                        View <ExternalLink className="h-3 w-3" />
-                      </Link>
+                      <div className="flex items-center gap-3">
+                        <Link
+                          href={`/admin/tenants/${t.id}`}
+                          className="font-mono text-xs text-primary transition-colors hover:text-primary/80"
+                        >
+                          Manage
+                        </Link>
+                        <Link
+                          href={`/${t.slug}`}
+                          className="inline-flex items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
+                        >
+                          View <ExternalLink className="h-3 w-3" />
+                        </Link>
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -111,12 +119,20 @@ export default async function AdminTenantsPage() {
                     <p className="text-sm font-medium">{t.name}</p>
                     <p className="font-mono text-xs text-muted-foreground">/{t.slug}</p>
                   </div>
-                  <Link
-                    href={`/${t.slug}`}
-                    className="inline-flex items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
-                  >
-                    View <ExternalLink className="h-3 w-3" />
-                  </Link>
+                  <div className="flex items-center gap-3">
+                    <Link
+                      href={`/admin/tenants/${t.id}`}
+                      className="font-mono text-xs text-primary transition-colors hover:text-primary/80"
+                    >
+                      Manage
+                    </Link>
+                    <Link
+                      href={`/${t.slug}`}
+                      className="inline-flex items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
+                    >
+                      View <ExternalLink className="h-3 w-3" />
+                    </Link>
+                  </div>
                 </div>
                 <div className="mt-2 flex gap-4 font-mono text-xs text-muted-foreground">
                   <span>{courtMap.get(t.id) ?? 0} courts</span>
