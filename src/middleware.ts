@@ -5,8 +5,8 @@ export async function middleware(request: NextRequest) {
   const { supabaseResponse, user } = await updateSession(request)
   const { pathname } = request.nextUrl
 
-  // Protected routes: dashboard requires auth + business_owner role
-  if (pathname.includes('/dashboard')) {
+  // Protected routes: dashboard and admin require auth
+  if (pathname.includes('/dashboard') || pathname.startsWith('/admin')) {
     if (!user) {
       const url = request.nextUrl.clone()
       url.pathname = '/login'

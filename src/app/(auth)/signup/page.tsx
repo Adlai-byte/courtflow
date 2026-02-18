@@ -1,10 +1,8 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import { GoogleSignIn } from '@/components/auth/google-sign-in'
+import { User, Mail, Lock, Building2, CalendarDays } from 'lucide-react'
 
 export default async function SignupPage({
   searchParams,
@@ -45,52 +43,138 @@ export default async function SignupPage({
   }
 
   return (
-    <Card>
-      <CardHeader className="text-center">
-        <CardTitle className="text-2xl font-bold">Create an account</CardTitle>
-        <CardDescription>Get started with CourtFLOW</CardDescription>
-      </CardHeader>
-      <CardContent>
-        {params.error && (
-          <div className="mb-4 rounded-md bg-destructive/10 p-3 text-sm text-destructive">
-            {params.error}
+    <div>
+      {/* Section label */}
+      <div className="mb-8">
+        <span className="section-label">[ CREATE ACCOUNT ]</span>
+      </div>
+
+      {/* Heading */}
+      <h1 className="text-3xl font-bold tracking-tight">Get started</h1>
+      <p className="mt-2 text-sm text-muted-foreground">
+        Create your CourtFLOW account
+      </p>
+
+      {/* Error */}
+      {params.error && (
+        <div className="mt-6 rounded-lg border border-destructive/20 bg-destructive/5 px-4 py-3 text-sm text-destructive">
+          {params.error}
+        </div>
+      )}
+
+      {/* Google sign-up */}
+      <div className="mt-8">
+        <GoogleSignIn />
+      </div>
+
+      {/* Divider */}
+      <div className="relative my-6">
+        <div className="absolute inset-0 flex items-center">
+          <div className="w-full border-t border-border" />
+        </div>
+        <div className="relative flex justify-center text-xs">
+          <span className="bg-background px-3 text-muted-foreground">or sign up with email</span>
+        </div>
+      </div>
+
+      {/* Form */}
+      <form action={signup} className="space-y-5">
+        {/* Full Name */}
+        <div className="space-y-2">
+          <label htmlFor="full_name" className="text-sm font-medium">
+            Full Name
+          </label>
+          <div className="relative">
+            <User className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <input
+              id="full_name"
+              name="full_name"
+              type="text"
+              required
+              placeholder="John Doe"
+              className="flex h-11 w-full rounded-lg border border-input bg-background pl-10 pr-4 text-sm transition-colors placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+            />
           </div>
-        )}
-        <form action={signup} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="full_name">Full Name</Label>
-            <Input id="full_name" name="full_name" type="text" required placeholder="John Doe" />
+        </div>
+
+        {/* Email */}
+        <div className="space-y-2">
+          <label htmlFor="email" className="text-sm font-medium">
+            Email
+          </label>
+          <div className="relative">
+            <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <input
+              id="email"
+              name="email"
+              type="email"
+              required
+              placeholder="you@example.com"
+              className="flex h-11 w-full rounded-lg border border-input bg-background pl-10 pr-4 text-sm transition-colors placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+            />
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input id="email" name="email" type="email" required placeholder="you@example.com" />
+        </div>
+
+        {/* Password */}
+        <div className="space-y-2">
+          <label htmlFor="password" className="text-sm font-medium">
+            Password
+          </label>
+          <div className="relative">
+            <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <input
+              id="password"
+              name="password"
+              type="password"
+              required
+              minLength={6}
+              placeholder="••••••••"
+              className="flex h-11 w-full rounded-lg border border-input bg-background pl-10 pr-4 text-sm transition-colors placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+            />
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
-            <Input id="password" name="password" type="password" required minLength={6} placeholder="••••••••" />
+          <p className="text-xs text-muted-foreground">Minimum 6 characters</p>
+        </div>
+
+        {/* Role selector */}
+        <div className="space-y-3">
+          <label className="text-sm font-medium">I want to...</label>
+          <div className="grid grid-cols-2 gap-3">
+            <label className="group relative flex cursor-pointer flex-col items-center gap-3 rounded-lg border-2 border-input p-5 text-center transition-all hover:border-primary/50 hover:bg-primary/[0.02] has-[:checked]:border-primary has-[:checked]:bg-primary/5">
+              <input type="radio" name="role" value="business_owner" required className="sr-only" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-muted transition-colors group-has-[:checked]:bg-primary/10">
+                <Building2 className="h-5 w-5 text-muted-foreground transition-colors group-has-[:checked]:text-primary" />
+              </div>
+              <div>
+                <span className="text-sm font-semibold">List my courts</span>
+                <p className="mt-0.5 text-xs text-muted-foreground">For facility owners</p>
+              </div>
+            </label>
+            <label className="group relative flex cursor-pointer flex-col items-center gap-3 rounded-lg border-2 border-input p-5 text-center transition-all hover:border-primary/50 hover:bg-primary/[0.02] has-[:checked]:border-primary has-[:checked]:bg-primary/5">
+              <input type="radio" name="role" value="customer" required className="sr-only" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-muted transition-colors group-has-[:checked]:bg-primary/10">
+                <CalendarDays className="h-5 w-5 text-muted-foreground transition-colors group-has-[:checked]:text-primary" />
+              </div>
+              <div>
+                <span className="text-sm font-semibold">Book courts</span>
+                <p className="mt-0.5 text-xs text-muted-foreground">For players</p>
+              </div>
+            </label>
           </div>
-          <div className="space-y-2">
-            <Label>I want to...</Label>
-            <div className="grid grid-cols-2 gap-3">
-              <label className="flex cursor-pointer items-center gap-2 rounded-lg border p-3 hover:bg-accent">
-                <input type="radio" name="role" value="business_owner" required className="accent-primary" />
-                <span className="text-sm font-medium">List my courts</span>
-              </label>
-              <label className="flex cursor-pointer items-center gap-2 rounded-lg border p-3 hover:bg-accent">
-                <input type="radio" name="role" value="customer" required className="accent-primary" />
-                <span className="text-sm font-medium">Book courts</span>
-              </label>
-            </div>
-          </div>
-          <Button type="submit" className="w-full">Create account</Button>
-        </form>
-        <p className="mt-4 text-center text-sm text-muted-foreground">
-          Already have an account?{' '}
-          <Link href="/login" className="text-primary underline-offset-4 hover:underline">
-            Sign in
-          </Link>
-        </p>
-      </CardContent>
-    </Card>
+        </div>
+
+        {/* Submit */}
+        <button type="submit" className="cta-button w-full justify-center rounded-lg">
+          Create account
+        </button>
+      </form>
+
+      {/* Login link */}
+      <p className="mt-8 text-center text-sm text-muted-foreground">
+        Already have an account?{' '}
+        <Link href="/login" className="font-medium text-foreground underline-offset-4 hover:underline">
+          Sign in
+        </Link>
+      </p>
+    </div>
   )
 }
