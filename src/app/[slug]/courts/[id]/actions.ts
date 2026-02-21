@@ -4,7 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { getTenantBySlug } from '@/lib/tenant'
 import { sendEmail } from '@/lib/email'
-import { bookingConfirmedEmail } from '@/lib/email-templates'
+import { bookingPendingEmail, newBookingRequestEmail } from '@/lib/email-templates'
 
 export async function createSingleBooking(
   courtId: string,
@@ -39,6 +39,7 @@ export async function createSingleBooking(
     date,
     start_time: startTime,
     end_time: endTime,
+    status: 'pending',
   })
 
   if (error) {
@@ -49,12 +50,27 @@ export async function createSingleBooking(
     }
   }
 
-  // Send confirmation email
+  // Send pending email to customer
   const adminClient = createAdminClient()
   const { data: userData } = await adminClient.auth.admin.getUserById(user.id)
   if (userData?.user?.email) {
-    const { subject, html } = bookingConfirmedEmail(court.name, date, startTime, endTime)
+    const { subject, html } = bookingPendingEmail(court.name, date, startTime, endTime)
     await sendEmail(userData.user.email, subject, html)
+  }
+
+  // Send new booking request email to owner
+  const { data: ownerData } = await supabase
+    .from('tenants')
+    .select('owner_id')
+    .eq('id', tenant.id)
+    .single()
+  if (ownerData) {
+    const { data: ownerUser } = await adminClient.auth.admin.getUserById(ownerData.owner_id)
+    if (ownerUser?.user?.email) {
+      const customerName = userData?.user?.user_metadata?.full_name || userData?.user?.email || 'A customer'
+      const { subject, html } = newBookingRequestEmail(customerName, court.name, date, startTime, endTime, tenant.name)
+      await sendEmail(ownerUser.user.email, subject, html)
+    }
   }
 
   return { error: null }
@@ -124,7 +140,7 @@ export async function createRecurringBooking(
       .select('id')
       .eq('court_id', courtId)
       .eq('date', dateStr)
-      .eq('status', 'confirmed')
+      .in('status', ['confirmed', 'pending'])
       .lt('start_time', endTime + ':00')
       .gt('end_time', startTime + ':00')
       .limit(1)
@@ -159,6 +175,7 @@ export async function createRecurringBooking(
         start_time: startTime,
         end_time: endTime,
         recurring_series_id: series.id,
+        status: 'pending',
       })
 
       if (!bookError) {
@@ -167,11 +184,11 @@ export async function createRecurringBooking(
     }
   }
 
-  // Send confirmation email for the series
+  // Send pending email for the series
   const adminClient = createAdminClient()
   const { data: userData } = await adminClient.auth.admin.getUserById(user.id)
   if (userData?.user?.email) {
-    const { subject, html } = bookingConfirmedEmail(
+    const { subject, html } = bookingPendingEmail(
       court.name,
       `${date} (weekly for ${totalWeeks} weeks)`,
       startTime,

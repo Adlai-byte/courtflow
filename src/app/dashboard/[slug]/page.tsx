@@ -2,9 +2,11 @@ import { requireTenantOwner } from '@/lib/tenant'
 import { createClient } from '@/lib/supabase/server'
 import { Card, CardContent } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
-import { CalendarDays, MapPin, Users, Clock } from 'lucide-react'
+import { CalendarDays, MapPin, Users, Clock, Hourglass, CheckCircle2, Circle, ArrowRight } from 'lucide-react'
+import Link from 'next/link'
 
 const statusColors: Record<string, string> = {
+  pending: 'bg-amber-50 text-amber-700 border-amber-200',
   confirmed: 'bg-green/10 text-green border-green/20',
   completed: 'bg-muted text-muted-foreground border-border',
   cancelled: 'bg-destructive/10 text-destructive border-destructive/20',
@@ -22,19 +24,21 @@ export default async function DashboardPage({
   const supabase = await createClient()
   const today = new Date().toISOString().split('T')[0]
 
-  const [courtsRes, todayBookingsRes, membersRes, waitlistRes, recentBookingsRes] = await Promise.all([
+  const [courtsRes, todayBookingsRes, membersRes, waitlistRes, pendingRes, recentBookingsRes, tiersRes] = await Promise.all([
     supabase.from('courts').select('id', { count: 'exact', head: true }).eq('tenant_id', tenant.id),
     supabase.from('bookings').select('id', { count: 'exact', head: true }).eq('tenant_id', tenant.id).eq('date', today).eq('status', 'confirmed'),
     supabase.from('member_subscriptions').select('id', { count: 'exact', head: true }).eq('tenant_id', tenant.id).eq('status', 'active'),
     supabase.from('waitlist_entries').select('id', { count: 'exact', head: true }).eq('tenant_id', tenant.id).eq('status', 'waiting'),
+    supabase.from('bookings').select('id', { count: 'exact', head: true }).eq('tenant_id', tenant.id).eq('status', 'pending'),
     supabase.from('bookings').select('*, courts ( name ), profiles:customer_id ( full_name )').eq('tenant_id', tenant.id).order('created_at', { ascending: false }).limit(5),
+    supabase.from('membership_tiers').select('id', { count: 'exact', head: true }).eq('tenant_id', tenant.id).eq('is_active', true),
   ])
 
   const stats = [
-    { label: 'Total Courts', value: courtsRes.count || 0, icon: MapPin, color: 'text-primary' },
+    { label: 'Pending Approval', value: pendingRes.count || 0, icon: Hourglass, color: 'text-amber-600' },
     { label: "Today's Bookings", value: todayBookingsRes.count || 0, icon: CalendarDays, color: 'text-chart-3' },
+    { label: 'Total Courts', value: courtsRes.count || 0, icon: MapPin, color: 'text-primary' },
     { label: 'Active Members', value: membersRes.count || 0, icon: Users, color: 'text-chart-2' },
-    { label: 'Waitlisted', value: waitlistRes.count || 0, icon: Clock, color: 'text-chart-4' },
   ]
 
   const recentBookings = recentBookingsRes.data || []
@@ -61,6 +65,62 @@ export default async function DashboardPage({
           ))}
         </div>
       </div>
+
+      {((courtsRes.count || 0) === 0 || (tiersRes.count || 0) === 0) && (
+        <div>
+          <span className="section-label mb-4 block">[ GETTING STARTED ]</span>
+          <Card>
+            <CardContent className="p-6">
+              <p className="mb-4 text-sm text-muted-foreground">
+                Complete these steps to start accepting bookings.
+              </p>
+              <div className="space-y-3">
+                {[
+                  {
+                    done: (courtsRes.count || 0) > 0,
+                    label: 'Add your first court',
+                    description: 'Set up a court with operating hours and booking rules.',
+                    href: `/dashboard/${slug}/courts`,
+                  },
+                  {
+                    done: (tiersRes.count || 0) > 0,
+                    label: 'Create membership tiers',
+                    description: 'Define pricing tiers so customers can subscribe.',
+                    href: `/dashboard/${slug}/members/tiers`,
+                  },
+                  {
+                    done: false,
+                    label: 'Share your booking page',
+                    description: `Your public URL: courtflow.com/${slug}`,
+                    href: `/${slug}`,
+                    external: true,
+                  },
+                ].map((step) => (
+                  <Link
+                    key={step.label}
+                    href={step.href}
+                    {...(step.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                    className="flex items-center gap-4 rounded-lg border p-4 transition-colors hover:bg-accent"
+                  >
+                    {step.done ? (
+                      <CheckCircle2 className="h-5 w-5 shrink-0 text-green" />
+                    ) : (
+                      <Circle className="h-5 w-5 shrink-0 text-muted-foreground" />
+                    )}
+                    <div className="flex-1">
+                      <p className={cn('text-sm font-medium', step.done && 'line-through text-muted-foreground')}>
+                        {step.label}
+                      </p>
+                      <p className="text-xs text-muted-foreground">{step.description}</p>
+                    </div>
+                    <ArrowRight className="h-4 w-4 shrink-0 text-muted-foreground" />
+                  </Link>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
 
       <div>
         <span className="section-label mb-4 block">[ RECENT BOOKINGS ]</span>

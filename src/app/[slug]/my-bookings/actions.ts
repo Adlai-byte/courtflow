@@ -17,7 +17,7 @@ export async function cancelBooking(bookingId: string, slug: string) {
     .select('*, tenants:tenant_id ( cancellation_hours ), courts ( name )')
     .eq('id', bookingId)
     .eq('customer_id', user.id)
-    .eq('status', 'confirmed')
+    .in('status', ['confirmed', 'pending'])
     .single()
 
   if (!booking) return { error: 'Booking not found' }

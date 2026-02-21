@@ -2,10 +2,12 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { Card, CardContent } from '@/components/ui/card'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
+import { Search } from 'lucide-react'
 import { CancelBookingButton } from './cancel-booking-button'
 
 const STATUS_FILTERS = [
   { label: 'All', value: 'all' },
+  { label: 'Pending', value: 'pending' },
   { label: 'Confirmed', value: 'confirmed' },
   { label: 'Completed', value: 'completed' },
   { label: 'Cancelled', value: 'cancelled' },
@@ -14,10 +16,11 @@ const STATUS_FILTERS = [
 export default async function AdminBookingsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ status?: string }>
+  searchParams: Promise<{ status?: string; q?: string }>
 }) {
-  const { status: statusFilter } = await searchParams
+  const { status: statusFilter, q } = await searchParams
   const activeFilter = statusFilter || 'all'
+  const searchQuery = q?.trim() || ''
   const supabase = createAdminClient()
 
   let query = supabase
@@ -30,7 +33,20 @@ export default async function AdminBookingsPage({
     query = query.eq('status', activeFilter)
   }
 
-  const { data: bookings } = await query
+  const { data: allBookings } = await query
+
+  // Client-side filter across joined fields
+  const bookings = searchQuery
+    ? (allBookings ?? []).filter((b: any) => {
+        const lq = searchQuery.toLowerCase()
+        return (
+          (b.profiles?.full_name ?? '').toLowerCase().includes(lq) ||
+          (b.courts?.name ?? '').toLowerCase().includes(lq) ||
+          (b.tenants?.name ?? '').toLowerCase().includes(lq) ||
+          (b.date ?? '').includes(lq)
+        )
+      })
+    : allBookings ?? []
 
   return (
     <div className="space-y-8">
@@ -38,27 +54,50 @@ export default async function AdminBookingsPage({
         <span className="section-label mb-2 block">[ BOOKINGS ]</span>
         <h1 className="text-2xl font-bold tracking-tight">All Bookings</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          {bookings?.length ?? 0} {(bookings?.length ?? 0) === 1 ? 'booking' : 'bookings'}
+          {bookings.length} {bookings.length === 1 ? 'booking' : 'bookings'}
           {activeFilter !== 'all' && ` (${STATUS_FILTERS.find(f => f.value === activeFilter)?.label})`}
         </p>
       </div>
 
+      {/* Search */}
+      <form className="max-w-sm">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <input
+            name="q"
+            type="text"
+            placeholder="Search customer, court, tenant..."
+            defaultValue={searchQuery}
+            className="h-9 w-full rounded-md border border-input bg-background pl-9 pr-3 font-mono text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+          />
+          {activeFilter !== 'all' && (
+            <input type="hidden" name="status" value={activeFilter} />
+          )}
+        </div>
+      </form>
+
       {/* Filter tabs */}
       <div className="flex gap-1 rounded-lg border bg-card p-1 w-fit">
-        {STATUS_FILTERS.map((f) => (
-          <Link
-            key={f.value}
-            href={f.value === 'all' ? '/admin/bookings' : `/admin/bookings?status=${f.value}`}
-            className={cn(
-              'rounded-md px-3 py-1.5 font-mono text-xs transition-colors',
-              activeFilter === f.value
-                ? 'bg-primary text-primary-foreground'
-                : 'text-muted-foreground hover:text-foreground'
-            )}
-          >
-            {f.label}
-          </Link>
-        ))}
+        {STATUS_FILTERS.map((f) => {
+          const params = new URLSearchParams()
+          if (f.value !== 'all') params.set('status', f.value)
+          if (searchQuery) params.set('q', searchQuery)
+          const href = params.toString() ? `/admin/bookings?${params}` : '/admin/bookings'
+          return (
+            <Link
+              key={f.value}
+              href={href}
+              className={cn(
+                'rounded-md px-3 py-1.5 font-mono text-xs transition-colors',
+                activeFilter === f.value
+                  ? 'bg-primary text-primary-foreground'
+                  : 'text-muted-foreground hover:text-foreground'
+              )}
+            >
+              {f.label}
+            </Link>
+          )
+        })}
       </div>
 
       <Card>
@@ -78,7 +117,7 @@ export default async function AdminBookingsPage({
                 </tr>
               </thead>
               <tbody>
-                {(bookings ?? []).map((b: any) => (
+                {bookings.map((b: any) => (
                   <tr key={b.id} className="border-b last:border-0">
                     <td className="px-4 py-3 text-sm">{b.tenants?.name ?? '—'}</td>
                     <td className="px-4 py-3 text-sm">{b.profiles?.full_name ?? '—'}</td>
@@ -89,13 +128,13 @@ export default async function AdminBookingsPage({
                       <StatusBadge status={b.status} />
                     </td>
                     <td className="px-4 py-3">
-                      {b.status === 'confirmed' && (
+                      {(b.status === 'confirmed' || b.status === 'pending') && (
                         <CancelBookingButton bookingId={b.id} />
                       )}
                     </td>
                   </tr>
                 ))}
-                {(bookings ?? []).length === 0 && (
+                {bookings.length === 0 && (
                   <tr>
                     <td colSpan={7} className="px-4 py-8 text-center text-sm text-muted-foreground">
                       No bookings found
@@ -108,7 +147,7 @@ export default async function AdminBookingsPage({
 
           {/* Mobile cards */}
           <div className="divide-y md:hidden">
-            {(bookings ?? []).map((b: any) => (
+            {bookings.map((b: any) => (
               <div key={b.id} className="px-4 py-3">
                 <div className="flex items-center justify-between">
                   <div>
@@ -122,14 +161,14 @@ export default async function AdminBookingsPage({
                   </div>
                   <div className="flex flex-col items-end gap-2">
                     <StatusBadge status={b.status} />
-                    {b.status === 'confirmed' && (
+                    {(b.status === 'confirmed' || b.status === 'pending') && (
                       <CancelBookingButton bookingId={b.id} />
                     )}
                   </div>
                 </div>
               </div>
             ))}
-            {(bookings ?? []).length === 0 && (
+            {bookings.length === 0 && (
               <div className="px-4 py-8 text-center text-sm text-muted-foreground">
                 No bookings found
               </div>
@@ -143,6 +182,7 @@ export default async function AdminBookingsPage({
 
 function StatusBadge({ status }: { status: string }) {
   const styles: Record<string, string> = {
+    pending: 'bg-amber-50 text-amber-700',
     confirmed: 'bg-green/10 text-green',
     completed: 'bg-primary/10 text-primary',
     cancelled: 'bg-destructive/10 text-destructive',

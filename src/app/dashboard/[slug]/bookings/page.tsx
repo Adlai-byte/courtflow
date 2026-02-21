@@ -1,25 +1,39 @@
 import { requireTenantOwner } from '@/lib/tenant'
 import { createClient } from '@/lib/supabase/server'
 import { Card, CardContent } from '@/components/ui/card'
-import { OwnerCancelButton } from '@/components/dashboard/owner-cancel-button'
+import { OwnerBookingActions } from '@/components/dashboard/owner-booking-actions'
+import Link from 'next/link'
+import { cn } from '@/lib/utils'
 
 const statusColors: Record<string, string> = {
+  pending: 'bg-amber-50 text-amber-700 border-amber-200',
   confirmed: 'bg-green/10 text-green border-green/20',
   completed: 'bg-muted text-muted-foreground border-border',
   cancelled: 'bg-destructive/10 text-destructive border-destructive/20',
   no_show: 'bg-amber-100 text-amber-700 border-amber-200',
 }
 
+const STATUS_FILTERS = [
+  { label: 'All', value: 'all' },
+  { label: 'Pending', value: 'pending' },
+  { label: 'Confirmed', value: 'confirmed' },
+  { label: 'Cancelled', value: 'cancelled' },
+] as const
+
 export default async function BookingsPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ slug: string }>
+  searchParams: Promise<{ status?: string }>
 }) {
   const { slug } = await params
+  const { status: statusFilter } = await searchParams
+  const activeFilter = statusFilter || 'all'
   const { tenant } = await requireTenantOwner(slug)
 
   const supabase = await createClient()
-  const { data: bookings } = await supabase
+  let query = supabase
     .from('bookings')
     .select('*, courts ( name ), profiles:customer_id ( full_name )')
     .eq('tenant_id', tenant.id)
@@ -27,10 +41,39 @@ export default async function BookingsPage({
     .order('start_time', { ascending: true })
     .limit(50)
 
+  if (activeFilter !== 'all') {
+    query = query.eq('status', activeFilter)
+  }
+
+  const { data: bookings } = await query
+
   return (
     <div className="space-y-6">
       <span className="section-label block">[ BOOKINGS ]</span>
       <h1 className="text-2xl font-bold tracking-tight">Bookings</h1>
+
+      {/* Filter tabs */}
+      <div className="flex gap-1 rounded-lg border bg-card p-1 w-fit">
+        {STATUS_FILTERS.map((f) => {
+          const href = f.value === 'all'
+            ? `/dashboard/${slug}/bookings`
+            : `/dashboard/${slug}/bookings?status=${f.value}`
+          return (
+            <Link
+              key={f.value}
+              href={href}
+              className={cn(
+                'rounded-md px-3 py-1.5 font-mono text-xs transition-colors',
+                activeFilter === f.value
+                  ? 'bg-primary text-primary-foreground'
+                  : 'text-muted-foreground hover:text-foreground'
+              )}
+            >
+              {f.label}
+            </Link>
+          )
+        })}
+      </div>
 
       <Card>
         <CardContent className="p-0">
@@ -70,9 +113,7 @@ export default async function BookingsPage({
                           )}
                         </td>
                         <td className="p-4">
-                          {booking.status === 'confirmed' && (
-                            <OwnerCancelButton bookingId={booking.id} slug={slug} />
-                          )}
+                          <OwnerBookingActions bookingId={booking.id} slug={slug} status={booking.status} />
                         </td>
                       </tr>
                     ))}
@@ -97,9 +138,7 @@ export default async function BookingsPage({
                     </div>
                     <p className="text-xs text-muted-foreground">{booking.courts?.name}</p>
                     <p className="font-mono text-xs text-muted-foreground">{booking.date} · {booking.start_time}–{booking.end_time}</p>
-                    {booking.status === 'confirmed' && (
-                      <OwnerCancelButton bookingId={booking.id} slug={slug} />
-                    )}
+                    <OwnerBookingActions bookingId={booking.id} slug={slug} status={booking.status} />
                   </div>
                 ))}
               </div>

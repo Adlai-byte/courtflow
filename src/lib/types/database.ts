@@ -1,9 +1,19 @@
 export type UserRole = 'platform_admin' | 'business_owner' | 'customer'
 export type SportType = 'basketball' | 'pickleball' | 'volleyball' | 'tennis' | 'badminton' | 'other'
 export type BookingMode = 'fixed_slot' | 'flexible'
-export type BookingStatus = 'confirmed' | 'cancelled' | 'completed' | 'no_show'
+export type BookingStatus = 'pending' | 'confirmed' | 'cancelled' | 'completed' | 'no_show'
 export type SubscriptionStatus = 'active' | 'expired' | 'cancelled'
 export type WaitlistStatus = 'waiting' | 'notified' | 'confirmed' | 'expired'
+
+export type VenueType = 'indoor' | 'outdoor' | 'covered'
+export type FloorType = 'hardwood' | 'concrete' | 'synthetic' | 'rubber' | 'grass' | 'clay' | 'turf'
+export type CourtFeature = 'air_conditioned' | 'restroom' | 'free_water' | 'parking' | 'wifi' | 'lighting' | 'seating' | 'locker_room' | 'scoreboard'
+
+export interface CourtAmenities {
+  venue_type?: VenueType
+  floor_type?: FloorType
+  features?: CourtFeature[]
+}
 
 export interface Profile {
   id: string
@@ -41,6 +51,7 @@ export interface Court {
   min_duration_minutes: number
   max_duration_minutes: number
   operating_hours: OperatingHours
+  amenities: CourtAmenities
   is_active: boolean
   created_at: string
 }

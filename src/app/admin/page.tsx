@@ -15,7 +15,7 @@ export default async function AdminOverviewPage() {
   ] = await Promise.all([
     supabase.from('tenants').select('id', { count: 'exact', head: true }),
     supabase.from('profiles').select('id', { count: 'exact', head: true }),
-    supabase.from('bookings').select('id', { count: 'exact', head: true }).in('status', ['confirmed', 'completed']),
+    supabase.from('bookings').select('id', { count: 'exact', head: true }).in('status', ['pending', 'confirmed', 'completed']),
     supabase.from('member_subscriptions').select('id', { count: 'exact', head: true }).eq('status', 'active'),
     supabase
       .from('bookings')
@@ -112,6 +112,7 @@ export default async function AdminOverviewPage() {
 
 function StatusBadge({ status }: { status: string }) {
   const styles: Record<string, string> = {
+    pending: 'bg-amber-50 text-amber-700',
     confirmed: 'bg-green/10 text-green',
     completed: 'bg-primary/10 text-primary',
     cancelled: 'bg-destructive/10 text-destructive',
