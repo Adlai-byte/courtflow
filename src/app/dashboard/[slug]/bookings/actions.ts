@@ -8,13 +8,14 @@ import { sendEmail } from '@/lib/email'
 import { bookingCancelledEmail, waitlistPromotionEmail, bookingApprovedEmail, bookingRejectedEmail } from '@/lib/email-templates'
 
 export async function approveBooking(bookingId: string, slug: string) {
-  await requireTenantOwner(slug)
+  const { tenant } = await requireTenantOwner(slug)
   const supabase = await createClient()
 
   const { data: booking } = await supabase
     .from('bookings')
     .select('customer_id, date, start_time, end_time, courts ( name )')
     .eq('id', bookingId)
+    .eq('tenant_id', tenant.id)
     .eq('status', 'pending')
     .single()
 
@@ -42,13 +43,14 @@ export async function approveBooking(bookingId: string, slug: string) {
 }
 
 export async function rejectBooking(bookingId: string, slug: string) {
-  await requireTenantOwner(slug)
+  const { tenant } = await requireTenantOwner(slug)
   const supabase = await createClient()
 
   const { data: booking } = await supabase
     .from('bookings')
     .select('court_id, customer_id, date, start_time, end_time, courts ( name )')
     .eq('id', bookingId)
+    .eq('tenant_id', tenant.id)
     .eq('status', 'pending')
     .single()
 
@@ -103,7 +105,7 @@ export async function rejectBooking(bookingId: string, slug: string) {
 }
 
 export async function ownerCancelBooking(bookingId: string, slug: string) {
-  await requireTenantOwner(slug)
+  const { tenant } = await requireTenantOwner(slug)
   const supabase = await createClient()
 
   // Fetch booking with court name and customer
@@ -111,6 +113,7 @@ export async function ownerCancelBooking(bookingId: string, slug: string) {
     .from('bookings')
     .select('court_id, customer_id, date, start_time, end_time, courts ( name )')
     .eq('id', bookingId)
+    .eq('tenant_id', tenant.id)
     .in('status', ['confirmed', 'pending'])
     .single()
 
@@ -161,5 +164,6 @@ export async function ownerCancelBooking(bookingId: string, slug: string) {
   }
 
   revalidatePath(`/dashboard/${slug}/bookings`)
+  revalidatePath(`/dashboard/${slug}`)
   return { error: null }
 }

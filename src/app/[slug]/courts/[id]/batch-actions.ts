@@ -4,7 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { getTenantBySlug } from '@/lib/tenant'
 import { sendEmail } from '@/lib/email'
-import { batchBookingPendingEmail } from '@/lib/email-templates'
+import { batchBookingPendingEmail, newBookingRequestEmail } from '@/lib/email-templates'
 
 interface BatchItem {
   courtId: string
@@ -208,6 +208,25 @@ export async function createBatchBooking(
     if (userData?.user?.email) {
       const { subject, html } = batchBookingPendingEmail(successfulResults)
       await sendEmail(userData.user.email, subject, html)
+    }
+
+    // Notify tenant owner about new booking requests
+    const { data: ownerData } = await supabase
+      .from('tenants')
+      .select('owner_id')
+      .eq('id', tenant.id)
+      .single()
+    if (ownerData) {
+      const { data: ownerUser } = await adminClient.auth.admin.getUserById(ownerData.owner_id)
+      if (ownerUser?.user?.email) {
+        const customerName = userData?.user?.user_metadata?.full_name || userData?.user?.email || 'A customer'
+        const first = successfulResults[0]
+        const summary = successfulResults.length === 1
+          ? `${first.courtName} on ${first.date}`
+          : `${successfulResults.length} bookings`
+        const { subject, html } = newBookingRequestEmail(customerName, summary, first.date, first.startTime, first.endTime, tenant.name)
+        await sendEmail(ownerUser.user.email, subject, html)
+      }
     }
   }
 

@@ -4,7 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { getTenantBySlug } from '@/lib/tenant'
 import { sendEmail } from '@/lib/email'
-import { bookingPendingEmail, newBookingRequestEmail } from '@/lib/email-templates'
+import { bookingPendingEmail, batchBookingPendingEmail, newBookingRequestEmail } from '@/lib/email-templates'
 
 export async function createSingleBooking(
   courtId: string,
@@ -59,13 +59,8 @@ export async function createSingleBooking(
   }
 
   // Send new booking request email to owner
-  const { data: ownerData } = await supabase
-    .from('tenants')
-    .select('owner_id')
-    .eq('id', tenant.id)
-    .single()
-  if (ownerData) {
-    const { data: ownerUser } = await adminClient.auth.admin.getUserById(ownerData.owner_id)
+  if (tenant.owner_id) {
+    const { data: ownerUser } = await adminClient.auth.admin.getUserById(tenant.owner_id)
     if (ownerUser?.user?.email) {
       const customerName = userData?.user?.user_metadata?.full_name || userData?.user?.email || 'A customer'
       const { subject, html } = newBookingRequestEmail(customerName, court.name, date, startTime, endTime, tenant.name)
@@ -184,17 +179,39 @@ export async function createRecurringBooking(
     }
   }
 
-  // Send pending email for the series
+  // Send pending email for the series using batch template
   const adminClient = createAdminClient()
   const { data: userData } = await adminClient.auth.admin.getUserById(user.id)
   if (userData?.user?.email) {
-    const { subject, html } = bookingPendingEmail(
-      court.name,
-      `${date} (weekly for ${totalWeeks} weeks)`,
-      startTime,
-      endTime
-    )
+    const bookingItems = []
+    for (let i = 0; i < totalWeeks; i++) {
+      const weekDate = new Date(firstDate)
+      weekDate.setDate(weekDate.getDate() + i * 7)
+      bookingItems.push({
+        courtName: court.name,
+        date: weekDate.toISOString().split('T')[0],
+        startTime,
+        endTime,
+        recurring: true,
+      })
+    }
+    const { subject, html } = batchBookingPendingEmail(bookingItems)
     await sendEmail(userData.user.email, subject, html)
+  }
+
+  // Notify tenant owner about new recurring booking request
+  const { data: ownerData } = await supabase
+    .from('tenants')
+    .select('owner_id')
+    .eq('id', tenant.id)
+    .single()
+  if (ownerData) {
+    const { data: ownerUser } = await adminClient.auth.admin.getUserById(ownerData.owner_id)
+    if (ownerUser?.user?.email) {
+      const customerName = userData?.user?.user_metadata?.full_name || userData?.user?.email || 'A customer'
+      const { subject, html } = newBookingRequestEmail(customerName, court.name, date, startTime, endTime, tenant.name)
+      await sendEmail(ownerUser.user.email, subject, html)
+    }
   }
 
   return { error: null, booked, waitlisted }

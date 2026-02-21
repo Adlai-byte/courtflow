@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { approveBooking, rejectBooking } from '@/app/dashboard/[slug]/bookings/actions'
 import { OwnerCancelButton } from './owner-cancel-button'
@@ -17,14 +18,20 @@ export function OwnerBookingActions({ bookingId, slug, status }: Props) {
   async function handleApprove() {
     if (!confirm('Approve this booking?')) return
     setLoading('approve')
-    await approveBooking(bookingId, slug)
+    const result = await approveBooking(bookingId, slug)
+    if (result.error) {
+      toast.error(result.error)
+    }
     setLoading(null)
   }
 
   async function handleReject() {
     if (!confirm('Reject this booking? The customer will be notified.')) return
     setLoading('reject')
-    await rejectBooking(bookingId, slug)
+    const result = await rejectBooking(bookingId, slug)
+    if (result.error) {
+      toast.error(result.error)
+    }
     setLoading(null)
   }
 

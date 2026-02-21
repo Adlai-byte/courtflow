@@ -22,13 +22,15 @@ export async function cancelBooking(bookingId: string, slug: string) {
 
   if (!booking) return { error: 'Booking not found' }
 
-  // Check cancellation deadline
-  const cancellationHours = (booking.tenants as any)?.cancellation_hours ?? 24
-  const bookingStart = new Date(`${booking.date}T${booking.start_time}`)
-  const deadline = new Date(bookingStart.getTime() - cancellationHours * 60 * 60 * 1000)
+  // Only enforce cancellation deadline for confirmed bookings — pending can be freely withdrawn
+  if (booking.status === 'confirmed') {
+    const cancellationHours = (booking.tenants as any)?.cancellation_hours ?? 24
+    const bookingStart = new Date(`${booking.date}T${booking.start_time}`)
+    const deadline = new Date(bookingStart.getTime() - cancellationHours * 60 * 60 * 1000)
 
-  if (new Date() > deadline) {
-    return { error: `Cancellation deadline has passed (${cancellationHours}h before start)` }
+    if (new Date() > deadline) {
+      return { error: `Cancellation deadline has passed (${cancellationHours}h before start)` }
+    }
   }
 
   // Cancel the booking
