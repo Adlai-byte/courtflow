@@ -32,7 +32,8 @@ export default async function SignupPage({
     })
 
     if (error) {
-      redirect(`/signup?error=${encodeURIComponent(error.message)}`)
+      // Generic message to prevent email enumeration attacks
+      redirect(`/signup?error=${encodeURIComponent('Something went wrong. Please try again or use a different email.')}`)
     }
 
     if (role === 'business_owner') {

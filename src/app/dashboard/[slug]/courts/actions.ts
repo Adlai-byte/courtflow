@@ -2,16 +2,18 @@
 
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
+import { requireTenantOwner } from '@/lib/tenant'
 import type { BookingMode, SportType } from '@/lib/types'
 
 export async function createCourt(tenantId: string, slug: string, formData: FormData) {
+  const { tenant } = await requireTenantOwner(slug)
   const supabase = await createClient()
 
   const amenitiesRaw = formData.get('amenities') as string
   const amenities = amenitiesRaw ? JSON.parse(amenitiesRaw) : {}
 
   const { error } = await supabase.from('courts').insert({
-    tenant_id: tenantId,
+    tenant_id: tenant.id,
     name: formData.get('name') as string,
     sport_type: formData.get('sport_type') as SportType,
     description: formData.get('description') as string || null,
@@ -32,6 +34,7 @@ export async function createCourt(tenantId: string, slug: string, formData: Form
 }
 
 export async function updateCourt(courtId: string, slug: string, formData: FormData) {
+  const { tenant } = await requireTenantOwner(slug)
   const supabase = await createClient()
 
   const amenitiesRaw = formData.get('amenities') as string
@@ -52,6 +55,7 @@ export async function updateCourt(courtId: string, slug: string, formData: FormD
       amenities,
     })
     .eq('id', courtId)
+    .eq('tenant_id', tenant.id)
 
   if (error) {
     return { error: error.message }
@@ -62,12 +66,14 @@ export async function updateCourt(courtId: string, slug: string, formData: FormD
 }
 
 export async function deleteCourt(courtId: string, slug: string) {
+  const { tenant } = await requireTenantOwner(slug)
   const supabase = await createClient()
 
   const { error } = await supabase
     .from('courts')
     .delete()
     .eq('id', courtId)
+    .eq('tenant_id', tenant.id)
 
   if (error) {
     return { error: error.message }

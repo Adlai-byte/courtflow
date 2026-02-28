@@ -11,7 +11,7 @@ export async function getDashboardUrl(supabase: SupabaseClient, userId: string):
     .from('profiles')
     .select('role')
     .eq('id', userId)
-    .single()
+    .maybeSingle()
 
   if (!profile) return '/explore'
 
@@ -25,7 +25,7 @@ export async function getDashboardUrl(supabase: SupabaseClient, userId: string):
       .select('slug')
       .eq('owner_id', userId)
       .limit(1)
-      .single()
+      .maybeSingle()
 
     return tenant ? `/dashboard/${tenant.slug}` : '/onboarding'
   }
