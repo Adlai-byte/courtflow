@@ -2,6 +2,8 @@
 
 import Link from 'next/link'
 import { useState } from 'react'
+import { usePathname } from 'next/navigation'
+import { cn } from '@/lib/utils'
 import { Menu, LogOut, BookOpen, User, CalendarDays, CreditCard, Clock } from 'lucide-react'
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import { Button } from '@/components/ui/button'
@@ -23,12 +25,21 @@ export function MobileMarketingNav({
   signOutAction?: () => void
 }) {
   const [open, setOpen] = useState(false)
+  const pathname = usePathname()
   const isCustomer = isLoggedIn && !isOwner && !isAdmin
+
+  function isActive(href: string) {
+    if (href.startsWith('#')) return false
+    return pathname === href
+  }
+
+  const linkClass = (href: string, base: string) =>
+    cn(base, isActive(href) && 'text-foreground')
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="icon" className="md:hidden">
+        <Button variant="ghost" size="icon" className="lg:hidden">
           <Menu className="h-5 w-5" />
         </Button>
       </SheetTrigger>
@@ -37,23 +48,23 @@ export function MobileMarketingNav({
         <nav className="flex flex-col gap-4 mt-8" onClick={() => setOpen(false)}>
           {isCustomer ? (
             <>
-              <Link href="/explore" className="flex items-center gap-2 font-mono text-sm uppercase tracking-wider text-muted-foreground hover:text-foreground">
+              <Link href="/explore" className={linkClass('/explore', 'flex items-center gap-2 font-mono text-sm uppercase tracking-wider text-muted-foreground hover:text-foreground')}>
                 <CalendarDays className="h-4 w-4" />
                 Book Courts
               </Link>
-              <Link href={customerSlug ? `/${customerSlug}/my-bookings` : '/explore'} className="flex items-center gap-2 font-mono text-sm uppercase tracking-wider text-muted-foreground hover:text-foreground">
+              <Link href={customerSlug ? `/${customerSlug}/my-bookings` : '/explore'} className={linkClass(customerSlug ? `/${customerSlug}/my-bookings` : '/explore', 'flex items-center gap-2 font-mono text-sm uppercase tracking-wider text-muted-foreground hover:text-foreground')}>
                 <BookOpen className="h-4 w-4" />
                 My Bookings
               </Link>
-              <Link href={customerSlug ? `/${customerSlug}/my-membership` : '/explore'} className="flex items-center gap-2 font-mono text-sm uppercase tracking-wider text-muted-foreground hover:text-foreground">
+              <Link href={customerSlug ? `/${customerSlug}/my-membership` : '/explore'} className={linkClass(customerSlug ? `/${customerSlug}/my-membership` : '/explore', 'flex items-center gap-2 font-mono text-sm uppercase tracking-wider text-muted-foreground hover:text-foreground')}>
                 <CreditCard className="h-4 w-4" />
                 My Membership
               </Link>
-              <Link href={customerSlug ? `/${customerSlug}/my-waitlist` : '/explore'} className="flex items-center gap-2 font-mono text-sm uppercase tracking-wider text-muted-foreground hover:text-foreground">
+              <Link href={customerSlug ? `/${customerSlug}/my-waitlist` : '/explore'} className={linkClass(customerSlug ? `/${customerSlug}/my-waitlist` : '/explore', 'flex items-center gap-2 font-mono text-sm uppercase tracking-wider text-muted-foreground hover:text-foreground')}>
                 <Clock className="h-4 w-4" />
                 My Waitlist
               </Link>
-              <Link href={customerSlug ? `/${customerSlug}/profile` : '/explore'} className="flex items-center gap-2 font-mono text-sm uppercase tracking-wider text-muted-foreground hover:text-foreground">
+              <Link href={customerSlug ? `/${customerSlug}/profile` : '/explore'} className={linkClass(customerSlug ? `/${customerSlug}/profile` : '/explore', 'flex items-center gap-2 font-mono text-sm uppercase tracking-wider text-muted-foreground hover:text-foreground')}>
                 <User className="h-4 w-4" />
                 Profile
               </Link>
@@ -75,7 +86,7 @@ export function MobileMarketingNav({
               <Link href="#features" className="font-mono text-sm uppercase tracking-wider text-muted-foreground hover:text-foreground">
                 Features
               </Link>
-              <Link href="/explore" className="font-mono text-sm uppercase tracking-wider text-muted-foreground hover:text-foreground">
+              <Link href="/explore" className={linkClass('/explore', 'font-mono text-sm uppercase tracking-wider text-muted-foreground hover:text-foreground')}>
                 Explore
               </Link>
               <Link href="#how-it-works" className="font-mono text-sm uppercase tracking-wider text-muted-foreground hover:text-foreground">
