@@ -41,26 +41,22 @@ export function MobileMarketingNav({
                 <CalendarDays className="h-4 w-4" />
                 Book Courts
               </Link>
-              {customerSlug && (
-                <>
-                  <Link href={`/${customerSlug}/my-bookings`} className="flex items-center gap-2 font-mono text-sm uppercase tracking-wider text-muted-foreground hover:text-foreground">
-                    <BookOpen className="h-4 w-4" />
-                    My Bookings
-                  </Link>
-                  <Link href={`/${customerSlug}/my-membership`} className="flex items-center gap-2 font-mono text-sm uppercase tracking-wider text-muted-foreground hover:text-foreground">
-                    <CreditCard className="h-4 w-4" />
-                    My Membership
-                  </Link>
-                  <Link href={`/${customerSlug}/my-waitlist`} className="flex items-center gap-2 font-mono text-sm uppercase tracking-wider text-muted-foreground hover:text-foreground">
-                    <Clock className="h-4 w-4" />
-                    My Waitlist
-                  </Link>
-                  <Link href={`/${customerSlug}/profile`} className="flex items-center gap-2 font-mono text-sm uppercase tracking-wider text-muted-foreground hover:text-foreground">
-                    <User className="h-4 w-4" />
-                    Profile
-                  </Link>
-                </>
-              )}
+              <Link href={customerSlug ? `/${customerSlug}/my-bookings` : '/explore'} className="flex items-center gap-2 font-mono text-sm uppercase tracking-wider text-muted-foreground hover:text-foreground">
+                <BookOpen className="h-4 w-4" />
+                My Bookings
+              </Link>
+              <Link href={customerSlug ? `/${customerSlug}/my-membership` : '/explore'} className="flex items-center gap-2 font-mono text-sm uppercase tracking-wider text-muted-foreground hover:text-foreground">
+                <CreditCard className="h-4 w-4" />
+                My Membership
+              </Link>
+              <Link href={customerSlug ? `/${customerSlug}/my-waitlist` : '/explore'} className="flex items-center gap-2 font-mono text-sm uppercase tracking-wider text-muted-foreground hover:text-foreground">
+                <Clock className="h-4 w-4" />
+                My Waitlist
+              </Link>
+              <Link href={customerSlug ? `/${customerSlug}/profile` : '/explore'} className="flex items-center gap-2 font-mono text-sm uppercase tracking-wider text-muted-foreground hover:text-foreground">
+                <User className="h-4 w-4" />
+                Profile
+              </Link>
               <hr className="border-border" />
               {signOutAction && (
                 <form action={signOutAction}>

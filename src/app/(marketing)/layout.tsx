@@ -87,26 +87,22 @@ export default async function MarketingLayout({
               <CalendarDays className="h-3.5 w-3.5" />
               Book Courts
             </Link>
-            {customerSlug && (
-              <>
-                <Link href={`/${customerSlug}/my-bookings`} className="flex items-center gap-1.5 font-mono text-xs uppercase tracking-wider text-muted-foreground transition-colors hover:text-foreground">
-                  <BookOpen className="h-3.5 w-3.5" />
-                  My Bookings
-                </Link>
-                <Link href={`/${customerSlug}/my-membership`} className="flex items-center gap-1.5 font-mono text-xs uppercase tracking-wider text-muted-foreground transition-colors hover:text-foreground">
-                  <CreditCard className="h-3.5 w-3.5" />
-                  My Membership
-                </Link>
-                <Link href={`/${customerSlug}/my-waitlist`} className="flex items-center gap-1.5 font-mono text-xs uppercase tracking-wider text-muted-foreground transition-colors hover:text-foreground">
-                  <Clock className="h-3.5 w-3.5" />
-                  My Waitlist
-                </Link>
-                <Link href={`/${customerSlug}/profile`} className="flex items-center gap-1.5 font-mono text-xs uppercase tracking-wider text-muted-foreground transition-colors hover:text-foreground">
-                  <User className="h-3.5 w-3.5" />
-                  Profile
-                </Link>
-              </>
-            )}
+            <Link href={customerSlug ? `/${customerSlug}/my-bookings` : '/explore'} className="flex items-center gap-1.5 font-mono text-xs uppercase tracking-wider text-muted-foreground transition-colors hover:text-foreground">
+              <BookOpen className="h-3.5 w-3.5" />
+              My Bookings
+            </Link>
+            <Link href={customerSlug ? `/${customerSlug}/my-membership` : '/explore'} className="flex items-center gap-1.5 font-mono text-xs uppercase tracking-wider text-muted-foreground transition-colors hover:text-foreground">
+              <CreditCard className="h-3.5 w-3.5" />
+              My Membership
+            </Link>
+            <Link href={customerSlug ? `/${customerSlug}/my-waitlist` : '/explore'} className="flex items-center gap-1.5 font-mono text-xs uppercase tracking-wider text-muted-foreground transition-colors hover:text-foreground">
+              <Clock className="h-3.5 w-3.5" />
+              My Waitlist
+            </Link>
+            <Link href={customerSlug ? `/${customerSlug}/profile` : '/explore'} className="flex items-center gap-1.5 font-mono text-xs uppercase tracking-wider text-muted-foreground transition-colors hover:text-foreground">
+              <User className="h-3.5 w-3.5" />
+              Profile
+            </Link>
           </nav>
         ) : (
           <nav className="hidden items-center gap-8 md:flex">
