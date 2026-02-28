@@ -1,8 +1,9 @@
+import { cache } from 'react'
 import { createClient } from '@/lib/supabase/server'
 import { notFound, redirect } from 'next/navigation'
 import type { Tenant, Profile } from '@/lib/types'
 
-export async function getTenantBySlug(slug: string): Promise<Tenant> {
+export const getTenantBySlug = cache(async (slug: string): Promise<Tenant> => {
   const supabase = await createClient()
   const { data, error } = await supabase
     .from('tenants')
@@ -15,7 +16,7 @@ export async function getTenantBySlug(slug: string): Promise<Tenant> {
   }
 
   return data as Tenant
-}
+})
 
 export async function requireTenantOwner(slug: string): Promise<{ tenant: Tenant; profile: Profile }> {
   const supabase = await createClient()

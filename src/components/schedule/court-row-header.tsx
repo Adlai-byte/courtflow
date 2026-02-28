@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { Info } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
@@ -55,8 +56,14 @@ export function CourtRowHeader({ court }: CourtRowHeaderProps) {
           </DialogHeader>
           <div className="space-y-4">
             {court.image_url && (
-              <div className="aspect-video w-full overflow-hidden rounded-lg border border-border">
-                <img src={court.image_url} alt={court.name} className="h-full w-full object-cover" />
+              <div className="relative aspect-video w-full overflow-hidden rounded-lg border border-border">
+                <Image
+                  src={court.image_url}
+                  alt={court.name}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 448px) 100vw, 448px"
+                />
               </div>
             )}
             <div className="flex flex-wrap items-center gap-2">

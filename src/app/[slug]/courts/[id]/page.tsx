@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import { AmenityChips } from '@/components/booking/amenity-chips'
 import type { Court } from '@/lib/types'
+import Image from 'next/image'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft, CalendarDays } from 'lucide-react'
@@ -68,8 +69,14 @@ export default async function CourtInfoPage({
       </Link>
 
       {typedCourt.image_url && (
-        <div className="aspect-video w-full overflow-hidden rounded-lg border border-border">
-          <img src={typedCourt.image_url} alt={typedCourt.name} className="h-full w-full object-cover" />
+        <div className="relative aspect-video w-full overflow-hidden rounded-lg border border-border">
+          <Image
+            src={typedCourt.image_url}
+            alt={typedCourt.name}
+            fill
+            className="object-cover"
+            sizes="(max-width: 672px) 100vw, 672px"
+          />
         </div>
       )}
 

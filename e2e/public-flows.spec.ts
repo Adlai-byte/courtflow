@@ -4,10 +4,9 @@ test.describe('Public flows', () => {
   test('landing page loads with hero, features, and how-it-works', async ({ page }) => {
     await page.goto('/')
     await expect(page).toHaveTitle(/CourtFLOW/)
-    await expect(page.locator('text=CourtFLOW')).toBeVisible()
-    // Check for key sections
-    await expect(page.locator('#features, [id*="feature"], text=Features').first()).toBeVisible()
-    await expect(page.locator('#how-it-works, [id*="how-it-works"], text=How it works').first()).toBeVisible()
+    await expect(page.getByRole('link', { name: 'CourtFLOW' })).toBeVisible()
+    await expect(page.locator('#features')).toBeVisible()
+    await expect(page.locator('#how-it-works')).toBeVisible()
   })
 
   test('explore page loads and shows heading', async ({ page }) => {
