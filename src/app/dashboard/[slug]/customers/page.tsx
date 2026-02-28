@@ -2,13 +2,18 @@ import { requireTenantOwner } from '@/lib/tenant'
 import { createClient } from '@/lib/supabase/server'
 import { Card, CardContent } from '@/components/ui/card'
 import Link from 'next/link'
+import { Search } from 'lucide-react'
 
 export default async function CustomersPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ slug: string }>
+  searchParams: Promise<{ q?: string }>
 }) {
   const { slug } = await params
+  const { q } = await searchParams
+  const searchQuery = q?.trim() || ''
   const { tenant } = await requireTenantOwner(slug)
 
   const supabase = await createClient()
@@ -58,18 +63,44 @@ export default async function CustomersPage({
     tierMap.set(sub.customer_id, (sub.membership_tiers as any)?.name || 'Unknown')
   }
 
-  const customers = Array.from(customerMap.values()).sort((a, b) => b.total_bookings - a.total_bookings)
+  let customers = Array.from(customerMap.values()).sort((a, b) => b.total_bookings - a.total_bookings)
+
+  // Filter by search query
+  if (searchQuery) {
+    const lq = searchQuery.toLowerCase()
+    customers = customers.filter(
+      (c) =>
+        (c.full_name ?? '').toLowerCase().includes(lq) ||
+        (c.phone ?? '').toLowerCase().includes(lq)
+    )
+  }
 
   return (
     <div className="space-y-6">
       <span className="section-label block">[ CUSTOMERS ]</span>
       <h1 className="text-2xl font-bold tracking-tight">Customers</h1>
 
+      {/* Search */}
+      <form className="max-w-sm">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <input
+            name="q"
+            type="text"
+            placeholder="Search by name or phone..."
+            defaultValue={searchQuery}
+            className="h-9 w-full rounded-md border border-input bg-background pl-9 pr-3 font-mono text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+          />
+        </div>
+      </form>
+
       <Card>
         <CardContent className="p-0">
           {customers.length === 0 ? (
             <div className="flex items-center justify-center py-12">
-              <p className="text-sm text-muted-foreground">No customers yet. Customers appear once they make a booking.</p>
+              <p className="text-sm text-muted-foreground">
+                {searchQuery ? 'No customers match your search.' : 'No customers yet. Customers appear once they make a booking.'}
+              </p>
             </div>
           ) : (
             <>

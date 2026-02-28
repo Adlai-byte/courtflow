@@ -1,10 +1,16 @@
 import { getTenantBySlug } from '@/lib/tenant'
 import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
-import { BookingCalendar } from '@/components/booking/booking-calendar'
+import { AmenityChips } from '@/components/booking/amenity-chips'
 import type { Court } from '@/lib/types'
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
+import { ArrowLeft, CalendarDays } from 'lucide-react'
 
-export default async function CourtBookingPage({
+const dayLabels = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+const dayKeys = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
+
+export default async function CourtInfoPage({
   params,
 }: {
   params: Promise<{ slug: string; id: string }>
@@ -26,15 +32,22 @@ export default async function CourtBookingPage({
 
   const typedCourt = court as Court
 
-  const { data: closures } = await supabase
-    .from('court_closures')
-    .select('date')
-    .eq('court_id', id)
-
-  const closureDates = (closures || []).map((c: { date: string }) => c.date)
-
   return (
-    <div className="space-y-6">
+    <div className="mx-auto max-w-2xl space-y-6">
+      <Link
+        href={`/${slug}`}
+        className="inline-flex items-center gap-1 font-mono text-xs text-muted-foreground hover:text-foreground transition-colors"
+      >
+        <ArrowLeft className="h-3 w-3" />
+        Back to {tenant.name}
+      </Link>
+
+      {typedCourt.image_url && (
+        <div className="aspect-video w-full overflow-hidden rounded-lg border border-border">
+          <img src={typedCourt.image_url} alt={typedCourt.name} className="h-full w-full object-cover" />
+        </div>
+      )}
+
       <div>
         <h1 className="text-2xl font-bold tracking-tight">{typedCourt.name}</h1>
         <div className="mt-2 flex items-center gap-2">
@@ -48,11 +61,46 @@ export default async function CourtBookingPage({
           </span>
         </div>
         {typedCourt.description && (
-          <p className="mt-2 text-sm text-muted-foreground">{typedCourt.description}</p>
+          <p className="mt-3 text-sm text-muted-foreground">{typedCourt.description}</p>
+        )}
+        {typedCourt.amenities && Object.keys(typedCourt.amenities).length > 0 && (
+          <div className="mt-3 flex flex-wrap items-center gap-2">
+            <AmenityChips amenities={typedCourt.amenities} />
+          </div>
         )}
       </div>
 
-      <BookingCalendar court={typedCourt} tenantId={tenant.id} slug={slug} closureDates={closureDates} />
+      {/* Operating hours */}
+      <div>
+        <span className="section-label block">[ OPERATING HOURS ]</span>
+        <div className="mt-3 rounded-lg border border-border overflow-hidden">
+          {dayKeys.map((key, idx) => {
+            const hours = typedCourt.operating_hours[key]
+            return (
+              <div
+                key={key}
+                className={`flex items-center justify-between px-4 py-2 font-mono text-sm ${
+                  idx < dayKeys.length - 1 ? 'border-b border-border' : ''
+                }`}
+              >
+                <span className="text-muted-foreground">{dayLabels[idx]}</span>
+                <span>
+                  {hours ? `${hours.open} – ${hours.close}` : (
+                    <span className="text-muted-foreground/50">Closed</span>
+                  )}
+                </span>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+
+      <Link href={`/${slug}`}>
+        <Button className="w-full font-mono text-xs uppercase tracking-wider">
+          <CalendarDays className="mr-2 h-4 w-4" />
+          View Schedule & Book
+        </Button>
+      </Link>
     </div>
   )
 }

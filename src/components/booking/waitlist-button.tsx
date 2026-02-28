@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { createClient } from '@/lib/supabase/client'
+import { toast } from 'sonner'
 
 interface WaitlistButtonProps {
   courtId: string
@@ -11,9 +12,10 @@ interface WaitlistButtonProps {
   startTime: string
   endTime: string
   slug: string
+  waitlistCount?: number
 }
 
-export function WaitlistButton({ courtId, tenantId, date, startTime, endTime, slug }: WaitlistButtonProps) {
+export function WaitlistButton({ courtId, tenantId, date, startTime, endTime, slug, waitlistCount }: WaitlistButtonProps) {
   const [joining, setJoining] = useState(false)
   const [joined, setJoined] = useState(false)
 
@@ -37,9 +39,10 @@ export function WaitlistButton({ courtId, tenantId, date, startTime, endTime, sl
     })
 
     if (error) {
-      alert(error.message)
+      toast.error(error.message)
     } else {
       setJoined(true)
+      toast.success('Added to waitlist')
     }
     setJoining(false)
   }
@@ -61,6 +64,9 @@ export function WaitlistButton({ courtId, tenantId, date, startTime, endTime, sl
       className="font-mono text-xs opacity-60 hover:opacity-100"
     >
       Waitlist
+      {typeof waitlistCount === 'number' && waitlistCount > 0 && (
+        <span className="ml-1 text-amber-600 font-medium">&middot; {waitlistCount}</span>
+      )}
     </Button>
   )
 }

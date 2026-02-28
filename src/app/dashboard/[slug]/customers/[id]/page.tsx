@@ -3,10 +3,10 @@ import { createClient } from '@/lib/supabase/server'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { notFound } from 'next/navigation'
 import { addCustomerNote } from './actions'
 import { CalendarDays, DollarSign, AlertTriangle, MapPin } from 'lucide-react'
+import { UserAvatar } from '@/components/shared/user-avatar'
 
 const statusColors: Record<string, string> = {
   confirmed: 'bg-green/10 text-green border-green/20',
@@ -73,13 +73,6 @@ export default async function CustomerDetailPage({
     ? Array.from(courtCounts.entries()).sort((a, b) => b[1] - a[1])[0][0]
     : '—'
 
-  const initials = (customer.full_name || 'U')
-    .split(' ')
-    .map((n: string) => n[0])
-    .join('')
-    .toUpperCase()
-    .slice(0, 2)
-
   async function handleAddNote(formData: FormData) {
     'use server'
     await addCustomerNote(slug, id, formData)
@@ -88,11 +81,7 @@ export default async function CustomerDetailPage({
   return (
     <div className="space-y-8">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
-        <Avatar className="h-16 w-16">
-          <AvatarFallback className="bg-primary/10 text-primary font-mono text-xl">
-            {initials}
-          </AvatarFallback>
-        </Avatar>
+        <UserAvatar avatarUrl={customer.avatar_url} fullName={customer.full_name} size="xl" />
         <div>
           <span className="section-label mb-1 block">[ CUSTOMER ]</span>
           <h1 className="text-2xl font-bold tracking-tight">{customer.full_name || 'Unknown'}</h1>

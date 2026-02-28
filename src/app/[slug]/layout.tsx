@@ -1,12 +1,5 @@
 import { getTenantBySlug } from '@/lib/tenant'
 import { createClient } from '@/lib/supabase/server'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
 import { LogOut } from 'lucide-react'
 import { redirect } from 'next/navigation'
 import { CartProviderWrapper } from '@/components/booking/cart-provider-wrapper'
@@ -24,23 +17,6 @@ export default async function BookingLayout({
   const tenant = await getTenantBySlug(slug)
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
-
-  let initials = 'U'
-  if (user) {
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('full_name')
-      .eq('id', user.id)
-      .single()
-    if (profile?.full_name) {
-      initials = profile.full_name
-        .split(' ')
-        .map((n: string) => n[0])
-        .join('')
-        .toUpperCase()
-        .slice(0, 2)
-    }
-  }
 
   async function signOut() {
     'use server'
@@ -71,27 +47,15 @@ export default async function BookingLayout({
             </span>
           </div>
           {user && (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button className="focus:outline-none">
-                  <Avatar className="h-8 w-8 border border-border cursor-pointer transition-colors hover:border-primary/50">
-                    <AvatarFallback className="bg-primary/10 font-mono text-xs text-primary">
-                      {initials}
-                    </AvatarFallback>
-                  </Avatar>
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48">
-                <DropdownMenuItem asChild>
-                  <form action={signOut} className="w-full">
-                    <button type="submit" className="flex w-full items-center gap-2 cursor-pointer text-destructive">
-                      <LogOut className="h-4 w-4" />
-                      <span className="font-mono text-xs">Sign Out</span>
-                    </button>
-                  </form>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <form action={signOut}>
+              <button
+                type="submit"
+                className="flex items-center gap-2 rounded-md px-3 py-1.5 font-mono text-xs text-muted-foreground transition-colors hover:text-destructive"
+              >
+                <LogOut className="h-4 w-4" />
+                <span className="hidden sm:inline">Sign Out</span>
+              </button>
+            </form>
           )}
         </header>
         <main className="flex-1 overflow-y-auto bg-background p-4 md:p-6">

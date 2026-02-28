@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 import { UserRoleChanger } from './user-role-changer'
 import { UserDeleteButton } from './user-delete-button'
+import { UserAvatar } from '@/components/shared/user-avatar'
 import type { UserRole } from '@/lib/types'
 
 export default async function AdminUserDetailPage({
@@ -70,12 +71,15 @@ export default async function AdminUserDetailPage({
           <ArrowLeft className="h-3 w-3" /> Back to Users
         </Link>
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-          <div>
-            <span className="section-label mb-2 block">[ USER DETAIL ]</span>
-            <h1 className="text-2xl font-bold tracking-tight">{profile.full_name ?? 'Unnamed User'}</h1>
-            <p className="mt-1 font-mono text-sm text-muted-foreground">
-              {email} &middot; Joined {new Date(profile.created_at).toLocaleDateString()}
-            </p>
+          <div className="flex items-center gap-4">
+            <UserAvatar avatarUrl={profile.avatar_url} fullName={profile.full_name} size="xl" />
+            <div>
+              <span className="section-label mb-2 block">[ USER DETAIL ]</span>
+              <h1 className="text-2xl font-bold tracking-tight">{profile.full_name ?? 'Unnamed User'}</h1>
+              <p className="mt-1 font-mono text-sm text-muted-foreground">
+                {email} &middot; Joined {new Date(profile.created_at).toLocaleDateString()}
+              </p>
+            </div>
           </div>
           <UserDeleteButton userId={profile.id} userName={profile.full_name ?? email} />
         </div>

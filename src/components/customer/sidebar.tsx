@@ -11,6 +11,7 @@ import {
   User,
   LogOut,
   Menu,
+  Compass,
 } from 'lucide-react'
 import {
   Sheet,
@@ -23,8 +24,8 @@ import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 
 const navItems = [
-  { label: 'Schedule', href: '', icon: CalendarDays },
-  { label: 'My Bookings', href: '/my-bookings', icon: BookOpen },
+  { label: 'Book Court', href: '', icon: CalendarDays },
+  { label: 'Booking History', href: '/my-bookings', icon: BookOpen },
   { label: 'My Membership', href: '/my-membership', icon: CreditCard },
   { label: 'My Waitlist', href: '/my-waitlist', icon: Clock },
   { label: 'Profile', href: '/profile', icon: User },
@@ -45,6 +46,15 @@ function NavContent({ slug, pathname, isAuthenticated, signOutAction, onNavigate
   return (
     <div className="flex flex-1 flex-col">
       <nav className="flex-1 space-y-1 p-3">
+        <Link
+          href="/explore"
+          onClick={onNavigate}
+          className="flex items-center gap-3 rounded-lg px-3 py-2 font-mono text-xs uppercase tracking-wider text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+        >
+          <Compass className="h-4 w-4" />
+          Explore Facilities
+        </Link>
+        <div className="my-2 border-t border-border" />
         {visibleItems.map((item) => {
           const href = `${basePath}${item.href}`
           const isActive = item.href === ''
@@ -53,7 +63,7 @@ function NavContent({ slug, pathname, isAuthenticated, signOutAction, onNavigate
 
           return (
             <Link
-              key={item.href}
+              key={item.label}
               href={href}
               onClick={onNavigate}
               className={cn(

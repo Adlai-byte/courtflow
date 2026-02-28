@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { GoogleSignIn } from '@/components/auth/google-sign-in'
+import { getDashboardUrl } from '@/lib/auth-redirect'
 import { Mail, Lock } from 'lucide-react'
 
 export default async function LoginPage({
@@ -14,7 +15,10 @@ export default async function LoginPage({
   const { data: { user } } = await supabase.auth.getUser()
 
   if (user) {
-    redirect(params.redirect || '/')
+    if (params.redirect) {
+      redirect(params.redirect)
+    }
+    redirect(await getDashboardUrl(supabase, user.id))
   }
 
   async function login(formData: FormData) {
@@ -24,7 +28,7 @@ export default async function LoginPage({
     const password = formData.get('password') as string
     const supabase = await createClient()
 
-    const { error } = await supabase.auth.signInWithPassword({
+    const { error, data } = await supabase.auth.signInWithPassword({
       email,
       password,
     })
@@ -33,7 +37,10 @@ export default async function LoginPage({
       redirect(`/login?error=${encodeURIComponent(error.message)}`)
     }
 
-    redirect(params.redirect || '/')
+    if (params.redirect) {
+      redirect(params.redirect)
+    }
+    redirect(await getDashboardUrl(supabase, data.user.id))
   }
 
   return (
@@ -121,7 +128,7 @@ export default async function LoginPage({
             <span className="text-sm text-muted-foreground">Remember me</span>
           </label>
           <Link
-            href="#"
+            href="/forgot-password"
             className="text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
           >
             Forgot password?
@@ -139,6 +146,14 @@ export default async function LoginPage({
         Don&apos;t have an account?{' '}
         <Link href="/signup" className="font-medium text-foreground underline-offset-4 hover:underline">
           Create one
+        </Link>
+      </p>
+
+      {/* Browse as guest */}
+      <p className="mt-3 text-center text-sm text-muted-foreground">
+        or{' '}
+        <Link href="/explore" className="text-muted-foreground underline-offset-4 hover:text-foreground hover:underline">
+          Browse facilities
         </Link>
       </p>
     </div>

@@ -39,7 +39,7 @@ export default async function SignupPage({
       redirect('/onboarding')
     }
 
-    redirect('/')
+    redirect('/explore')
   }
 
   return (
@@ -173,6 +173,14 @@ export default async function SignupPage({
         Already have an account?{' '}
         <Link href="/login" className="font-medium text-foreground underline-offset-4 hover:underline">
           Sign in
+        </Link>
+      </p>
+
+      {/* Browse as guest */}
+      <p className="mt-3 text-center text-sm text-muted-foreground">
+        or{' '}
+        <Link href="/explore" className="text-muted-foreground underline-offset-4 hover:text-foreground hover:underline">
+          Browse facilities
         </Link>
       </p>
     </div>

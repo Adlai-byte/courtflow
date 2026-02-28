@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { requestMembership } from '@/app/[slug]/membership/actions'
+import { toast } from 'sonner'
 
 interface MembershipRequestButtonProps {
   tierId: string
@@ -40,9 +41,10 @@ export function MembershipRequestButton({
     setSubmitting(true)
     const result = await requestMembership(tierId, slug)
     if (result.error) {
-      alert(result.error)
+      toast.error(result.error)
     } else {
       setSubmitted(true)
+      toast.success('Membership request submitted!')
     }
     setSubmitting(false)
   }

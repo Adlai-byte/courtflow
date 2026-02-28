@@ -38,7 +38,7 @@ export default async function CourtsPage({
               Add Court
             </Button>
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent className="max-h-[85vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>Add a new court</DialogTitle>
             </DialogHeader>

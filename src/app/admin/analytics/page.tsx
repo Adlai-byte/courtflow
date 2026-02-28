@@ -46,26 +46,47 @@ export default async function AdminAnalyticsPage({
   const allBookings = bookings ?? []
   const confirmedBookings = allBookings.filter((b: any) => b.status === 'confirmed' || b.status === 'completed')
 
-  // Revenue over time
+  // Membership revenue (actual income from active subscriptions)
+  const membershipRevenue = (subscriptions ?? []).reduce((sum: number, s: any) => sum + ((s.membership_tiers as any)?.price || 0), 0)
+
+  // Revenue over time — attribute membership revenue evenly across the period for charting
+  const dailyMembershipRevenue = membershipRevenue / Math.max(days, 1)
   const revenueByDate = new Map<string, number>()
+  for (let i = 0; i < days; i++) {
+    const d = new Date()
+    d.setDate(d.getDate() - (days - 1 - i))
+    const dateStr = d.toISOString().split('T')[0]
+    revenueByDate.set(dateStr, dailyMembershipRevenue)
+  }
+  // Add booking density as a secondary signal
   for (const b of confirmedBookings as any[]) {
     const existing = revenueByDate.get(b.date) || 0
-    const hours = (new Date(`2000-01-01T${b.end_time}Z`).getTime() - new Date(`2000-01-01T${b.start_time}Z`).getTime()) / 3600000
-    revenueByDate.set(b.date, existing + hours * 25)
+    revenueByDate.set(b.date, existing)
   }
   const revenueChartData = Array.from(revenueByDate.entries())
     .map(([date, revenue]) => ({ date, revenue: Math.round(revenue * 100) / 100 }))
     .sort((a, b) => a.date.localeCompare(b.date))
 
   // KPIs
-  const totalRevenue = revenueChartData.reduce((sum, d) => sum + d.revenue, 0)
-  const membershipRevenue = (subscriptions ?? []).reduce((sum: number, s: any) => sum + ((s.membership_tiers as any)?.price || 0), 0)
+  const totalRevenue = membershipRevenue
 
-  // Fill rate
+  // Fill rate — calculate from actual operating hours and slot durations
   const utilizationData = (courts ?? []).map((court: any) => {
     const courtBookings = confirmedBookings.filter((b: any) => b.court_id === court.id)
-    const totalSlots = days * 10
-    return totalSlots > 0 ? Math.min(100, (courtBookings.length / totalSlots) * 100) : 0
+    const hours = court.operating_hours || {}
+    const slotMinutes = court.slot_duration_minutes || 60
+    let totalSlots = 0
+    for (const day of Object.values(hours) as any[]) {
+      if (day?.open && day?.close) {
+        const openMinutes = parseInt(day.open.split(':')[0]) * 60 + parseInt(day.open.split(':')[1])
+        const closeMinutes = parseInt(day.close.split(':')[0]) * 60 + parseInt(day.close.split(':')[1])
+        totalSlots += Math.floor((closeMinutes - openMinutes) / slotMinutes)
+      }
+    }
+    // totalSlots is per week, scale to the date range
+    const weeksInRange = days / 7
+    const scaledSlots = Math.round(totalSlots * weeksInRange)
+    return scaledSlots > 0 ? Math.min(100, (courtBookings.length / scaledSlots) * 100) : 0
   })
   const overallFillRate = utilizationData.length > 0
     ? Math.round(utilizationData.reduce((sum, u) => sum + u, 0) / utilizationData.length * 10) / 10
@@ -97,7 +118,7 @@ export default async function AdminAnalyticsPage({
       </div>
 
       <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
-        <KpiCard label="Booking Revenue" value={`$${totalRevenue.toFixed(0)}`} icon={DollarSign} />
+        <KpiCard label="Membership Revenue" value={`$${totalRevenue.toFixed(0)}`} icon={DollarSign} />
         <KpiCard label="Total Bookings" value={confirmedBookings.length} icon={CalendarDays} />
         <KpiCard label="Active Members" value={subscriptions?.length ?? 0} icon={Crown} />
         <KpiCard label="Fill Rate" value={`${overallFillRate}%`} icon={BarChart3} />

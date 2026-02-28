@@ -2,6 +2,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { Card, CardContent } from '@/components/ui/card'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
+import { Search } from 'lucide-react'
 import type { UserRole } from '@/lib/types'
 
 const ROLE_FILTERS = [
@@ -14,10 +15,11 @@ const ROLE_FILTERS = [
 export default async function AdminUsersPage({
   searchParams,
 }: {
-  searchParams: Promise<{ role?: string }>
+  searchParams: Promise<{ role?: string; q?: string }>
 }) {
-  const { role: roleFilter } = await searchParams
+  const { role: roleFilter, q } = await searchParams
   const activeFilter = roleFilter || 'all'
+  const searchQuery = q?.trim() || ''
   const supabase = createAdminClient()
 
   let query = supabase
@@ -27,6 +29,10 @@ export default async function AdminUsersPage({
 
   if (activeFilter !== 'all') {
     query = query.eq('role', activeFilter)
+  }
+
+  if (searchQuery) {
+    query = query.ilike('full_name', `%${searchQuery}%`)
   }
 
   const { data: profiles } = await query
@@ -49,22 +55,45 @@ export default async function AdminUsersPage({
         </p>
       </div>
 
+      {/* Search */}
+      <form className="max-w-sm">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <input
+            name="q"
+            type="text"
+            placeholder="Search by name..."
+            defaultValue={searchQuery}
+            className="h-9 w-full rounded-md border border-input bg-background pl-9 pr-3 font-mono text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+          />
+          {activeFilter !== 'all' && (
+            <input type="hidden" name="role" value={activeFilter} />
+          )}
+        </div>
+      </form>
+
       {/* Filter tabs */}
       <div className="flex gap-1 rounded-lg border bg-card p-1 w-fit">
-        {ROLE_FILTERS.map((r) => (
-          <Link
-            key={r.value}
-            href={r.value === 'all' ? '/admin/users' : `/admin/users?role=${r.value}`}
-            className={cn(
-              'rounded-md px-3 py-1.5 font-mono text-xs transition-colors',
-              activeFilter === r.value
-                ? 'bg-primary text-primary-foreground'
-                : 'text-muted-foreground hover:text-foreground'
-            )}
-          >
-            {r.label}
-          </Link>
-        ))}
+        {ROLE_FILTERS.map((r) => {
+          const params = new URLSearchParams()
+          if (r.value !== 'all') params.set('role', r.value)
+          if (searchQuery) params.set('q', searchQuery)
+          const href = params.toString() ? `/admin/users?${params}` : '/admin/users'
+          return (
+            <Link
+              key={r.value}
+              href={href}
+              className={cn(
+                'rounded-md px-3 py-1.5 font-mono text-xs transition-colors',
+                activeFilter === r.value
+                  ? 'bg-primary text-primary-foreground'
+                  : 'text-muted-foreground hover:text-foreground'
+              )}
+            >
+              {r.label}
+            </Link>
+          )
+        })}
       </div>
 
       <Card>

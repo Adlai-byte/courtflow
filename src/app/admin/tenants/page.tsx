@@ -1,7 +1,7 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { Card, CardContent } from '@/components/ui/card'
 import Link from 'next/link'
-import { ExternalLink } from 'lucide-react'
+import { ExternalLink, LayoutDashboard } from 'lucide-react'
 
 export default async function AdminTenantsPage() {
   const supabase = createAdminClient()
@@ -10,6 +10,13 @@ export default async function AdminTenantsPage() {
     .from('tenants')
     .select('*, profiles:owner_id ( full_name )')
     .order('created_at', { ascending: false })
+
+  // Get owner emails from auth
+  const { data: authData } = await supabase.auth.admin.listUsers({ perPage: 1000 })
+  const emailMap = new Map<string, string>()
+  for (const u of authData?.users ?? []) {
+    emailMap.set(u.id, u.email ?? '')
+  }
 
   // Fetch aggregate counts per tenant
   const tenantIds = (tenants ?? []).map((t: any) => t.id)
@@ -57,7 +64,7 @@ export default async function AdminTenantsPage() {
               <thead>
                 <tr className="border-b text-left">
                   <th className="px-4 py-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">Name</th>
-                  <th className="px-4 py-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">Owner</th>
+                  <th className="px-4 py-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">Owner / Email</th>
                   <th className="px-4 py-3 font-mono text-xs uppercase tracking-wider text-muted-foreground text-right">Courts</th>
                   <th className="px-4 py-3 font-mono text-xs uppercase tracking-wider text-muted-foreground text-right">Bookings</th>
                   <th className="px-4 py-3 font-mono text-xs uppercase tracking-wider text-muted-foreground text-right">Members</th>
@@ -74,7 +81,10 @@ export default async function AdminTenantsPage() {
                         <p className="font-mono text-xs text-muted-foreground">/{t.slug}</p>
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-sm">{t.profiles?.full_name ?? '—'}</td>
+                    <td className="px-4 py-3">
+                      <p className="text-sm">{t.profiles?.full_name ?? '—'}</p>
+                      <p className="text-xs text-muted-foreground">{emailMap.get(t.owner_id) ?? ''}</p>
+                    </td>
                     <td className="px-4 py-3 text-sm text-right font-mono">{courtMap.get(t.id) ?? 0}</td>
                     <td className="px-4 py-3 text-sm text-right font-mono">{bookingMap.get(t.id) ?? 0}</td>
                     <td className="px-4 py-3 text-sm text-right font-mono">{memberMap.get(t.id) ?? 0}</td>
@@ -90,7 +100,15 @@ export default async function AdminTenantsPage() {
                           Manage
                         </Link>
                         <Link
+                          href={`/dashboard/${t.slug}`}
+                          className="inline-flex items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
+                        >
+                          <LayoutDashboard className="h-3 w-3" /> Dashboard
+                        </Link>
+                        <Link
                           href={`/${t.slug}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
                           className="inline-flex items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
                         >
                           View <ExternalLink className="h-3 w-3" />
@@ -127,10 +145,18 @@ export default async function AdminTenantsPage() {
                       Manage
                     </Link>
                     <Link
-                      href={`/${t.slug}`}
+                      href={`/dashboard/${t.slug}`}
                       className="inline-flex items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
                     >
-                      View <ExternalLink className="h-3 w-3" />
+                      <LayoutDashboard className="h-3 w-3" />
+                    </Link>
+                    <Link
+                      href={`/${t.slug}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
+                    >
+                      <ExternalLink className="h-3 w-3" />
                     </Link>
                   </div>
                 </div>
@@ -140,7 +166,7 @@ export default async function AdminTenantsPage() {
                   <span>{memberMap.get(t.id) ?? 0} members</span>
                 </div>
                 <p className="mt-1 text-xs text-muted-foreground">
-                  Owner: {t.profiles?.full_name ?? '—'} &middot; {new Date(t.created_at).toLocaleDateString()}
+                  Owner: {t.profiles?.full_name ?? '—'} ({emailMap.get(t.owner_id) ?? '—'}) &middot; {new Date(t.created_at).toLocaleDateString()}
                 </p>
               </div>
             ))}

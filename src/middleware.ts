@@ -15,21 +15,14 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  // Protect booking actions (my-bookings) - require auth
-  if (pathname.includes('/my-bookings')) {
+  // Protect customer account pages - require auth
+  if (pathname.includes('/my-bookings') || pathname.includes('/my-membership') || pathname.includes('/my-waitlist') || pathname.includes('/profile')) {
     if (!user) {
       const url = request.nextUrl.clone()
       url.pathname = '/login'
       url.searchParams.set('redirect', pathname)
       return NextResponse.redirect(url)
     }
-  }
-
-  // Redirect logged-in users away from auth pages
-  if ((pathname === '/login' || pathname === '/signup') && user) {
-    const url = request.nextUrl.clone()
-    url.pathname = '/'
-    return NextResponse.redirect(url)
   }
 
   return supabaseResponse
