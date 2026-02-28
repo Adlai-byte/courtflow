@@ -1,8 +1,22 @@
+import type { Metadata } from 'next'
 import { getTenantBySlug } from '@/lib/tenant'
 import { createClient } from '@/lib/supabase/server'
 import type { Court } from '@/lib/types'
 import { MembershipRequestButton } from '@/components/booking/membership-request-button'
 import { ScheduleGridWrapper } from '@/components/schedule/schedule-grid-wrapper'
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>
+}): Promise<Metadata> {
+  const { slug } = await params
+  const tenant = await getTenantBySlug(slug)
+  return {
+    title: tenant.name,
+    description: tenant.description || `Book courts at ${tenant.name} on CourtFLOW.`,
+  }
+}
 
 export default async function BusinessPage({
   params,
@@ -78,6 +92,7 @@ export default async function BusinessPage({
       </div>
 
       <div>
+        <h2 className="sr-only">Schedule</h2>
         <span className="section-label block">[ SCHEDULE ]</span>
         <div className="mt-4">
           <ScheduleGridWrapper
@@ -92,6 +107,7 @@ export default async function BusinessPage({
 
       {tiers && tiers.length > 0 && (
         <div>
+          <h2 className="sr-only">Membership Plans</h2>
           <span className="section-label block">[ MEMBERSHIP PLANS ]</span>
           <div className="mt-4 grid gap-4 md:grid-cols-3">
             {(tiers as any[]).map((tier) => (

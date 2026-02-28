@@ -46,6 +46,7 @@ export default async function DashboardPage({
   return (
     <div className="space-y-8">
       <div>
+        <h1 className="sr-only">Dashboard Overview</h1>
         <span className="section-label mb-4 block">[ OVERVIEW ]</span>
         <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
           {stats.map((stat) => (

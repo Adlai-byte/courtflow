@@ -110,6 +110,7 @@ export function CartDrawer({ slug }: CartDrawerProps) {
       {itemCount > 0 && (
         <button
           onClick={() => setOpen(true)}
+          aria-label={`Open cart (${itemCount} items)`}
           className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform hover:scale-105 active:scale-95"
         >
           <ShoppingCart className="h-6 w-6" />
@@ -132,7 +133,7 @@ export function CartDrawer({ slug }: CartDrawerProps) {
           </SheetHeader>
 
           {/* Body — scrollable */}
-          <div className="flex-1 overflow-y-auto px-4">
+          <div className="flex-1 overflow-y-auto px-4" aria-live="polite">
             {Object.entries(grouped).map(([courtName, courtItems]) => (
               <div key={courtName} className="mb-4">
                 <h3 className="mb-2 font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">
@@ -179,6 +180,7 @@ export function CartDrawer({ slug }: CartDrawerProps) {
                         <Button
                           variant="ghost"
                           size="icon-xs"
+                          aria-label={`Remove ${item.courtName} booking`}
                           onClick={() => {
                             removeItem(item.id)
                             setFailedIds((prev) => {

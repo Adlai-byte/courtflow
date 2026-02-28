@@ -39,7 +39,7 @@ export default async function OnboardingPage({
       </CardHeader>
       <CardContent>
         {params.error && (
-          <div className="mb-4 rounded-md bg-destructive/10 p-3 text-sm text-destructive">
+          <div role="alert" className="mb-4 rounded-md bg-destructive/10 p-3 text-sm text-destructive">
             {params.error}
           </div>
         )}

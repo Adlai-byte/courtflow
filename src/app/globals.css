@@ -140,6 +140,21 @@
   }
 }
 
+/* Skip-to-content link for accessibility */
+.skip-to-content {
+  position: absolute;
+  left: -9999px;
+  z-index: 999;
+  padding: 0.5rem 1rem;
+  background: hsl(var(--background));
+  border: 1px solid hsl(var(--border));
+  font-size: 0.875rem;
+}
+.skip-to-content:focus {
+  left: 1rem;
+  top: 1rem;
+}
+
 /* Greptile-style section label */
 .section-label {
   font-family: var(--font-mono);

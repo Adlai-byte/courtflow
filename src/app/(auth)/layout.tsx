@@ -8,6 +8,9 @@ export default function AuthLayout({
 }) {
   return (
     <div className="flex min-h-screen">
+      <a href="#main-content" className="skip-to-content">
+        Skip to main content
+      </a>
       {/* Left branding panel — desktop only */}
       <div className="relative hidden w-[480px] shrink-0 flex-col justify-between overflow-hidden bg-foreground p-10 text-background lg:flex">
         {/* Decorative grid lines */}
@@ -65,11 +68,11 @@ export default function AuthLayout({
         </div>
 
         {/* Centered form */}
-        <div className="flex flex-1 items-center justify-center px-6 py-12">
+        <main id="main-content" className="flex flex-1 items-center justify-center px-6 py-12">
           <div className="w-full max-w-md">
             {children}
           </div>
-        </div>
+        </main>
       </div>
     </div>
   )

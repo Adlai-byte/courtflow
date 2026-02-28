@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { getTenantBySlug } from '@/lib/tenant'
 import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
@@ -6,6 +7,30 @@ import type { Court } from '@/lib/types'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft, CalendarDays } from 'lucide-react'
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string; id: string }>
+}): Promise<Metadata> {
+  const { slug, id } = await params
+  const tenant = await getTenantBySlug(slug)
+  const supabase = await createClient()
+  const { data: court } = await supabase
+    .from('courts')
+    .select('name')
+    .eq('id', id)
+    .eq('is_active', true)
+    .single()
+
+  if (!court) {
+    return { title: 'Court Not Found' }
+  }
+
+  return {
+    title: `${court.name} — ${tenant.name}`,
+  }
+}
 
 const dayLabels = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 const dayKeys = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']

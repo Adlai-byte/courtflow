@@ -191,13 +191,13 @@ export function BookingCalendar({ court, tenantId, slug, closureDates, currentUs
             Book a Slot
           </span>
           <div className="flex items-center gap-2">
-            <Button variant="outline" size="icon" onClick={() => navigateDay(-1)}>
+            <Button variant="outline" size="icon" aria-label="Previous day" onClick={() => navigateDay(-1)}>
               <ChevronLeft className="h-4 w-4" />
             </Button>
             <span className="min-w-[140px] text-center font-mono text-sm font-medium">
               {selectedDate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
             </span>
-            <Button variant="outline" size="icon" onClick={() => navigateDay(1)}>
+            <Button variant="outline" size="icon" aria-label="Next day" onClick={() => navigateDay(1)}>
               <ChevronRight className="h-4 w-4" />
             </Button>
           </div>

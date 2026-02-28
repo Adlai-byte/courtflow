@@ -76,6 +76,9 @@ export default async function MarketingLayout({
 
   return (
     <div className="relative min-h-screen bg-background">
+      <a href="#main-content" className="skip-to-content">
+        Skip to main content
+      </a>
       {/* Nav */}
       <header className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
         <Link href="/" className="font-mono text-sm font-medium tracking-tight">
@@ -153,7 +156,7 @@ export default async function MarketingLayout({
         </div>
       </header>
 
-      {children}
+      <main id="main-content">{children}</main>
     </div>
   )
 }

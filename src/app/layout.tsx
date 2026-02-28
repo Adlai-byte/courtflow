@@ -16,9 +16,17 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CourtFLOW - Court Booking Made Simple",
+  title: {
+    default: 'CourtFLOW — Court Booking Made Simple',
+    template: '%s | CourtFLOW',
+  },
   description:
-    "The all-in-one platform for court facility owners to manage bookings and memberships.",
+    'The all-in-one platform for court facility owners to manage bookings and memberships.',
+  metadataBase: new URL('https://courtflow-app.vercel.app'),
+  openGraph: {
+    type: 'website',
+    siteName: 'CourtFLOW',
+  },
 };
 
 export default function RootLayout({

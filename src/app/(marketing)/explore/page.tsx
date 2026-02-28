@@ -6,7 +6,7 @@ import type { TenantCard } from '@/components/explore/explore-list'
 import type { SportType, VenueType, CourtAmenities } from '@/lib/types'
 
 export const metadata = {
-  title: 'Explore Facilities | CourtFLOW',
+  title: 'Explore Facilities',
   description: 'Browse basketball, pickleball, tennis, volleyball, and badminton courts available to book.',
 }
 

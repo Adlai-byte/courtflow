@@ -20,10 +20,13 @@ export default async function AdminLayout({
 
   return (
     <div className="flex h-screen">
+      <a href="#main-content" className="skip-to-content">
+        Skip to main content
+      </a>
       <AdminSidebar signOutAction={signOut} />
       <div className="flex flex-1 flex-col overflow-hidden">
         <AdminTopbar profile={profile} signOutAction={signOut} />
-        <main className="flex-1 overflow-y-auto bg-background p-4 md:p-6">
+        <main id="main-content" className="flex-1 overflow-y-auto bg-background p-4 md:p-6">
           {children}
         </main>
       </div>

@@ -5,6 +5,10 @@ import { GoogleSignIn } from '@/components/auth/google-sign-in'
 import { getDashboardUrl } from '@/lib/auth-redirect'
 import { Mail, Lock } from 'lucide-react'
 
+export const metadata = {
+  title: 'Sign In',
+}
+
 export default async function LoginPage({
   searchParams,
 }: {
@@ -58,7 +62,7 @@ export default async function LoginPage({
 
       {/* Error */}
       {params.error && (
-        <div className="mt-6 rounded-lg border border-destructive/20 bg-destructive/5 px-4 py-3 text-sm text-destructive">
+        <div role="alert" className="mt-6 rounded-lg border border-destructive/20 bg-destructive/5 px-4 py-3 text-sm text-destructive">
           {params.error}
         </div>
       )}

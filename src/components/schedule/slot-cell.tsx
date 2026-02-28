@@ -23,6 +23,7 @@ export function SlotCell({ slot, onAddToCart, onRemoveFromCart }: SlotCellProps)
     return (
       <button
         disabled
+        aria-label={`${label} — Past`}
         className="flex h-full w-full items-center justify-center border-r border-border bg-muted/40 font-mono text-[10px] text-muted-foreground/40 line-through"
       >
         {label}
@@ -34,6 +35,7 @@ export function SlotCell({ slot, onAddToCart, onRemoveFromCart }: SlotCellProps)
     return (
       <button
         disabled
+        aria-label={`${label} — Your booking`}
         className="flex h-full w-full items-center justify-center gap-0.5 border-r border-primary/20 bg-primary/15 font-mono text-[10px] font-semibold text-primary"
       >
         <Star className="h-2.5 w-2.5 fill-current" />
@@ -71,6 +73,7 @@ export function SlotCell({ slot, onAddToCart, onRemoveFromCart }: SlotCellProps)
   if (slot.state === 'in_cart') {
     return (
       <button
+        aria-label={`${label} — In cart, click to remove`}
         className="flex h-full w-full items-center justify-center gap-0.5 border-r border-primary bg-primary/10 font-mono text-[10px] text-primary transition-colors hover:bg-primary/20"
         onClick={() => onRemoveFromCart(slot.courtId, slot.start)}
         title={`${label} — In cart (click to remove)`}
@@ -84,6 +87,7 @@ export function SlotCell({ slot, onAddToCart, onRemoveFromCart }: SlotCellProps)
   // available
   return (
     <button
+      aria-label={`${label} — Available, click to add to cart`}
       className="flex h-full w-full items-center justify-center border-r border-emerald-200 bg-emerald-50 font-mono text-[10px] text-emerald-700 transition-colors hover:bg-emerald-500 hover:text-white"
       onClick={() => onAddToCart(slot.courtId, slot.start, slot.end)}
       title={`${label} — Available`}

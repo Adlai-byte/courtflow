@@ -4,6 +4,10 @@ import { createClient } from '@/lib/supabase/server'
 import { GoogleSignIn } from '@/components/auth/google-sign-in'
 import { User, Mail, Lock, Building2, CalendarDays } from 'lucide-react'
 
+export const metadata = {
+  title: 'Create Account',
+}
+
 export default async function SignupPage({
   searchParams,
 }: {
@@ -58,7 +62,7 @@ export default async function SignupPage({
 
       {/* Error */}
       {params.error && (
-        <div className="mt-6 rounded-lg border border-destructive/20 bg-destructive/5 px-4 py-3 text-sm text-destructive">
+        <div role="alert" className="mt-6 rounded-lg border border-destructive/20 bg-destructive/5 px-4 py-3 text-sm text-destructive">
           {params.error}
         </div>
       )}
