@@ -72,7 +72,7 @@ export async function cancelBooking(bookingId: string, slug: string) {
     // Send waitlist promotion email
     const { data: waitlistUser } = await adminClient.auth.admin.getUserById(nextWaitlist.customer_id)
     if (waitlistUser?.user?.email) {
-      const bookingUrl = `${process.env.NEXT_PUBLIC_APP_URL || ''}/${slug}/courts/${booking.court_id}`
+      const bookingUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'https://courtflow-app.vercel.app'}/${slug}/courts/${booking.court_id}`
       const { subject, html } = waitlistPromotionEmail(courtName, booking.date, booking.start_time, booking.end_time, bookingUrl)
       await sendEmail(waitlistUser.user.email, subject, html)
     }

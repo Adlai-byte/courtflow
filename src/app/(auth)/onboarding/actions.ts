@@ -20,6 +20,15 @@ export async function createBusiness(formData: FormData) {
 
   const description = formData.get('description') as string
 
+  // Block reserved slugs that conflict with app routes
+  const reservedSlugs = [
+    'admin', 'dashboard', 'login', 'signup', 'explore', 'onboarding',
+    'auth', 'api', 'forgot-password', 'reset-password', 'profile',
+  ]
+  if (reservedSlugs.includes(slug)) {
+    redirect(`/onboarding?error=${encodeURIComponent('This URL is reserved. Please choose another.')}`)
+  }
+
   // Check if slug is taken
   const { data: existing } = await supabase
     .from('tenants')

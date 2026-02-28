@@ -61,6 +61,7 @@ export default async function MarketingLayout({
           .from('member_subscriptions')
           .select('tenants(slug)')
           .eq('customer_id', user.id)
+          .eq('status', 'active')
           .order('created_at', { ascending: false })
           .limit(1)
           .maybeSingle()

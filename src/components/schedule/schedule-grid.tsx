@@ -43,6 +43,9 @@ export function ScheduleGrid({
   const dateStr = selectedDate.toISOString().split('T')[0]
   const dayOfWeek = getDayName(selectedDate)
 
+  // Stable key for courts array to prevent unnecessary re-fetches
+  const courtsKey = courts.map((c) => c.id).join(',')
+
   // Fetch bookings for ALL courts on this date
   useEffect(() => {
     if (courts.length === 0) return
@@ -63,7 +66,8 @@ export function ScheduleGrid({
       setLoading(false)
     }
     fetchBookings()
-  }, [courts, dateStr])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [courtsKey, dateStr])
 
   const baseInterval = useMemo(() => computeBaseInterval(courts), [courts])
   const timeColumns = useMemo(

@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 import { requireTenantOwner } from '@/lib/tenant'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
+import { SubmitButton } from '@/components/shared/submit-button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
@@ -76,7 +76,7 @@ export default async function SettingsPage({
                 className="w-32 font-mono"
               />
             </div>
-            <Button type="submit"><span className="font-mono text-xs uppercase tracking-wider">Save Changes</span></Button>
+            <SubmitButton pendingText="Saving..."><span className="font-mono text-xs uppercase tracking-wider">Save Changes</span></SubmitButton>
           </form>
         </CardContent>
       </Card>

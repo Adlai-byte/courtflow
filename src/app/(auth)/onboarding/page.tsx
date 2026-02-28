@@ -1,10 +1,10 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
+import { SubmitButton } from '@/components/shared/submit-button'
 import { createBusiness } from './actions'
 
 export default async function OnboardingPage({
@@ -71,7 +71,7 @@ export default async function OnboardingPage({
               rows={3}
             />
           </div>
-          <Button type="submit" className="w-full">Create Business</Button>
+          <SubmitButton className="w-full" pendingText="Creating...">Create Business</SubmitButton>
         </form>
       </CardContent>
     </Card>
