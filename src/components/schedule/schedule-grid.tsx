@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useCallback } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import type { Court, Booking } from '@/lib/types'
 import { useBookingCart } from '@/contexts/booking-cart-context'
@@ -46,28 +46,57 @@ export function ScheduleGrid({
   // Stable key for courts array to prevent unnecessary re-fetches
   const courtsKey = courts.map((c) => c.id).join(',')
 
-  // Fetch bookings for ALL courts on this date
-  useEffect(() => {
+  const fetchBookings = useCallback(async () => {
     if (courts.length === 0) return
+    setLoading(true)
+    const supabase = createClient()
+    const courtIds = courts.map((c) => c.id)
 
-    async function fetchBookings() {
-      setLoading(true)
-      const supabase = createClient()
-      const courtIds = courts.map((c) => c.id)
+    const { data } = await supabase
+      .from('bookings')
+      .select('*')
+      .in('court_id', courtIds)
+      .eq('date', dateStr)
+      .in('status', ['confirmed', 'pending'])
 
-      const { data } = await supabase
-        .from('bookings')
-        .select('*')
-        .in('court_id', courtIds)
-        .eq('date', dateStr)
-        .in('status', ['confirmed', 'pending'])
-
-      setBookings((data || []) as Booking[])
-      setLoading(false)
-    }
-    fetchBookings()
+    setBookings((data || []) as Booking[])
+    setLoading(false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [courtsKey, dateStr])
+
+  // Initial fetch + Realtime subscription
+  useEffect(() => {
+    fetchBookings()
+
+    const supabase = createClient()
+    const channel = supabase
+      .channel(`bookings:${tenantId}:${dateStr}`)
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'bookings',
+          filter: `tenant_id=eq.${tenantId}`,
+        },
+        (payload) => {
+          const row = payload.new as Booking | undefined
+          const oldRow = payload.old as Booking | undefined
+          // Only refetch if the change is for the current date
+          if (
+            (row && row.date === dateStr) ||
+            (oldRow && (oldRow as any).date === dateStr)
+          ) {
+            fetchBookings()
+          }
+        }
+      )
+      .subscribe()
+
+    return () => {
+      supabase.removeChannel(channel)
+    }
+  }, [fetchBookings, tenantId, dateStr])
 
   const baseInterval = useMemo(() => computeBaseInterval(courts), [courts])
   const timeColumns = useMemo(
