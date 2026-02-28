@@ -25,7 +25,7 @@ export default async function OnboardingPage({
     .from('tenants')
     .select('slug')
     .eq('owner_id', user.id)
-    .single()
+    .maybeSingle()
 
   if (tenant) {
     redirect(`/dashboard/${tenant.slug}`)

@@ -1,3 +1,4 @@
+import { redirect } from 'next/navigation'
 import { requireTenantOwner } from '@/lib/tenant'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -8,21 +9,39 @@ import { updateTenant } from './actions'
 
 export default async function SettingsPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ slug: string }>
+  searchParams: Promise<{ success?: string; error?: string }>
 }) {
   const { slug } = await params
+  const sp = await searchParams
   const { tenant } = await requireTenantOwner(slug)
 
   async function handleUpdate(formData: FormData) {
     'use server'
-    await updateTenant(tenant.id, slug, formData)
+    const result = await updateTenant(tenant.id, slug, formData)
+    if (result.error) {
+      redirect(`/dashboard/${slug}/settings?error=${encodeURIComponent(result.error)}`)
+    }
+    redirect(`/dashboard/${slug}/settings?success=1`)
   }
 
   return (
     <div className="space-y-6">
       <span className="section-label mb-2 block">[ SETTINGS ]</span>
       <h1 className="text-2xl font-bold tracking-tight">Settings</h1>
+
+      {sp.success && (
+        <div className="rounded-md bg-green/10 px-4 py-3 text-sm text-green">
+          Settings saved successfully.
+        </div>
+      )}
+      {sp.error && (
+        <div className="rounded-md bg-destructive/10 px-4 py-3 text-sm text-destructive">
+          {sp.error}
+        </div>
+      )}
 
       <Card className="max-w-2xl">
         <CardHeader>

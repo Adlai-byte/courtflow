@@ -25,7 +25,7 @@ export async function createBusiness(formData: FormData) {
     .from('tenants')
     .select('id')
     .eq('slug', slug)
-    .single()
+    .maybeSingle()
 
   if (existing) {
     redirect(`/onboarding?error=${encodeURIComponent('This URL is already taken. Choose another.')}`)

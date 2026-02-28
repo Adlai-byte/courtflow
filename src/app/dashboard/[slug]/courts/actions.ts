@@ -30,6 +30,8 @@ export async function createCourt(tenantId: string, slug: string, formData: Form
   }
 
   revalidatePath(`/dashboard/${slug}/courts`)
+  revalidatePath(`/dashboard/${slug}`)
+  revalidatePath(`/${slug}`)
   return { error: null }
 }
 
@@ -62,6 +64,8 @@ export async function updateCourt(courtId: string, slug: string, formData: FormD
   }
 
   revalidatePath(`/dashboard/${slug}/courts`)
+  revalidatePath(`/dashboard/${slug}`)
+  revalidatePath(`/${slug}`)
   return { error: null }
 }
 
@@ -80,5 +84,7 @@ export async function deleteCourt(courtId: string, slug: string) {
   }
 
   revalidatePath(`/dashboard/${slug}/courts`)
+  revalidatePath(`/dashboard/${slug}`)
+  revalidatePath(`/${slug}`)
   return { error: null }
 }

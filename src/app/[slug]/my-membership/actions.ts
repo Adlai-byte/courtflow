@@ -2,17 +2,21 @@
 
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
+import { getTenantBySlug } from '@/lib/tenant'
 
 export async function cancelMembership(subscriptionId: string, slug: string) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: 'Not authenticated' }
 
+  const tenant = await getTenantBySlug(slug)
+
   const { error } = await supabase
     .from('member_subscriptions')
     .update({ status: 'cancelled', end_date: new Date().toISOString().split('T')[0] })
     .eq('id', subscriptionId)
     .eq('customer_id', user.id)
+    .eq('tenant_id', tenant.id)
 
   if (error) return { error: error.message }
 

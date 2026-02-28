@@ -38,7 +38,7 @@ export default async function AdminUserDetailPage({
       .select('id, name, slug, created_at')
       .eq('owner_id', id)
       .limit(1)
-      .single()
+      .maybeSingle()
     tenant = data
   }
 

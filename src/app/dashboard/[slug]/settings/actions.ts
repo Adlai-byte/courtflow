@@ -2,8 +2,10 @@
 
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
+import { requireTenantOwner } from '@/lib/tenant'
 
 export async function updateTenant(tenantId: string, slug: string, formData: FormData) {
+  await requireTenantOwner(slug)
   const supabase = await createClient()
 
   const cancellationHours = parseInt(formData.get('cancellation_hours') as string, 10)
@@ -22,5 +24,7 @@ export async function updateTenant(tenantId: string, slug: string, formData: For
   }
 
   revalidatePath(`/dashboard/${slug}/settings`)
+  revalidatePath(`/dashboard/${slug}`, 'layout')
+  revalidatePath(`/${slug}`)
   return { error: null }
 }

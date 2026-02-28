@@ -92,7 +92,7 @@ export async function adminCancelBooking(bookingId: string) {
     .from('bookings')
     .select('court_id, customer_id, tenant_id, date, start_time, end_time, courts ( name ), tenants ( slug )')
     .eq('id', bookingId)
-    .eq('status', 'confirmed')
+    .in('status', ['confirmed', 'pending'])
     .single()
 
   if (!booking) return { error: 'Booking not found' }
@@ -124,7 +124,7 @@ export async function adminCancelBooking(bookingId: string) {
     .eq('status', 'waiting')
     .order('position', { ascending: true })
     .limit(1)
-    .single()
+    .maybeSingle()
 
   if (nextWaitlist) {
     await supabase

@@ -15,7 +15,7 @@ export default async function DashboardIndexPage() {
     .select('slug')
     .eq('owner_id', user.id)
     .limit(1)
-    .single()
+    .maybeSingle()
 
   if (tenant) {
     redirect(`/dashboard/${tenant.slug}`)
@@ -26,7 +26,7 @@ export default async function DashboardIndexPage() {
     .from('profiles')
     .select('role')
     .eq('id', user.id)
-    .single()
+    .maybeSingle()
 
   // Platform admins go to admin dashboard
   if (profile?.role === 'platform_admin') {

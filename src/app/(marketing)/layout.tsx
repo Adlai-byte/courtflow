@@ -28,7 +28,7 @@ export default async function MarketingLayout({
       .from('profiles')
       .select('role')
       .eq('id', user.id)
-      .single()
+      .maybeSingle()
 
     if (profile?.role === 'platform_admin') {
       isAdmin = true
@@ -40,7 +40,7 @@ export default async function MarketingLayout({
         .select('slug')
         .eq('owner_id', user.id)
         .limit(1)
-        .single()
+        .maybeSingle()
       if (tenant) {
         dashboardHref = `/dashboard/${tenant.slug}`
       }
@@ -52,7 +52,7 @@ export default async function MarketingLayout({
         .eq('customer_id', user.id)
         .order('created_at', { ascending: false })
         .limit(1)
-        .single()
+        .maybeSingle()
 
       if (lastBooking?.tenants) {
         customerSlug = (lastBooking.tenants as unknown as { slug: string }).slug
@@ -63,7 +63,7 @@ export default async function MarketingLayout({
           .eq('customer_id', user.id)
           .order('created_at', { ascending: false })
           .limit(1)
-          .single()
+          .maybeSingle()
 
         if (lastMembership?.tenants) {
           customerSlug = (lastMembership.tenants as unknown as { slug: string }).slug

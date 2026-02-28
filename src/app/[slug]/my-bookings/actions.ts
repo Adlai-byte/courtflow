@@ -61,7 +61,7 @@ export async function cancelBooking(bookingId: string, slug: string) {
     .eq('status', 'waiting')
     .order('position', { ascending: true })
     .limit(1)
-    .single()
+    .maybeSingle()
 
   if (nextWaitlist) {
     await supabase

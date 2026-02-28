@@ -18,7 +18,7 @@ export async function approveMembershipRequest(requestId: string, slug: string) 
     .eq('id', requestId)
     .eq('tenant_id', tenant.id)
     .eq('status', 'pending')
-    .single()
+    .maybeSingle()
 
   if (!request) {
     return { error: 'Request not found or already processed' }
@@ -58,6 +58,7 @@ export async function approveMembershipRequest(requestId: string, slug: string) 
   }
 
   revalidatePath(`/dashboard/${slug}/members`)
+  revalidatePath(`/dashboard/${slug}`)
   return { error: null }
 }
 
@@ -72,7 +73,7 @@ export async function rejectMembershipRequest(requestId: string, slug: string, n
     .eq('id', requestId)
     .eq('tenant_id', tenant.id)
     .eq('status', 'pending')
-    .single()
+    .maybeSingle()
 
   if (!request) {
     return { error: 'Request not found or already processed' }
@@ -101,5 +102,6 @@ export async function rejectMembershipRequest(requestId: string, slug: string, n
   }
 
   revalidatePath(`/dashboard/${slug}/members`)
+  revalidatePath(`/dashboard/${slug}`)
   return { error: null }
 }

@@ -27,7 +27,9 @@ export async function requireTenantOwner(slug: string): Promise<{ tenant: Tenant
 
   const tenant = await getTenantBySlug(slug)
 
-  if (tenant.owner_id !== user.id) {
+  // Allow tenant owner and platform admins
+  const userRole = user.user_metadata?.role
+  if (tenant.owner_id !== user.id && userRole !== 'platform_admin') {
     redirect('/')
   }
 
@@ -35,7 +37,7 @@ export async function requireTenantOwner(slug: string): Promise<{ tenant: Tenant
     .from('profiles')
     .select('*')
     .eq('id', user.id)
-    .single()
+    .maybeSingle()
 
   return { tenant, profile: profile as Profile }
 }

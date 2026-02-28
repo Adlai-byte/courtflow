@@ -12,13 +12,14 @@ export default async function CourtDetailPage({
   params: Promise<{ slug: string; id: string }>
 }) {
   const { slug, id } = await params
-  await requireTenantOwner(slug)
+  const { tenant } = await requireTenantOwner(slug)
 
   const supabase = await createClient()
   const { data: court } = await supabase
     .from('courts')
     .select('*')
     .eq('id', id)
+    .eq('tenant_id', tenant.id)
     .single()
 
   if (!court) {

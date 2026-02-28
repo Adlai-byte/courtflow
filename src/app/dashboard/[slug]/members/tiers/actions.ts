@@ -28,6 +28,7 @@ export async function createTier(tenantId: string, slug: string, formData: FormD
   }
 
   revalidatePath(`/dashboard/${slug}/members/tiers`)
+  revalidatePath(`/${slug}`)
   return { error: null }
 }
 
@@ -46,5 +47,6 @@ export async function deleteTier(tierId: string, slug: string) {
   }
 
   revalidatePath(`/dashboard/${slug}/members/tiers`)
+  revalidatePath(`/${slug}`)
   return { error: null }
 }

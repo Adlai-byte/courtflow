@@ -83,7 +83,7 @@ export async function rejectBooking(bookingId: string, slug: string) {
     .eq('status', 'waiting')
     .order('position', { ascending: true })
     .limit(1)
-    .single()
+    .maybeSingle()
 
   if (nextWaitlist) {
     await supabase
@@ -146,7 +146,7 @@ export async function ownerCancelBooking(bookingId: string, slug: string) {
     .eq('status', 'waiting')
     .order('position', { ascending: true })
     .limit(1)
-    .single()
+    .maybeSingle()
 
   if (nextWaitlist) {
     await supabase

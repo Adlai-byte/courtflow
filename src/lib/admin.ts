@@ -14,7 +14,7 @@ export async function requirePlatformAdmin(): Promise<{ profile: Profile }> {
     .from('profiles')
     .select('*')
     .eq('id', user.id)
-    .single()
+    .maybeSingle()
 
   if (!profile || profile.role !== 'platform_admin') {
     redirect('/')

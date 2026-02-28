@@ -12,15 +12,18 @@ export async function addCustomerNote(
   const { tenant, profile: ownerProfile } = await requireTenantOwner(tenantSlug)
   const note = formData.get('note') as string
 
-  if (!note?.trim()) return
+  if (!note?.trim()) return { error: 'Note cannot be empty' }
 
   const supabase = await createClient()
-  await supabase.from('customer_notes').insert({
+  const { error } = await supabase.from('customer_notes').insert({
     tenant_id: tenant.id,
     profile_id: profileId,
     note: note.trim(),
     created_by: ownerProfile.id,
   })
 
+  if (error) return { error: error.message }
+
   revalidatePath(`/dashboard/${tenantSlug}/customers/${profileId}`)
+  return { error: null }
 }
