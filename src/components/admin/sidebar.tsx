@@ -43,7 +43,7 @@ interface NavContentProps {
 function NavContent({ pathname, signOutAction, onNavigate }: NavContentProps) {
   return (
     <div className="flex flex-1 flex-col">
-      <nav className="flex-1 space-y-1 p-3">
+      <nav className="flex-1 space-y-1 overflow-y-auto p-3">
         {navItems.map((item) => {
           const isActive = item.href === '/admin'
             ? pathname === '/admin'

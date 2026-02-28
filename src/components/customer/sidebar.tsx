@@ -45,7 +45,7 @@ function NavContent({ slug, pathname, isAuthenticated, signOutAction, onNavigate
 
   return (
     <div className="flex flex-1 flex-col">
-      <nav className="flex-1 space-y-1 p-3">
+      <nav className="flex-1 space-y-1 overflow-y-auto p-3">
         <Link
           href="/explore"
           onClick={onNavigate}
