@@ -123,6 +123,7 @@ export default async function MyBookingsPage({
                             bookingDate={booking.date}
                             bookingStartTime={booking.start_time}
                             cancellationHours={cancellationHours}
+                            bookingStatus={booking.status}
                           />
                         )}
                       </td>
@@ -157,6 +158,7 @@ export default async function MyBookingsPage({
                       bookingDate={booking.date}
                       bookingStartTime={booking.start_time}
                       cancellationHours={cancellationHours}
+                      bookingStatus={booking.status}
                     />
                   )}
                 </div>

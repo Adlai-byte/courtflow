@@ -7,6 +7,7 @@ import { notFound } from 'next/navigation'
 import { addCustomerNote } from './actions'
 import { CalendarDays, DollarSign, AlertTriangle, MapPin } from 'lucide-react'
 import { UserAvatar } from '@/components/shared/user-avatar'
+import { toSlotLabel, formatDate } from '@/lib/time-format'
 
 const statusColors: Record<string, string> = {
   confirmed: 'bg-green/10 text-green border-green/20',
@@ -139,9 +140,9 @@ export default async function CustomerDetailPage({
                     <tbody>
                       {(bookings as any[]).map((booking, i) => (
                         <tr key={booking.id} className={i % 2 === 1 ? 'bg-muted/30' : ''}>
-                          <td className="p-4 font-mono text-sm">{booking.date}</td>
+                          <td className="p-4 font-mono text-sm">{formatDate(booking.date)}</td>
                           <td className="p-4 text-sm">{booking.courts?.name}</td>
-                          <td className="p-4 font-mono text-sm">{booking.start_time}–{booking.end_time}</td>
+                          <td className="p-4 font-mono text-sm">{toSlotLabel(booking.start_time, booking.end_time)}</td>
                           <td className="p-4">
                             <span className={`inline-flex rounded-full border px-2.5 py-0.5 text-xs font-medium ${statusColors[booking.status] || ''}`}>
                               {booking.status}
@@ -161,7 +162,7 @@ export default async function CustomerDetailPage({
                           {booking.status}
                         </span>
                       </div>
-                      <p className="font-mono text-xs text-muted-foreground">{booking.date} · {booking.start_time}–{booking.end_time}</p>
+                      <p className="font-mono text-xs text-muted-foreground">{formatDate(booking.date)} · {toSlotLabel(booking.start_time, booking.end_time)}</p>
                     </div>
                   ))}
                 </div>

@@ -4,6 +4,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { OwnerBookingActions } from '@/components/dashboard/owner-booking-actions'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
+import { toSlotLabel, formatDate } from '@/lib/time-format'
 
 const statusColors: Record<string, string> = {
   pending: 'bg-amber-50 text-amber-700 border-amber-200',
@@ -98,8 +99,8 @@ export default async function BookingsPage({
                   <tbody>
                     {bookings.map((booking: any, i: number) => (
                       <tr key={booking.id} className={i % 2 === 1 ? 'bg-muted/30' : ''}>
-                        <td className="p-4 font-mono text-sm">{booking.date}</td>
-                        <td className="p-4 font-mono text-sm">{booking.start_time}–{booking.end_time}</td>
+                        <td className="p-4 font-mono text-sm">{formatDate(booking.date)}</td>
+                        <td className="p-4 font-mono text-sm">{toSlotLabel(booking.start_time, booking.end_time)}</td>
                         <td className="p-4 text-sm">{booking.courts?.name}</td>
                         <td className="p-4 text-sm">{booking.profiles?.full_name || 'Unknown'}</td>
                         <td className="p-4">
@@ -137,7 +138,7 @@ export default async function BookingsPage({
                       </div>
                     </div>
                     <p className="text-xs text-muted-foreground">{booking.courts?.name}</p>
-                    <p className="font-mono text-xs text-muted-foreground">{booking.date} · {booking.start_time}–{booking.end_time}</p>
+                    <p className="font-mono text-xs text-muted-foreground">{formatDate(booking.date)} · {toSlotLabel(booking.start_time, booking.end_time)}</p>
                     <OwnerBookingActions bookingId={booking.id} slug={slug} status={booking.status} />
                   </div>
                 ))}

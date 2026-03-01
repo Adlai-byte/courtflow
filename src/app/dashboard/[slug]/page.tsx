@@ -4,6 +4,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
 import { CalendarDays, MapPin, Users, Clock, Hourglass, CheckCircle2, Circle, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
+import { toSlotLabel, formatDate } from '@/lib/time-format'
 
 const statusColors: Record<string, string> = {
   pending: 'bg-amber-50 text-amber-700 border-amber-200',
@@ -149,8 +150,8 @@ export default async function DashboardPage({
                         <tr key={booking.id} className={i % 2 === 1 ? 'bg-muted/30' : ''}>
                           <td className="p-4 text-sm">{booking.profiles?.full_name || 'Unknown'}</td>
                           <td className="p-4 text-sm">{booking.courts?.name}</td>
-                          <td className="p-4 font-mono text-sm">{booking.date}</td>
-                          <td className="p-4 font-mono text-sm">{booking.start_time}–{booking.end_time}</td>
+                          <td className="p-4 font-mono text-sm">{formatDate(booking.date)}</td>
+                          <td className="p-4 font-mono text-sm">{toSlotLabel(booking.start_time, booking.end_time)}</td>
                           <td className="p-4">
                             <span className={`inline-flex rounded-full border px-2.5 py-0.5 text-xs font-medium ${statusColors[booking.status] || ''}`}>
                               {booking.status}
@@ -171,7 +172,7 @@ export default async function DashboardPage({
                         </span>
                       </div>
                       <p className="text-xs text-muted-foreground">{booking.courts?.name}</p>
-                      <p className="font-mono text-xs text-muted-foreground">{booking.date} · {booking.start_time}–{booking.end_time}</p>
+                      <p className="font-mono text-xs text-muted-foreground">{formatDate(booking.date)} · {toSlotLabel(booking.start_time, booking.end_time)}</p>
                     </div>
                   ))}
                 </div>

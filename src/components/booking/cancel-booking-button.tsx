@@ -10,15 +10,16 @@ interface Props {
   bookingDate: string
   bookingStartTime: string
   cancellationHours: number
+  bookingStatus: string
 }
 
-export function CancelBookingButton({ bookingId, slug, bookingDate, bookingStartTime, cancellationHours }: Props) {
+export function CancelBookingButton({ bookingId, slug, bookingDate, bookingStartTime, cancellationHours, bookingStatus }: Props) {
   const [cancelling, setCancelling] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   const bookingStart = new Date(`${bookingDate}T${bookingStartTime}`)
   const deadline = new Date(bookingStart.getTime() - cancellationHours * 60 * 60 * 1000)
-  const isPastDeadline = new Date() > deadline
+  const isPastDeadline = bookingStatus === 'confirmed' && new Date() > deadline
   const isPast = bookingStart < new Date()
 
   if (isPast) return null

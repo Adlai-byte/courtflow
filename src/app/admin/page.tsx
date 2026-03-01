@@ -2,6 +2,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { KpiCard } from '@/components/analytics/kpi-card'
 import { Building2, Users, CalendarDays, Crown } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
+import { toSlotLabel, formatDate } from '@/lib/time-format'
 
 export default async function AdminOverviewPage() {
   const supabase = createAdminClient()
@@ -15,7 +16,7 @@ export default async function AdminOverviewPage() {
   ] = await Promise.all([
     supabase.from('tenants').select('id', { count: 'exact', head: true }),
     supabase.from('profiles').select('id', { count: 'exact', head: true }),
-    supabase.from('bookings').select('id', { count: 'exact', head: true }).in('status', ['pending', 'confirmed', 'completed']),
+    supabase.from('bookings').select('id', { count: 'exact', head: true }),
     supabase.from('member_subscriptions').select('id', { count: 'exact', head: true }).eq('status', 'active'),
     supabase
       .from('bookings')
@@ -63,8 +64,8 @@ export default async function AdminOverviewPage() {
                       <td className="px-4 py-3 text-sm">{b.tenants?.name ?? '—'}</td>
                       <td className="px-4 py-3 text-sm">{b.profiles?.full_name ?? '—'}</td>
                       <td className="px-4 py-3 text-sm">{b.courts?.name ?? '—'}</td>
-                      <td className="px-4 py-3 text-sm font-mono">{b.date}</td>
-                      <td className="px-4 py-3 text-sm font-mono">{b.start_time?.slice(0, 5)}–{b.end_time?.slice(0, 5)}</td>
+                      <td className="px-4 py-3 text-sm font-mono">{formatDate(b.date)}</td>
+                      <td className="px-4 py-3 text-sm font-mono">{toSlotLabel(b.start_time, b.end_time)}</td>
                       <td className="px-4 py-3">
                         <StatusBadge status={b.status} />
                       </td>
@@ -91,7 +92,7 @@ export default async function AdminOverviewPage() {
                       {b.tenants?.name} &middot; {b.profiles?.full_name ?? '—'}
                     </p>
                     <p className="font-mono text-xs text-muted-foreground">
-                      {b.date} {b.start_time?.slice(0, 5)}–{b.end_time?.slice(0, 5)}
+                      {formatDate(b.date)} {toSlotLabel(b.start_time, b.end_time)}
                     </p>
                   </div>
                   <StatusBadge status={b.status} />

@@ -16,6 +16,15 @@ export function to12Hr(time24: string): string {
  * Build a compact slot label like "8–9 AM", "11 AM–12 PM", "12–1 PM".
  * When both times share the same AM/PM period the suffix appears once at the end.
  */
+/**
+ * Format an ISO date string like "2026-03-01" → "Mar 1, 2026"
+ */
+export function formatDate(dateStr: string): string {
+  const [y, m, d] = dateStr.split('-').map(Number)
+  const date = new Date(y, m - 1, d)
+  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+}
+
 export function toSlotLabel(start: string, end: string): string {
   const parse = (t: string) => {
     const [hStr, mStr] = t.split(':')

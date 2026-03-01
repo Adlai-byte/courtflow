@@ -53,6 +53,12 @@ export function CartDrawer({ slug }: CartDrawerProps) {
       )
 
       if (result.error) {
+        if (result.error.toLowerCase().includes('not authenticated')) {
+          toast.error('Please sign in to book courts.')
+          setConfirming(false)
+          window.location.href = `/login?redirect=/${slug}`
+          return
+        }
         toast.error(result.error)
         setConfirming(false)
         return
