@@ -32,6 +32,11 @@ export interface Tenant {
   description: string | null
   owner_id: string
   cancellation_hours: number
+  require_payment: boolean
+  auto_approve: boolean
+  city: string | null
+  address: string | null
+  contact_phone: string | null
   created_at: string
 }
 
@@ -53,6 +58,7 @@ export interface Court {
   operating_hours: OperatingHours
   amenities: CourtAmenities
   is_active: boolean
+  price_per_hour: number
   created_at: string
 }
 
@@ -67,6 +73,9 @@ export interface Booking {
   status: BookingStatus
   membership_id: string | null
   recurring_series_id: string | null
+  amount: number
+  payment_status: 'unpaid' | 'paid' | 'refunded'
+  payment_id: string | null
   created_at: string
 }
 
@@ -156,4 +165,20 @@ export interface CustomerNote {
   note: string
   created_at: string
   created_by: string
+}
+
+export type PaymentStatus = 'pending' | 'paid' | 'failed' | 'refunded'
+
+export interface Payment {
+  id: string
+  tenant_id: string
+  booking_id: string | null
+  amount: number
+  currency: string
+  status: PaymentStatus
+  provider: string
+  provider_payment_id: string | null
+  provider_checkout_id: string | null
+  paid_at: string | null
+  created_at: string
 }
