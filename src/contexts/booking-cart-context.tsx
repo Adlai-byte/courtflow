@@ -11,6 +11,7 @@ export interface CartItem {
   endTime: string    // HH:MM
   recurring: boolean
   totalWeeks?: number
+  price: number      // total price for this slot in PHP
 }
 
 interface BookingCartContextValue {

@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/sheet'
 import { useBookingCart, type CartItem } from '@/contexts/booking-cart-context'
 import { createBatchBooking } from '@/app/[slug]/courts/[id]/batch-actions'
+import { createPaymentCheckout } from '@/app/[slug]/checkout/actions'
 import { toSlotLabel } from '@/lib/time-format'
 
 interface CartDrawerProps {
@@ -62,6 +63,33 @@ export function CartDrawer({ slug }: CartDrawerProps) {
         toast.error(result.error)
         setConfirming(false)
         return
+      }
+
+      if (result.requiresPayment) {
+        // Tenant requires payment -- redirect to PayMongo
+        const paymentResult = await createPaymentCheckout(
+          slug,
+          items.map(i => ({
+            courtId: i.courtId,
+            courtName: i.courtName,
+            date: i.date,
+            startTime: i.startTime,
+            endTime: i.endTime,
+            recurring: i.recurring,
+            totalWeeks: i.totalWeeks,
+            price: i.price,
+          }))
+        )
+        if (paymentResult.error) {
+          toast.error(paymentResult.error)
+          setConfirming(false)
+          return
+        }
+        if (paymentResult.checkoutUrl) {
+          clearCart()
+          window.location.href = paymentResult.checkoutUrl
+          return
+        }
       }
 
       // Track failures
@@ -168,6 +196,9 @@ export function CartDrawer({ slug }: CartDrawerProps) {
                               day: 'numeric',
                             })}
                           </p>
+                          {item.price > 0 && (
+                            <p className="font-mono text-xs font-medium text-primary">{'\u20B1'}{item.price.toFixed(2)}</p>
+                          )}
                           <div className="flex items-center gap-1 mt-0.5">
                             {item.recurring && (
                               <Badge variant="secondary" className="text-[10px] px-1.5 py-0">
@@ -204,6 +235,12 @@ export function CartDrawer({ slug }: CartDrawerProps) {
                 </div>
               </div>
             ))}
+          </div>
+
+          {/* Total */}
+          <div className="border-t px-4 py-2 flex items-center justify-between">
+            <span className="font-mono text-xs uppercase tracking-wider text-muted-foreground">Total</span>
+            <span className="font-mono text-sm font-bold">{'\u20B1'}{items.reduce((s, i) => s + i.price, 0).toFixed(2)}</span>
           </div>
 
           {/* Footer */}

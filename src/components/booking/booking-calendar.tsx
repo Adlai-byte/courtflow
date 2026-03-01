@@ -151,6 +151,13 @@ export function BookingCalendar({ court, tenantId, slug, closureDates, currentUs
 
   function handleAddToCart(start: string, end: string) {
     const label = toSlotLabel(start, end)
+
+    // Compute price
+    const [sh, sm] = start.split(':').map(Number)
+    const [eh, em] = end.split(':').map(Number)
+    const hours = (eh * 60 + em - sh * 60 - sm) / 60
+    const price = Math.round((court.price_per_hour || 0) * hours * 100) / 100
+
     addItem({
       courtId: court.id,
       courtName: court.name,
@@ -159,9 +166,10 @@ export function BookingCalendar({ court, tenantId, slug, closureDates, currentUs
       endTime: end,
       recurring,
       totalWeeks: recurring ? totalWeeks : undefined,
+      price,
     })
     toast.success(
-      `Added to cart: ${label}${recurring ? ` (weekly for ${totalWeeks} weeks)` : ''}`
+      `Added to cart: ${label}${price > 0 ? ` (\u20B1${price})` : ''}${recurring ? ` (weekly for ${totalWeeks} weeks)` : ''}`
     )
   }
 

@@ -4,7 +4,12 @@ import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { getTenantBySlug } from '@/lib/tenant'
 import { sendEmail } from '@/lib/email'
-import { batchBookingPendingEmail, newBookingRequestEmail } from '@/lib/email-templates'
+import { sendSMS } from '@/lib/sms'
+import {
+  batchBookingPendingEmail,
+  batchBookingConfirmedEmail,
+  newBookingRequestEmail,
+} from '@/lib/email-templates'
 
 interface BatchItem {
   courtId: string
@@ -27,6 +32,13 @@ interface BatchResult {
   recurring?: boolean
 }
 
+function computeAmount(pricePerHour: number, startTime: string, endTime: string): number {
+  const [sh, sm] = startTime.split(':').map(Number)
+  const [eh, em] = endTime.split(':').map(Number)
+  const hours = (eh * 60 + em - sh * 60 - sm) / 60
+  return Math.round(pricePerHour * hours * 100) / 100
+}
+
 export async function createBatchBooking(
   slug: string,
   items: BatchItem[]
@@ -36,6 +48,7 @@ export async function createBatchBooking(
   totalFailed: number
   totalWaitlisted: number
   error?: string
+  requiresPayment?: boolean
 }> {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
@@ -52,12 +65,34 @@ export async function createBatchBooking(
 
   const tenant = await getTenantBySlug(slug)
 
+  // If tenant requires payment, return early — client will redirect to PayMongo checkout
+  if (tenant.require_payment) {
+    return {
+      results: [],
+      totalBooked: 0,
+      totalFailed: 0,
+      totalWaitlisted: 0,
+      requiresPayment: true,
+    }
+  }
+
+  // Fetch court prices for amount calculation
+  const { data: courtPrices } = await supabase
+    .from('courts')
+    .select('id, price_per_hour')
+    .eq('tenant_id', tenant.id)
+
+  // Determine booking status based on auto_approve
+  const bookingStatus = tenant.auto_approve ? 'confirmed' : 'pending'
+
   const results: BatchResult[] = []
   let totalBooked = 0
   let totalFailed = 0
   let totalWaitlisted = 0
 
   for (const item of items) {
+    const courtPrice = courtPrices?.find(c => c.id === item.courtId)?.price_per_hour || 0
+
     if (item.recurring && item.totalWeeks) {
       // --- Recurring booking ---
       const firstDate = new Date(item.date + 'T00:00:00')
@@ -140,7 +175,9 @@ export async function createBatchBooking(
             start_time: item.startTime,
             end_time: item.endTime,
             recurring_series_id: series.id,
-            status: 'pending',
+            status: bookingStatus,
+            amount: computeAmount(courtPrice, item.startTime, item.endTime),
+            payment_status: 'unpaid',
           })
 
           if (!bookError) {
@@ -170,7 +207,9 @@ export async function createBatchBooking(
         date: item.date,
         start_time: item.startTime,
         end_time: item.endTime,
-        status: 'pending',
+        status: bookingStatus,
+        amount: computeAmount(courtPrice, item.startTime, item.endTime),
+        payment_status: 'unpaid',
       })
 
       if (error) {
@@ -205,9 +244,22 @@ export async function createBatchBooking(
   if (successfulResults.length > 0) {
     const adminClient = createAdminClient()
     const { data: userData } = await adminClient.auth.admin.getUserById(user.id)
+
     if (userData?.user?.email) {
-      const { subject, html } = batchBookingPendingEmail(successfulResults)
+      // Send confirmed or pending email based on auto_approve
+      const emailFn = tenant.auto_approve ? batchBookingConfirmedEmail : batchBookingPendingEmail
+      const { subject, html } = emailFn(successfulResults)
       await sendEmail(userData.user.email, subject, html)
+    }
+
+    // SMS to customer
+    const { data: profile } = await supabase.from('profiles').select('phone').eq('id', user.id).single()
+    if (profile?.phone) {
+      const statusLabel = tenant.auto_approve ? 'confirmed' : 'pending approval'
+      await sendSMS(
+        profile.phone,
+        `CourtFLOW: Your booking at ${tenant.name} is ${statusLabel}. ${successfulResults.length} slot(s) on ${successfulResults[0].date}.`
+      )
     }
 
     // Notify tenant owner about new booking requests
@@ -226,6 +278,19 @@ export async function createBatchBooking(
           : `${successfulResults.length} bookings`
         const { subject, html } = newBookingRequestEmail(customerName, summary, first.date, first.startTime, first.endTime, tenant.name)
         await sendEmail(ownerUser.user.email, subject, html)
+      }
+
+      // SMS to owner
+      if (tenant.contact_phone) {
+        const customerName = userData?.user?.user_metadata?.full_name || userData?.user?.email || 'A customer'
+        const first = successfulResults[0]
+        const summary = successfulResults.length === 1
+          ? `${first.courtName} on ${first.date}`
+          : `${successfulResults.length} bookings`
+        await sendSMS(
+          tenant.contact_phone,
+          `CourtFLOW: New booking from ${customerName} - ${summary}.`
+        )
       }
     }
   }
