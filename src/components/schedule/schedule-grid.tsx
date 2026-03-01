@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useMemo, useCallback } from 'react'
+import { useState, useEffect, useMemo, useCallback, useRef } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import type { Court, Booking } from '@/lib/types'
 import { useBookingCart } from '@/contexts/booking-cart-context'
@@ -39,6 +39,7 @@ export function ScheduleGrid({
   const [bookings, setBookings] = useState<Booking[]>([])
   const [loading, setLoading] = useState(true)
   const { addItem, removeItem, isInCart, items } = useBookingCart()
+  const scrollRef = useRef<HTMLDivElement>(null)
 
   const dateStr = selectedDate.toISOString().split('T')[0]
   const dayOfWeek = getDayName(selectedDate)
@@ -69,47 +70,57 @@ export function ScheduleGrid({
     fetchBookings()
 
     let pollTimer: ReturnType<typeof setInterval> | null = null
-    const supabase = createClient()
-    const channel = supabase
-      .channel(`bookings:${tenantId}:${dateStr}`)
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'bookings',
-          filter: `tenant_id=eq.${tenantId}`,
-        },
-        (payload) => {
-          const row = payload.new as Booking | undefined
-          const oldRow = payload.old as Booking | undefined
-          // Only refetch if the change is for the current date
-          if (
-            (row && row.date === dateStr) ||
-            (oldRow && (oldRow as any).date === dateStr)
-          ) {
-            fetchBookings()
-          }
-        }
-      )
-      .subscribe((status) => {
-        if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
-          // Realtime unavailable — fall back to polling every 30s
-          if (!pollTimer) {
-            pollTimer = setInterval(fetchBookings, 30_000)
-          }
-        }
-        if (status === 'SUBSCRIBED' && pollTimer) {
-          clearInterval(pollTimer)
-          pollTimer = null
-        }
-      })
 
-    return () => {
-      if (pollTimer) clearInterval(pollTimer)
-      supabase.removeChannel(channel)
+    // Only attempt Realtime if user is authenticated
+    if (currentUserId) {
+      const supabase = createClient()
+      const channel = supabase
+        .channel(`bookings:${tenantId}:${dateStr}`)
+        .on(
+          'postgres_changes',
+          {
+            event: '*',
+            schema: 'public',
+            table: 'bookings',
+            filter: `tenant_id=eq.${tenantId}`,
+          },
+          (payload) => {
+            const row = payload.new as any
+            const oldRow = payload.old as any
+            // Only refetch if the change is for the current date
+            if (
+              (row && row.date === dateStr) ||
+              (oldRow && oldRow.date === dateStr)
+            ) {
+              fetchBookings()
+            }
+          }
+        )
+        .subscribe((status) => {
+          if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
+            // Realtime unavailable — fall back to polling every 30s
+            if (!pollTimer) {
+              pollTimer = setInterval(fetchBookings, 30_000)
+            }
+          }
+          if (status === 'SUBSCRIBED' && pollTimer) {
+            clearInterval(pollTimer)
+            pollTimer = null
+          }
+        })
+
+      return () => {
+        if (pollTimer) clearInterval(pollTimer)
+        supabase.removeChannel(channel)
+      }
+    } else {
+      // Anonymous: polling only
+      pollTimer = setInterval(fetchBookings, 30_000)
+      return () => {
+        if (pollTimer) clearInterval(pollTimer)
+      }
     }
-  }, [fetchBookings, tenantId, dateStr])
+  }, [fetchBookings, tenantId, dateStr, currentUserId])
 
   const baseInterval = useMemo(() => computeBaseInterval(courts), [courts])
   const timeColumns = useMemo(
@@ -134,6 +145,31 @@ export function ScheduleGrid({
       ),
     }))
   }, [courts, dayOfWeek, baseInterval, timeColumns, bookings, currentUserId, dateStr, isInCart, closureDatesMap])
+
+  // Auto-scroll to current time on load
+  useEffect(() => {
+    if (!scrollRef.current || timeColumns.length === 0) return
+    const now = new Date()
+    const currentMinutes = now.getHours() * 60 + now.getMinutes()
+    // Find the index of the first column that hasn't passed yet
+    const targetIdx = timeColumns.findIndex((col) => {
+      const [h, m] = col.time.split(':').map(Number)
+      return h * 60 + m >= currentMinutes
+    })
+    if (targetIdx > 0) {
+      // Scroll to show ~2 columns before current time
+      const scrollTarget = Math.max(0, targetIdx - 2)
+      const gridEl = scrollRef.current.firstElementChild as HTMLElement
+      if (gridEl) {
+        const cols = gridEl.children
+        // +1 for the court header column
+        const targetCol = cols[scrollTarget + 1] as HTMLElement
+        if (targetCol) {
+          scrollRef.current.scrollLeft = targetCol.offsetLeft - 130 // account for sticky court column
+        }
+      }
+    }
+  }, [timeColumns])
 
   function handleAddToCart(courtId: string, start: string, end: string) {
     const court = courts.find((c) => c.id === courtId)
@@ -190,6 +226,7 @@ export function ScheduleGrid({
   return (
     <div className="rounded-lg border border-border overflow-hidden">
       <div
+        ref={scrollRef}
         className="overflow-x-auto"
         style={{ WebkitOverflowScrolling: 'touch' }}
       >
