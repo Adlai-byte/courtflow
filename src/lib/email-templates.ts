@@ -192,7 +192,7 @@ export function bookingApprovedEmail(courtName: string, date: string, startTime:
   }
 }
 
-export function bookingRejectedEmail(courtName: string, date: string, startTime: string, endTime: string) {
+export function bookingRejectedEmail(courtName: string, date: string, startTime: string, endTime: string, reason?: string) {
   return {
     subject: `Booking Not Approved — ${courtName} on ${date}`,
     html: layout(`
@@ -203,6 +203,7 @@ export function bookingRejectedEmail(courtName: string, date: string, startTime:
         <p style="margin: 4px 0;"><strong>Date:</strong> ${date}</p>
         <p style="margin: 4px 0;"><strong>Time:</strong> ${startTime} – ${endTime}</p>
       </div>
+      ${reason ? `<p style="margin: 16px 0;"><strong>Reason:</strong> ${reason}</p>` : ''}
       <p style="color: #666;">The time slot is now available for other bookings. Feel free to try a different slot.</p>
     `),
   }

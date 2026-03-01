@@ -114,6 +114,9 @@ export default async function MyBookingsPage({
                             recurring
                           </span>
                         )}
+                        {booking.status === 'cancelled' && booking.rejection_reason && (
+                          <p className="mt-1 text-xs text-muted-foreground">Reason: {booking.rejection_reason}</p>
+                        )}
                       </td>
                       <td className="p-4">
                         {(booking.status === 'confirmed' || booking.status === 'pending') && (
@@ -151,6 +154,9 @@ export default async function MyBookingsPage({
                   <p className="font-mono text-xs text-muted-foreground">
                     {booking.date} · {to12Hr(booking.start_time)}–{to12Hr(booking.end_time)}
                   </p>
+                  {booking.status === 'cancelled' && booking.rejection_reason && (
+                    <p className="text-xs text-muted-foreground">Reason: {booking.rejection_reason}</p>
+                  )}
                   {(booking.status === 'confirmed' || booking.status === 'pending') && (
                     <CancelBookingButton
                       bookingId={booking.id}

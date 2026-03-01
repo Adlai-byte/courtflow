@@ -42,7 +42,7 @@ export async function approveBooking(bookingId: string, slug: string) {
   return { error: null }
 }
 
-export async function rejectBooking(bookingId: string, slug: string) {
+export async function rejectBooking(bookingId: string, slug: string, reason?: string) {
   const { tenant } = await requireTenantOwner(slug)
   const supabase = await createClient()
 
@@ -58,7 +58,7 @@ export async function rejectBooking(bookingId: string, slug: string) {
 
   const { error } = await supabase
     .from('bookings')
-    .update({ status: 'cancelled' })
+    .update({ status: 'cancelled', rejection_reason: reason || null })
     .eq('id', bookingId)
 
   if (error) return { error: error.message }
@@ -69,7 +69,7 @@ export async function rejectBooking(bookingId: string, slug: string) {
   // Send rejected email to customer
   const { data: userData } = await adminClient.auth.admin.getUserById(booking.customer_id)
   if (userData?.user?.email) {
-    const { subject, html } = bookingRejectedEmail(courtName, booking.date, booking.start_time, booking.end_time)
+    const { subject, html } = bookingRejectedEmail(courtName, booking.date, booking.start_time, booking.end_time, reason)
     await sendEmail(userData.user.email, subject, html)
   }
 

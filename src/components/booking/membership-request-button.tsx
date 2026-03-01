@@ -38,6 +38,7 @@ export function MembershipRequestButton({
   }
 
   async function handleRequest() {
+    if (!confirm('Request this membership? The facility owner will review your request.')) return
     setSubmitting(true)
     const result = await requestMembership(tierId, slug)
     if (result.error) {

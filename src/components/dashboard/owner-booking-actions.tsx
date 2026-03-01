@@ -21,16 +21,21 @@ export function OwnerBookingActions({ bookingId, slug, status }: Props) {
     const result = await approveBooking(bookingId, slug)
     if (result.error) {
       toast.error(result.error)
+    } else {
+      toast.success('Booking approved')
     }
     setLoading(null)
   }
 
   async function handleReject() {
-    if (!confirm('Reject this booking? The customer will be notified.')) return
+    const reason = prompt('Reason for rejection (optional):')
+    if (reason === null) return // user clicked Cancel
     setLoading('reject')
-    const result = await rejectBooking(bookingId, slug)
+    const result = await rejectBooking(bookingId, slug, reason || undefined)
     if (result.error) {
       toast.error(result.error)
+    } else {
+      toast.success('Booking rejected')
     }
     setLoading(null)
   }
