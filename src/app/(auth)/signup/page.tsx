@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
+import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
 import { GoogleSignIn } from '@/components/auth/google-sign-in'
 import { User, Mail, Lock, Building2, CalendarDays } from 'lucide-react'
@@ -11,7 +12,7 @@ export const metadata = {
 export default async function SignupPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string }>
+  searchParams: Promise<{ error?: string; confirmed?: string }>
 }) {
   const params = await searchParams
 
@@ -24,7 +25,11 @@ export default async function SignupPage({
     const role = formData.get('role') as string
     const supabase = await createClient()
 
-    const { error } = await supabase.auth.signUp({
+    const headersList = await headers()
+    const origin = headersList.get('origin') || process.env.NEXT_PUBLIC_APP_URL || ''
+    const redirectTo = role === 'business_owner' ? '/onboarding' : '/explore'
+
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -32,6 +37,7 @@ export default async function SignupPage({
           full_name: fullName,
           role: role,
         },
+        emailRedirectTo: `${origin}/auth/callback?next=${encodeURIComponent(redirectTo)}`,
       },
     })
 
@@ -40,11 +46,40 @@ export default async function SignupPage({
       redirect(`/signup?error=${encodeURIComponent('Something went wrong. Please try again or use a different email.')}`)
     }
 
+    // If email confirmation is required, user.identities will be empty or session will be null
+    const needsConfirmation = !data.session
+    if (needsConfirmation) {
+      redirect(`/signup?confirmed=pending`)
+    }
+
+    // Session exists — user is signed in (auto-confirm enabled or email already confirmed)
     if (role === 'business_owner') {
       redirect('/onboarding')
     }
 
     redirect('/explore')
+  }
+
+  // Show "check your email" screen after signup when email confirmation is required
+  if (params.confirmed === 'pending') {
+    return (
+      <div className="flex flex-col items-center text-center">
+        <div className="mb-6">
+          <span className="section-label">[ CHECK YOUR EMAIL ]</span>
+        </div>
+        <Mail className="h-12 w-12 text-primary" />
+        <h1 className="mt-4 text-2xl font-bold tracking-tight">Check your email</h1>
+        <p className="mt-2 text-sm text-muted-foreground max-w-sm">
+          We&apos;ve sent you a confirmation link. Click the link in your email to activate your account.
+        </p>
+        <Link
+          href="/login"
+          className="mt-6 text-sm font-medium text-primary underline-offset-4 hover:underline"
+        >
+          Back to sign in
+        </Link>
+      </div>
+    )
   }
 
   return (

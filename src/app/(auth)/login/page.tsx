@@ -41,6 +41,16 @@ export default async function LoginPage({
       redirect(`/login?error=${encodeURIComponent(error.message)}`)
     }
 
+    // For business owners and admins, always go to their dashboard
+    // unless the redirect explicitly points to a dashboard/admin route
+    const role = data.user.user_metadata?.role
+    if (role === 'business_owner' || role === 'platform_admin') {
+      if (params.redirect?.startsWith('/dashboard') || params.redirect?.startsWith('/admin')) {
+        redirect(params.redirect)
+      }
+      redirect(await getDashboardUrl(supabase, data.user.id))
+    }
+
     if (params.redirect) {
       redirect(params.redirect)
     }

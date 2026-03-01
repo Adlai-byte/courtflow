@@ -64,10 +64,11 @@ export function ScheduleGrid({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [courtsKey, dateStr])
 
-  // Initial fetch + Realtime subscription
+  // Initial fetch + Realtime subscription with polling fallback
   useEffect(() => {
     fetchBookings()
 
+    let pollTimer: ReturnType<typeof setInterval> | null = null
     const supabase = createClient()
     const channel = supabase
       .channel(`bookings:${tenantId}:${dateStr}`)
@@ -91,9 +92,21 @@ export function ScheduleGrid({
           }
         }
       )
-      .subscribe()
+      .subscribe((status) => {
+        if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
+          // Realtime unavailable — fall back to polling every 30s
+          if (!pollTimer) {
+            pollTimer = setInterval(fetchBookings, 30_000)
+          }
+        }
+        if (status === 'SUBSCRIBED' && pollTimer) {
+          clearInterval(pollTimer)
+          pollTimer = null
+        }
+      })
 
     return () => {
+      if (pollTimer) clearInterval(pollTimer)
       supabase.removeChannel(channel)
     }
   }, [fetchBookings, tenantId, dateStr])
