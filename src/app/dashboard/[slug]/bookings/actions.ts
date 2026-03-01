@@ -6,6 +6,8 @@ import { requireTenantOwner } from '@/lib/tenant'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { sendEmail } from '@/lib/email'
 import { bookingCancelledEmail, waitlistPromotionEmail, bookingApprovedEmail, bookingRejectedEmail } from '@/lib/email-templates'
+import { sendSMS } from '@/lib/sms'
+import { createRefund } from '@/lib/paymongo'
 
 export async function approveBooking(bookingId: string, slug: string) {
   const { tenant } = await requireTenantOwner(slug)
@@ -35,6 +37,12 @@ export async function approveBooking(bookingId: string, slug: string) {
   if (userData?.user?.email) {
     const { subject, html } = bookingApprovedEmail(courtName, booking.date, booking.start_time, booking.end_time)
     await sendEmail(userData.user.email, subject, html)
+  }
+
+  // Send SMS notification to customer
+  const { data: approveProfile } = await supabase.from('profiles').select('phone').eq('id', booking.customer_id).single()
+  if (approveProfile?.phone) {
+    await sendSMS(approveProfile.phone, `CourtFLOW: Your booking at ${courtName} on ${booking.date} has been approved!`)
   }
 
   revalidatePath(`/dashboard/${slug}/bookings`)
@@ -71,6 +79,12 @@ export async function rejectBooking(bookingId: string, slug: string, reason?: st
   if (userData?.user?.email) {
     const { subject, html } = bookingRejectedEmail(courtName, booking.date, booking.start_time, booking.end_time, reason)
     await sendEmail(userData.user.email, subject, html)
+  }
+
+  // Send SMS notification to customer
+  const { data: rejectProfile } = await supabase.from('profiles').select('phone').eq('id', booking.customer_id).single()
+  if (rejectProfile?.phone) {
+    await sendSMS(rejectProfile.phone, `CourtFLOW: Your booking at ${courtName} on ${booking.date} was not approved. Contact the facility for details.`)
   }
 
   // Promote next waitlist entry
@@ -142,6 +156,12 @@ export async function approveRecurringSeries(seriesId: string, slug: string) {
     await sendEmail(userData.user.email, subject, html)
   }
 
+  // Send SMS notification to customer
+  const { data: recurringProfile } = await supabase.from('profiles').select('phone').eq('id', first.customer_id).single()
+  if (recurringProfile?.phone) {
+    await sendSMS(recurringProfile.phone, `CourtFLOW: All ${pendingBookings.length} bookings in your recurring series have been approved!`)
+  }
+
   revalidatePath(`/dashboard/${slug}/bookings`)
   revalidatePath(`/dashboard/${slug}`)
   return { error: null, count: pendingBookings.length }
@@ -154,7 +174,7 @@ export async function ownerCancelBooking(bookingId: string, slug: string) {
   // Fetch booking with court name and customer
   const { data: booking } = await supabase
     .from('bookings')
-    .select('court_id, customer_id, date, start_time, end_time, courts ( name )')
+    .select('court_id, customer_id, date, start_time, end_time, amount, payment_status, payment_id, courts ( name )')
     .eq('id', bookingId)
     .eq('tenant_id', tenant.id)
     .in('status', ['confirmed', 'pending'])
@@ -169,6 +189,22 @@ export async function ownerCancelBooking(bookingId: string, slug: string) {
 
   if (error) return { error: error.message }
 
+  // If booking was paid, process refund
+  if ((booking as any).payment_status === 'paid' && (booking as any).payment_id) {
+    try {
+      await createRefund((booking as any).payment_id, (booking as any).amount, 'Owner cancelled booking')
+      await supabase.from('bookings')
+        .update({ payment_status: 'refunded' })
+        .eq('id', bookingId)
+      await supabase.from('payments')
+        .update({ status: 'refunded' })
+        .eq('booking_id', bookingId)
+    } catch (err) {
+      console.error('[REFUND ERROR]', err)
+      // Don't block cancellation if refund fails — log for manual resolution
+    }
+  }
+
   const adminClient = createAdminClient()
   const courtName = (booking.courts as any)?.name || 'Court'
 
@@ -177,6 +213,12 @@ export async function ownerCancelBooking(bookingId: string, slug: string) {
   if (userData?.user?.email) {
     const { subject, html } = bookingCancelledEmail(courtName, booking.date, booking.start_time, booking.end_time)
     await sendEmail(userData.user.email, subject, html)
+  }
+
+  // Send SMS notification to customer
+  const { data: cancelProfile } = await supabase.from('profiles').select('phone').eq('id', booking.customer_id).single()
+  if (cancelProfile?.phone) {
+    await sendSMS(cancelProfile.phone, `CourtFLOW: Your booking at ${courtName} on ${booking.date} has been cancelled by the facility.`)
   }
 
   // Promote next waitlist entry
