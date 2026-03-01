@@ -67,7 +67,7 @@ export default async function MyMembershipPage({
                   <div>
                     <h3 className="font-medium">{tier?.name}</h3>
                     <p className="font-mono text-lg font-bold text-primary">
-                      {tier?.price > 0 ? `$${tier.price}` : 'Free'}
+                      {tier?.price > 0 ? `₱${tier.price}` : 'Free'}
                     </p>
                   </div>
                   <span className={`inline-flex rounded-full border px-2.5 py-0.5 text-xs font-medium ${statusColors[sub.status] || ''}`}>

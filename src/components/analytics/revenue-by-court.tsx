@@ -26,7 +26,7 @@ export function RevenueByCourtChart({ data }: RevenueByCourtProps) {
                 <XAxis
                   type="number"
                   tick={{ fontSize: 11, fontFamily: 'var(--font-mono)', fill: 'var(--muted-foreground)' }}
-                  tickFormatter={(v) => `$${v}`}
+                  tickFormatter={(v) => `₱${v}`}
                   axisLine={{ stroke: 'var(--border)' }}
                   tickLine={false}
                 />
@@ -46,7 +46,7 @@ export function RevenueByCourtChart({ data }: RevenueByCourtProps) {
                     fontFamily: 'var(--font-mono)',
                     fontSize: '12px',
                   }}
-                  formatter={(value) => [`$${Number(value).toFixed(2)}`, 'Revenue']}
+                  formatter={(value) => [`₱${Number(value).toFixed(2)}`, 'Revenue']}
                 />
                 <Bar dataKey="revenue" fill="var(--chart-2)" radius={[0, 4, 4, 0]} />
               </BarChart>

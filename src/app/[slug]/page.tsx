@@ -115,7 +115,7 @@ export default async function BusinessPage({
                 <div>
                   <h3 className="font-medium">{tier.name}</h3>
                   <p className="font-mono text-lg font-bold text-primary">
-                    {tier.price > 0 ? `$${tier.price}` : 'Free'}
+                    {tier.price > 0 ? `₱${tier.price}` : 'Free'}
                   </p>
                 </div>
                 {tier.description && (

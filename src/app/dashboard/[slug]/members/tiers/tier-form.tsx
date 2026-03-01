@@ -39,7 +39,7 @@ export function TierForm({ tenantId, slug, onSuccess }: TierFormProps) {
         <Textarea id="description" name="description" placeholder="Premium access with exclusive perks..." rows={2} />
       </div>
       <div className="space-y-2">
-        <Label htmlFor="price">Monthly Price ($)</Label>
+        <Label htmlFor="price">Monthly Price (₱)</Label>
         <Input id="price" name="price" type="number" step="0.01" min="0" defaultValue="0" />
       </div>
       <div className="space-y-3">

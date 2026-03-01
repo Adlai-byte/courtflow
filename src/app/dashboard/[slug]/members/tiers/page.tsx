@@ -58,7 +58,7 @@ export default async function TiersPage({
             <Card key={tier.id}>
               <CardHeader>
                 <CardTitle className="text-lg">{tier.name}</CardTitle>
-                <p className="text-2xl font-bold">${tier.price}<span className="text-sm font-normal text-muted-foreground">/month</span></p>
+                <p className="text-2xl font-bold">₱{tier.price}<span className="text-sm font-normal text-muted-foreground">/month</span></p>
               </CardHeader>
               <CardContent className="space-y-2">
                 {tier.description && <p className="text-sm text-muted-foreground">{tier.description}</p>}

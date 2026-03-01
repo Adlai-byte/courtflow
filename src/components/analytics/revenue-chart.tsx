@@ -33,7 +33,7 @@ export function RevenueChart({ data }: RevenueChartProps) {
                   tick={{ fontSize: 11, fontFamily: 'var(--font-mono)', fill: 'var(--muted-foreground)' }}
                   tickLine={false}
                   axisLine={false}
-                  tickFormatter={(v) => `$${v}`}
+                  tickFormatter={(v) => `₱${v}`}
                 />
                 <Tooltip
                   contentStyle={{
@@ -43,7 +43,7 @@ export function RevenueChart({ data }: RevenueChartProps) {
                     fontFamily: 'var(--font-mono)',
                     fontSize: '12px',
                   }}
-                  formatter={(value) => [`$${Number(value).toFixed(2)}`, 'Revenue']}
+                  formatter={(value) => [`₱${Number(value).toFixed(2)}`, 'Revenue']}
                 />
                 <Area
                   type="monotone"
