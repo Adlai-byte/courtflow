@@ -85,14 +85,21 @@ export function SlotCell({ slot, onAddToCart, onRemoveFromCart }: SlotCellProps)
   }
 
   // available
+  const [startH, startM] = slot.start.split(':').map(Number)
+  const [endH, endM] = slot.end.split(':').map(Number)
+  const durationHours = (endH * 60 + endM - (startH * 60 + startM)) / 60
+
   return (
     <button
       aria-label={`${label} — Available, click to add to cart`}
-      className="flex h-full w-full items-center justify-center border-r border-emerald-200 bg-emerald-50 font-mono text-[10px] text-emerald-700 transition-colors hover:bg-emerald-500 hover:text-white active:scale-95"
+      className="flex h-full w-full flex-col items-center justify-center border-r border-emerald-200 bg-emerald-50 font-mono text-[10px] text-emerald-700 transition-colors hover:bg-emerald-500 hover:text-white active:scale-95"
       onClick={() => onAddToCart(slot.courtId, slot.start, slot.end)}
       title={`${label} — Available`}
     >
       {label}
+      {slot.pricePerHour > 0 && (
+        <span className="block text-[8px] opacity-70">₱{Math.round(slot.pricePerHour * durationHours)}</span>
+      )}
     </button>
   )
 }

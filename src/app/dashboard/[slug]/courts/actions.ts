@@ -22,6 +22,7 @@ export async function createCourt(tenantId: string, slug: string, formData: Form
     slot_duration_minutes: parseInt(formData.get('slot_duration_minutes') as string) || 60,
     min_duration_minutes: parseInt(formData.get('min_duration_minutes') as string) || 30,
     max_duration_minutes: parseInt(formData.get('max_duration_minutes') as string) || 180,
+    price_per_hour: parseFloat(formData.get('price_per_hour') as string) || 0,
     amenities,
   })
 
@@ -53,6 +54,7 @@ export async function updateCourt(courtId: string, slug: string, formData: FormD
       slot_duration_minutes: parseInt(formData.get('slot_duration_minutes') as string) || 60,
       min_duration_minutes: parseInt(formData.get('min_duration_minutes') as string) || 30,
       max_duration_minutes: parseInt(formData.get('max_duration_minutes') as string) || 180,
+      price_per_hour: parseFloat(formData.get('price_per_hour') as string) || 0,
       is_active: formData.get('is_active') === 'true',
       amenities,
     })

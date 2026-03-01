@@ -203,6 +203,18 @@ export function CourtForm({ tenantId, slug, court, onSuccess }: CourtFormProps) 
           </div>
         </div>
       )}
+      <div className="space-y-2">
+        <Label htmlFor="price_per_hour">Price per hour (₱)</Label>
+        <Input
+          id="price_per_hour"
+          name="price_per_hour"
+          type="number"
+          min="0"
+          step="0.01"
+          defaultValue={court?.price_per_hour || 0}
+          className="w-40 font-mono"
+        />
+      </div>
       {court && <input type="hidden" name="is_active" value={String(court.is_active)} />}
       <Button type="submit" className="w-full">
         {court ? 'Update Court' : 'Add Court'}

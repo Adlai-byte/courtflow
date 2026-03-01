@@ -9,6 +9,7 @@ export interface GridSlot {
   state: SlotState | 'closed'
   colSpan: number
   colStart: number // 0-based index into time columns
+  pricePerHour: number
 }
 
 const dayNames = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
@@ -105,6 +106,7 @@ export function generateCourtSlots(
       state: 'closed',
       colSpan: timeColumns.length,
       colStart: 0,
+      pricePerHour: 0,
     }]
   }
 
@@ -142,6 +144,7 @@ export function generateCourtSlots(
         state: 'closed',
         colSpan: spanCount,
         colStart: colIdx,
+        pricePerHour: 0,
       })
       colIdx += spanCount
       continue
@@ -157,6 +160,7 @@ export function generateCourtSlots(
         state: 'closed',
         colSpan: remaining,
         colStart: colIdx,
+        pricePerHour: 0,
       })
       break
     }
@@ -176,6 +180,7 @@ export function generateCourtSlots(
         state: 'closed',
         colSpan: remaining,
         colStart: colIdx,
+        pricePerHour: 0,
       })
       break
     }
@@ -208,6 +213,7 @@ export function generateCourtSlots(
       state,
       colSpan: slotSpan,
       colStart: colIdx,
+      pricePerHour: court.price_per_hour ?? 0,
     })
 
     colIdx += slotSpan
