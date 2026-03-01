@@ -81,10 +81,15 @@ export default async function MyBookingsPage({
 
       <div className="rounded-lg border border-border bg-card">
         {bookings.length === 0 ? (
-          <div className="flex items-center justify-center py-12">
+          <div className="flex flex-col items-center justify-center gap-3 py-12">
             <p className="text-sm text-muted-foreground">
               {activeFilter === 'upcoming' ? 'No upcoming bookings.' : activeFilter === 'past' ? 'No past bookings.' : 'You have no bookings yet.'}
             </p>
+            {activeFilter !== 'past' && (
+              <Link href={`/${slug}`} className="font-mono text-xs text-primary underline underline-offset-4 hover:text-primary/80">
+                Book a court
+              </Link>
+            )}
           </div>
         ) : (
           <>
@@ -113,6 +118,9 @@ export default async function MyBookingsPage({
                           <span className="ml-1 inline-flex rounded-full border border-primary/20 bg-primary/5 px-2 py-0.5 text-xs font-medium text-primary">
                             recurring
                           </span>
+                        )}
+                        {booking.status === 'pending' && (
+                          <p className="mt-1 font-mono text-[10px] text-amber-600">Awaiting owner approval</p>
                         )}
                         {booking.status === 'cancelled' && booking.rejection_reason && (
                           <p className="mt-1 text-xs text-muted-foreground">Reason: {booking.rejection_reason}</p>
@@ -154,6 +162,9 @@ export default async function MyBookingsPage({
                   <p className="font-mono text-xs text-muted-foreground">
                     {booking.date} · {to12Hr(booking.start_time)}–{to12Hr(booking.end_time)}
                   </p>
+                  {booking.status === 'pending' && (
+                    <p className="font-mono text-[10px] text-amber-600">Awaiting owner approval</p>
+                  )}
                   {booking.status === 'cancelled' && booking.rejection_reason && (
                     <p className="text-xs text-muted-foreground">Reason: {booking.rejection_reason}</p>
                   )}

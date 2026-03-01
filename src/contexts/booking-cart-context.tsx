@@ -35,7 +35,9 @@ export function BookingCartProvider({ slug, children }: { slug?: string; childre
     try {
       const stored = localStorage.getItem(storageKey)
       if (stored) {
-        setItems(JSON.parse(stored))
+        const today = new Date().toISOString().split('T')[0]
+        const parsed: CartItem[] = JSON.parse(stored)
+        setItems(parsed.filter((item) => item.date >= today))
       }
     } catch {}
     setHydrated(true)

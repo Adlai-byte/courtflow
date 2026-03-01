@@ -29,7 +29,7 @@ export function Topbar({
     <header className="flex h-14 items-center justify-between border-b bg-card px-4 md:px-6">
       <div className="flex items-center gap-3">
         <MobileSidebar slug={slug} tenantName={tenant.name} signOutAction={signOutAction} />
-        <span className="section-label hidden sm:inline md:hidden">{tenant.name}</span>
+        <span className="section-label hidden md:inline">{tenant.name}</span>
       </div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>

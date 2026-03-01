@@ -35,7 +35,7 @@ export function CourtRowHeader({ court }: CourtRowHeaderProps) {
   return (
     <div className="flex items-center gap-2 border-r border-border bg-background px-3 py-2">
       <div className="min-w-0 flex-1">
-        <p className="truncate text-sm font-semibold tracking-tight">{court.name}</p>
+        <p className="line-clamp-2 leading-tight text-sm font-semibold tracking-tight">{court.name}</p>
         <div className="flex items-center gap-1.5 mt-0.5">
           <span className="font-mono text-[10px] text-muted-foreground">
             {sportLabels[court.sport_type] || court.sport_type}

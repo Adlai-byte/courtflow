@@ -49,7 +49,7 @@ function NavContent({ slug, pathname, isAuthenticated, signOutAction, onNavigate
         <Link
           href="/explore"
           onClick={onNavigate}
-          className="flex items-center gap-3 rounded-lg px-3 py-2 font-mono text-xs uppercase tracking-wider text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+          className="flex items-center gap-3 rounded-lg border border-primary/20 bg-primary/5 px-3 py-2 font-mono text-xs uppercase tracking-wider text-primary transition-colors hover:bg-primary/10"
         >
           <Compass className="h-4 w-4" />
           Explore Facilities

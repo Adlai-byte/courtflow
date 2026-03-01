@@ -104,6 +104,49 @@ export async function rejectBooking(bookingId: string, slug: string, reason?: st
   return { error: null }
 }
 
+export async function approveRecurringSeries(seriesId: string, slug: string) {
+  const { tenant } = await requireTenantOwner(slug)
+  const supabase = await createClient()
+
+  const { data: pendingBookings } = await supabase
+    .from('bookings')
+    .select('id, customer_id, date, start_time, end_time, courts ( name )')
+    .eq('tenant_id', tenant.id)
+    .eq('recurring_series_id', seriesId)
+    .eq('status', 'pending')
+
+  if (!pendingBookings || pendingBookings.length === 0) {
+    return { error: 'No pending bookings found for this series', count: 0 }
+  }
+
+  const ids = pendingBookings.map((b: any) => b.id)
+  const { error } = await supabase
+    .from('bookings')
+    .update({ status: 'confirmed' })
+    .in('id', ids)
+
+  if (error) return { error: error.message, count: 0 }
+
+  // Send one confirmation email to the customer
+  const first = pendingBookings[0] as any
+  const adminClient = createAdminClient()
+  const { data: userData } = await adminClient.auth.admin.getUserById(first.customer_id)
+  if (userData?.user?.email) {
+    const courtName = first.courts?.name || 'Court'
+    const { subject, html } = bookingApprovedEmail(
+      courtName,
+      `${pendingBookings.length} bookings in recurring series`,
+      first.start_time,
+      first.end_time
+    )
+    await sendEmail(userData.user.email, subject, html)
+  }
+
+  revalidatePath(`/dashboard/${slug}/bookings`)
+  revalidatePath(`/dashboard/${slug}`)
+  return { error: null, count: pendingBookings.length }
+}
+
 export async function ownerCancelBooking(bookingId: string, slug: string) {
   const { tenant } = await requireTenantOwner(slug)
   const supabase = await createClient()

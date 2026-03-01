@@ -2,6 +2,7 @@ import { requireTenantOwner } from '@/lib/tenant'
 import { createClient } from '@/lib/supabase/server'
 import { Card, CardContent } from '@/components/ui/card'
 import { OwnerBookingActions } from '@/components/dashboard/owner-booking-actions'
+import { ApproveSeriesButton } from '@/components/dashboard/approve-series-button'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
 import { toSlotLabel, formatDate } from '@/lib/time-format'
@@ -114,7 +115,12 @@ export default async function BookingsPage({
                           )}
                         </td>
                         <td className="p-4">
-                          <OwnerBookingActions bookingId={booking.id} slug={slug} status={booking.status} />
+                          <div className="flex items-center gap-1">
+                            <OwnerBookingActions bookingId={booking.id} slug={slug} status={booking.status} />
+                            {booking.status === 'pending' && booking.recurring_series_id && (
+                              <ApproveSeriesButton seriesId={booking.recurring_series_id} slug={slug} />
+                            )}
+                          </div>
                         </td>
                       </tr>
                     ))}
@@ -139,7 +145,12 @@ export default async function BookingsPage({
                     </div>
                     <p className="text-xs text-muted-foreground">{booking.courts?.name}</p>
                     <p className="font-mono text-xs text-muted-foreground">{formatDate(booking.date)} · {toSlotLabel(booking.start_time, booking.end_time)}</p>
-                    <OwnerBookingActions bookingId={booking.id} slug={slug} status={booking.status} />
+                    <div className="flex items-center gap-1">
+                      <OwnerBookingActions bookingId={booking.id} slug={slug} status={booking.status} />
+                      {booking.status === 'pending' && booking.recurring_series_id && (
+                        <ApproveSeriesButton seriesId={booking.recurring_series_id} slug={slug} />
+                      )}
+                    </div>
                   </div>
                 ))}
               </div>

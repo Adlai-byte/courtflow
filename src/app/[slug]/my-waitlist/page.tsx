@@ -3,6 +3,7 @@ import { getTenantBySlug } from '@/lib/tenant'
 import { createClient } from '@/lib/supabase/server'
 import { LeaveWaitlistButton } from '@/components/booking/leave-waitlist-button'
 import { to12Hr } from '@/lib/time-format'
+import Link from 'next/link'
 
 const statusColors: Record<string, string> = {
   waiting: 'bg-amber-100 text-amber-700 border-amber-200',
@@ -41,8 +42,11 @@ export default async function MyWaitlistPage({
 
       <div className="rounded-lg border border-border bg-card">
         {(!entries || entries.length === 0) ? (
-          <div className="flex items-center justify-center py-12">
+          <div className="flex flex-col items-center justify-center gap-3 py-12">
             <p className="text-sm text-muted-foreground">You are not on any waitlists.</p>
+            <Link href={`/${slug}`} className="font-mono text-xs text-primary underline underline-offset-4 hover:text-primary/80">
+              Browse available courts
+            </Link>
           </div>
         ) : (
           <>

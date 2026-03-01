@@ -74,7 +74,7 @@ export function SlotCell({ slot, onAddToCart, onRemoveFromCart }: SlotCellProps)
     return (
       <button
         aria-label={`${label} — In cart, click to remove`}
-        className="flex h-full w-full items-center justify-center gap-0.5 border-r border-primary bg-primary/10 font-mono text-[10px] text-primary transition-colors hover:bg-primary/20"
+        className="flex h-full w-full items-center justify-center gap-0.5 border-r border-primary bg-primary/10 font-mono text-[10px] text-primary transition-colors hover:bg-primary/20 active:scale-95"
         onClick={() => onRemoveFromCart(slot.courtId, slot.start)}
         title={`${label} — In cart (click to remove)`}
       >
@@ -88,7 +88,7 @@ export function SlotCell({ slot, onAddToCart, onRemoveFromCart }: SlotCellProps)
   return (
     <button
       aria-label={`${label} — Available, click to add to cart`}
-      className="flex h-full w-full items-center justify-center border-r border-emerald-200 bg-emerald-50 font-mono text-[10px] text-emerald-700 transition-colors hover:bg-emerald-500 hover:text-white"
+      className="flex h-full w-full items-center justify-center border-r border-emerald-200 bg-emerald-50 font-mono text-[10px] text-emerald-700 transition-colors hover:bg-emerald-500 hover:text-white active:scale-95"
       onClick={() => onAddToCart(slot.courtId, slot.start, slot.end)}
       title={`${label} — Available`}
     >

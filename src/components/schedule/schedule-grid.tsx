@@ -188,7 +188,7 @@ export function ScheduleGrid({
         <div
           className="grid min-w-[600px]"
           style={{
-            gridTemplateColumns: `minmax(140px, 200px) repeat(${timeColumns.length}, minmax(56px, 1fr))`,
+            gridTemplateColumns: `minmax(120px, 200px) repeat(${timeColumns.length}, minmax(64px, 1fr))`,
           }}
         >
           {/* Corner cell */}
