@@ -1,9 +1,30 @@
 import { type NextRequest, NextResponse } from 'next/server'
 import { updateSession } from '@/lib/supabase/middleware'
+import { rateLimit } from '@/lib/rate-limit'
+
+// 20 requests per minute for auth pages (login, signup, forgot-password)
+const authLimiter = rateLimit({ windowMs: 60_000, max: 20 })
 
 export async function middleware(request: NextRequest) {
-  const { supabaseResponse, user } = await updateSession(request)
   const { pathname } = request.nextUrl
+
+  // Rate limit auth routes
+  if (
+    pathname === '/login' ||
+    pathname === '/signup' ||
+    pathname === '/forgot-password'
+  ) {
+    const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
+    const { allowed } = authLimiter(`auth:${ip}`)
+    if (!allowed) {
+      return NextResponse.json(
+        { error: 'Too many requests. Please try again later.' },
+        { status: 429 }
+      )
+    }
+  }
+
+  const { supabaseResponse, user } = await updateSession(request)
 
   // Helper: redirect to login with return URL
   function redirectToLogin() {

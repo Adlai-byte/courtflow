@@ -10,13 +10,14 @@ export async function updateOperatingHours(
   slug: string,
   hours: OperatingHours
 ) {
-  await requireTenantOwner(slug)
+  const { tenant } = await requireTenantOwner(slug)
   const supabase = await createClient()
 
   const { error } = await supabase
     .from('courts')
     .update({ operating_hours: hours })
     .eq('id', courtId)
+    .eq('tenant_id', tenant.id)
 
   if (error) {
     return { error: error.message }
@@ -32,8 +33,20 @@ export async function addClosure(
   date: string,
   reason: string | null
 ) {
-  await requireTenantOwner(slug)
+  const { tenant } = await requireTenantOwner(slug)
   const supabase = await createClient()
+
+  // Verify the court belongs to this tenant before inserting closure
+  const { data: court } = await supabase
+    .from('courts')
+    .select('id')
+    .eq('id', courtId)
+    .eq('tenant_id', tenant.id)
+    .single()
+
+  if (!court) {
+    return { error: 'Court not found' }
+  }
 
   const { error } = await supabase
     .from('court_closures')
@@ -52,8 +65,20 @@ export async function removeClosure(
   courtId: string,
   slug: string
 ) {
-  await requireTenantOwner(slug)
+  const { tenant } = await requireTenantOwner(slug)
   const supabase = await createClient()
+
+  // Verify the court belongs to this tenant before deleting closure
+  const { data: court } = await supabase
+    .from('courts')
+    .select('id')
+    .eq('id', courtId)
+    .eq('tenant_id', tenant.id)
+    .single()
+
+  if (!court) {
+    return { error: 'Court not found' }
+  }
 
   const { error } = await supabase
     .from('court_closures')
