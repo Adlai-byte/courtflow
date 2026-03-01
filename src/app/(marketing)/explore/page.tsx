@@ -35,6 +35,7 @@ export default async function ExplorePage() {
       slug: t.slug,
       logo_url: t.logo_url,
       description: t.description,
+      city: t.city || null,
       courtCount: activeCourts.length,
       sportTypes,
       venueTypes,

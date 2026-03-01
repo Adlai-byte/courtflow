@@ -112,6 +112,7 @@ export default async function HomePage() {
       slug: t.slug,
       logo_url: t.logo_url,
       description: t.description,
+      city: t.city || null,
       courtCount: activeCourts.length,
       sportTypes,
       venueTypes,

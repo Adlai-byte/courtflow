@@ -5,6 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowRight, Search } from 'lucide-react'
 import { Input } from '@/components/ui/input'
+import { cn } from '@/lib/utils'
 import type { SportType, VenueType } from '@/lib/types'
 
 const sportOptions: { value: SportType | 'all'; label: string }[] = [
@@ -31,6 +32,7 @@ export interface TenantCard {
   slug: string
   logo_url: string | null
   description: string | null
+  city: string | null
   courtCount: number
   sportTypes: SportType[]
   venueTypes: VenueType[]
@@ -39,10 +41,17 @@ export interface TenantCard {
 export function ExploreList({ tenants }: { tenants: TenantCard[] }) {
   const [searchQuery, setSearchQuery] = useState('')
   const [sportFilter, setSportFilter] = useState<SportType | 'all'>('all')
+  const [selectedCity, setSelectedCity] = useState<string | null>(null)
+
+  const cities = useMemo(
+    () => [...new Set(tenants.map((t) => t.city).filter(Boolean))] as string[],
+    [tenants]
+  )
 
   const filtered = useMemo(() => {
     return tenants.filter((t) => {
       if (sportFilter !== 'all' && !t.sportTypes.includes(sportFilter)) return false
+      if (selectedCity && t.city !== selectedCity) return false
       if (searchQuery) {
         const q = searchQuery.toLowerCase()
         if (
@@ -53,7 +62,7 @@ export function ExploreList({ tenants }: { tenants: TenantCard[] }) {
       }
       return true
     })
-  }, [tenants, searchQuery, sportFilter])
+  }, [tenants, searchQuery, sportFilter, selectedCity])
 
   return (
     <div>
@@ -83,6 +92,35 @@ export function ExploreList({ tenants }: { tenants: TenantCard[] }) {
             </button>
           ))}
         </div>
+        {cities.length > 1 && (
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={() => setSelectedCity(null)}
+              className={cn(
+                'rounded-full border px-3 py-1 font-mono text-xs transition-colors',
+                !selectedCity
+                  ? 'bg-primary text-primary-foreground'
+                  : 'text-muted-foreground hover:text-foreground'
+              )}
+            >
+              All Cities
+            </button>
+            {cities.map((city) => (
+              <button
+                key={city}
+                onClick={() => setSelectedCity(city)}
+                className={cn(
+                  'rounded-full border px-3 py-1 font-mono text-xs transition-colors',
+                  selectedCity === city
+                    ? 'bg-primary text-primary-foreground'
+                    : 'text-muted-foreground hover:text-foreground'
+                )}
+              >
+                {city}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Card grid */}
@@ -128,9 +166,12 @@ function TenantCardItem({ tenant }: { tenant: TenantCard }) {
       </div>
 
       {tenant.description && (
-        <p className="mb-4 line-clamp-2 text-sm leading-relaxed text-muted-foreground">
+        <p className="mb-2 line-clamp-2 text-sm leading-relaxed text-muted-foreground">
           {tenant.description}
         </p>
+      )}
+      {tenant.city && (
+        <p className="mb-4 text-xs text-muted-foreground">{tenant.city}</p>
       )}
 
       {/* Sport badges */}
