@@ -57,7 +57,7 @@ export function ClosuresEditor({ courtId, slug, initialClosures }: Props) {
             type="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
-            className="w-40 font-mono text-sm"
+            className="w-40 text-sm"
           />
         </div>
         <div>
@@ -70,7 +70,7 @@ export function ClosuresEditor({ courtId, slug, initialClosures }: Props) {
           />
         </div>
         <Button onClick={handleAdd} disabled={adding || !date} size="sm">
-          <span className="font-mono text-xs uppercase tracking-wider">Add Closure</span>
+          <span className="text-sm font-medium">Add Closure</span>
         </Button>
       </div>
       {error && <p className="text-sm text-destructive">{error}</p>}
@@ -82,7 +82,7 @@ export function ClosuresEditor({ courtId, slug, initialClosures }: Props) {
           {closures.map((closure) => (
             <div key={closure.id} className="flex items-center justify-between rounded border px-3 py-2">
               <div className="flex items-center gap-3">
-                <span className="font-mono text-sm">{closure.date}</span>
+                <span className="text-sm">{closure.date}</span>
                 {closure.reason && (
                   <span className="text-sm text-muted-foreground">{closure.reason}</span>
                 )}

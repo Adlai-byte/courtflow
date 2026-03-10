@@ -68,7 +68,7 @@ export default async function SignupPage({
           <span className="section-label">[ CHECK YOUR EMAIL ]</span>
         </div>
         <Mail className="h-12 w-12 text-primary" />
-        <h1 className="mt-4 text-2xl font-bold tracking-tight">Check your email</h1>
+        <h1 className="font-heading mt-4 text-2xl font-bold tracking-tight">Check your email</h1>
         <p className="mt-2 text-sm text-muted-foreground max-w-sm">
           We&apos;ve sent you a confirmation link. Click the link in your email to activate your account.
         </p>
@@ -90,7 +90,7 @@ export default async function SignupPage({
       </div>
 
       {/* Heading */}
-      <h1 className="text-3xl font-bold tracking-tight">Get started</h1>
+      <h1 className="font-heading text-3xl font-bold tracking-tight">Get started</h1>
       <p className="mt-2 text-sm text-muted-foreground">
         Create your CourtFLOW account
       </p>

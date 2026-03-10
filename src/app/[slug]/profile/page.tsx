@@ -37,7 +37,7 @@ export default async function ProfilePage({
   return (
     <div className="space-y-6">
       <span className="section-label block">[ PROFILE ]</span>
-      <h1 className="text-2xl font-bold tracking-tight">Profile</h1>
+      <h1 className="font-heading text-2xl font-bold tracking-tight">Profile</h1>
 
       <Card className="max-w-2xl">
         <CardHeader>
@@ -51,7 +51,7 @@ export default async function ProfilePage({
             fullName={profile?.full_name || null}
           />
           <div className="mb-4 rounded-lg bg-muted/50 px-4 py-3">
-            <p className="font-mono text-xs uppercase tracking-wider text-muted-foreground">Email</p>
+            <p className="text-sm font-medium text-muted-foreground">Email</p>
             <p className="mt-1 text-sm">{user.email}</p>
           </div>
           <form action={handleUpdate} className="space-y-4">
@@ -64,7 +64,7 @@ export default async function ProfilePage({
               <Input id="phone" name="phone" type="tel" defaultValue={profile?.phone || ''} placeholder="+1 (555) 000-0000" />
             </div>
             <Button type="submit">
-              <span className="font-mono text-xs uppercase tracking-wider">Save Changes</span>
+              <span className="text-sm font-medium">Save Changes</span>
             </Button>
           </form>
         </CardContent>

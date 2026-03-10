@@ -62,7 +62,7 @@ export default async function CourtInfoPage({
     <div className="mx-auto max-w-2xl space-y-6">
       <Link
         href={`/${slug}`}
-        className="inline-flex items-center gap-1 font-mono text-xs text-muted-foreground hover:text-foreground transition-colors"
+        className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
       >
         <ArrowLeft className="h-3 w-3" />
         Back to {tenant.name}
@@ -81,12 +81,12 @@ export default async function CourtInfoPage({
       )}
 
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">{typedCourt.name}</h1>
+        <h1 className="font-heading text-2xl font-bold tracking-tight">{typedCourt.name}</h1>
         <div className="mt-2 flex items-center gap-2">
-          <span className="inline-flex rounded border border-border px-2 py-0.5 font-mono text-xs text-muted-foreground">
+          <span className="inline-flex rounded border border-border px-2 py-0.5 text-xs text-muted-foreground">
             {typedCourt.sport_type}
           </span>
-          <span className="inline-flex rounded border border-border px-2 py-0.5 font-mono text-xs text-muted-foreground">
+          <span className="inline-flex rounded border border-border px-2 py-0.5 text-xs text-muted-foreground">
             {typedCourt.booking_mode === 'fixed_slot'
               ? `${typedCourt.slot_duration_minutes}min slots`
               : `${typedCourt.min_duration_minutes}-${typedCourt.max_duration_minutes}min`}
@@ -111,7 +111,7 @@ export default async function CourtInfoPage({
             return (
               <div
                 key={key}
-                className={`flex items-center justify-between px-4 py-2 font-mono text-sm ${
+                className={`flex items-center justify-between px-4 py-2 text-sm ${
                   idx < dayKeys.length - 1 ? 'border-b border-border' : ''
                 }`}
               >
@@ -128,7 +128,7 @@ export default async function CourtInfoPage({
       </div>
 
       <Link href={`/${slug}`}>
-        <Button className="w-full font-mono text-xs uppercase tracking-wider">
+        <Button className="w-full text-sm font-medium">
           <CalendarDays className="mr-2 h-4 w-4" />
           View Schedule & Book
         </Button>

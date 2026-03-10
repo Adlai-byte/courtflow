@@ -104,7 +104,7 @@ export function PartnerForm({ partner }: PartnerFormProps) {
         <form action={handleSubmit} className="space-y-6">
           {/* Logo upload */}
           <div className="space-y-2">
-            <Label className="font-mono text-xs uppercase tracking-wider">Logo</Label>
+            <Label className="text-sm font-medium">Logo</Label>
             {logoUrl ? (
               <div className="relative inline-block">
                 <div className="flex h-24 w-48 items-center justify-center rounded-md border border-border bg-muted/30 p-3">
@@ -140,7 +140,7 @@ export function PartnerForm({ partner }: PartnerFormProps) {
                   ) : (
                     <ImagePlus className="h-5 w-5" />
                   )}
-                  <span className="font-mono text-xs">
+                  <span className="text-xs">
                     {uploading ? 'Uploading...' : 'Upload Logo'}
                   </span>
                 </div>
@@ -159,7 +159,7 @@ export function PartnerForm({ partner }: PartnerFormProps) {
           {/* Fields */}
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
-              <Label htmlFor="name" className="font-mono text-xs uppercase tracking-wider">
+              <Label htmlFor="name" className="text-sm font-medium">
                 Partner Name
               </Label>
               <Input
@@ -171,7 +171,7 @@ export function PartnerForm({ partner }: PartnerFormProps) {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="sort_order" className="font-mono text-xs uppercase tracking-wider">
+              <Label htmlFor="sort_order" className="text-sm font-medium">
                 Sort Order
               </Label>
               <Input
@@ -185,7 +185,7 @@ export function PartnerForm({ partner }: PartnerFormProps) {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="website_url" className="font-mono text-xs uppercase tracking-wider">
+            <Label htmlFor="website_url" className="text-sm font-medium">
               Website URL
             </Label>
             <Input
@@ -203,13 +203,13 @@ export function PartnerForm({ partner }: PartnerFormProps) {
               checked={isActive}
               onCheckedChange={setIsActive}
             />
-            <Label htmlFor="is_active" className="font-mono text-xs uppercase tracking-wider cursor-pointer">
+            <Label htmlFor="is_active" className="text-sm font-medium cursor-pointer">
               Active (visible on landing page)
             </Label>
           </div>
 
           {message && (
-            <p className={`font-mono text-xs ${message.type === 'error' ? 'text-destructive' : 'text-green'}`}>
+            <p className={`text-xs ${message.type === 'error' ? 'text-destructive' : 'text-green'}`}>
               {message.text}
             </p>
           )}

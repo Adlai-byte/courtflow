@@ -41,7 +41,7 @@ export default function ResetPasswordPage() {
       </div>
 
       {/* Heading */}
-      <h1 className="text-3xl font-bold tracking-tight">Set new password</h1>
+      <h1 className="font-heading text-3xl font-bold tracking-tight">Set new password</h1>
       <p className="mt-2 text-sm text-muted-foreground">
         Enter your new password below.
       </p>

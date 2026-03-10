@@ -54,7 +54,7 @@ export default async function DashboardPage({
             <Card key={stat.label}>
               <CardContent className="p-4 md:p-6">
                 <div className="flex items-center justify-between">
-                  <span className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
+                  <span className="text-sm font-medium text-muted-foreground">
                     {stat.label}
                   </span>
                   <stat.icon className={cn('h-4 w-4', stat.color)} />
@@ -138,11 +138,11 @@ export default async function DashboardPage({
                   <table className="w-full">
                     <thead>
                       <tr className="border-b text-left">
-                        <th className="p-4 font-mono text-xs uppercase tracking-wider text-muted-foreground font-medium">Customer</th>
-                        <th className="p-4 font-mono text-xs uppercase tracking-wider text-muted-foreground font-medium">Court</th>
-                        <th className="p-4 font-mono text-xs uppercase tracking-wider text-muted-foreground font-medium">Date</th>
-                        <th className="p-4 font-mono text-xs uppercase tracking-wider text-muted-foreground font-medium">Time</th>
-                        <th className="p-4 font-mono text-xs uppercase tracking-wider text-muted-foreground font-medium">Status</th>
+                        <th className="p-4 text-sm font-medium text-muted-foreground font-medium">Customer</th>
+                        <th className="p-4 text-sm font-medium text-muted-foreground font-medium">Court</th>
+                        <th className="p-4 text-sm font-medium text-muted-foreground font-medium">Date</th>
+                        <th className="p-4 text-sm font-medium text-muted-foreground font-medium">Time</th>
+                        <th className="p-4 text-sm font-medium text-muted-foreground font-medium">Status</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -150,8 +150,8 @@ export default async function DashboardPage({
                         <tr key={booking.id} className={i % 2 === 1 ? 'bg-muted/30' : ''}>
                           <td className="p-4 text-sm">{booking.profiles?.full_name || 'Unknown'}</td>
                           <td className="p-4 text-sm">{booking.courts?.name}</td>
-                          <td className="p-4 font-mono text-sm">{formatDate(booking.date)}</td>
-                          <td className="p-4 font-mono text-sm">{toSlotLabel(booking.start_time, booking.end_time)}</td>
+                          <td className="p-4 text-sm">{formatDate(booking.date)}</td>
+                          <td className="p-4 text-sm">{toSlotLabel(booking.start_time, booking.end_time)}</td>
                           <td className="p-4">
                             <span className={`inline-flex rounded-full border px-2.5 py-0.5 text-xs font-medium ${statusColors[booking.status] || ''}`}>
                               {booking.status}
@@ -172,7 +172,7 @@ export default async function DashboardPage({
                         </span>
                       </div>
                       <p className="text-xs text-muted-foreground">{booking.courts?.name}</p>
-                      <p className="font-mono text-xs text-muted-foreground">{formatDate(booking.date)} · {toSlotLabel(booking.start_time, booking.end_time)}</p>
+                      <p className="text-xs text-muted-foreground">{formatDate(booking.date)} · {toSlotLabel(booking.start_time, booking.end_time)}</p>
                     </div>
                   ))}
                 </div>

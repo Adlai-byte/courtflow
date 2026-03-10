@@ -60,7 +60,7 @@ export function CourtFilters({
             placeholder="Search courts..."
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
-            className="pl-9 font-mono text-sm"
+            className="pl-9 text-sm"
           />
         </div>
         <div className="flex flex-wrap gap-1">
@@ -68,7 +68,7 @@ export function CourtFilters({
             <button
               key={opt.value}
               onClick={() => onSportChange(opt.value)}
-              className={`rounded-md border px-2.5 py-1 font-mono text-xs transition-colors ${
+              className={`rounded-md border px-2.5 py-1 text-xs transition-colors ${
                 sportFilter === opt.value
                   ? 'border-primary bg-primary text-primary-foreground'
                   : 'border-border bg-background text-muted-foreground hover:border-primary/30 hover:text-foreground'
@@ -86,7 +86,7 @@ export function CourtFilters({
           <button
             key={opt.value}
             onClick={() => onVenueChange(venueFilter === opt.value ? '' : opt.value)}
-            className={`rounded-md border px-2 py-0.5 font-mono text-xs transition-colors ${
+            className={`rounded-md border px-2 py-0.5 text-xs transition-colors ${
               venueFilter === opt.value
                 ? 'border-primary/50 bg-primary/10 text-primary'
                 : 'border-border text-muted-foreground hover:border-primary/20 hover:text-foreground'
@@ -100,7 +100,7 @@ export function CourtFilters({
           <button
             key={opt.value}
             onClick={() => onFeatureToggle(opt.value)}
-            className={`rounded-md border px-2 py-0.5 font-mono text-xs transition-colors ${
+            className={`rounded-md border px-2 py-0.5 text-xs transition-colors ${
               featureFilters.includes(opt.value)
                 ? 'border-primary/50 bg-primary/10 text-primary'
                 : 'border-border text-muted-foreground hover:border-primary/20 hover:text-foreground'

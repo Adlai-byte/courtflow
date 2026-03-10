@@ -38,7 +38,7 @@ export default async function CourtDetailPage({
     <div className="space-y-6">
       <div>
         <span className="section-label block">[ COURT SETTINGS ]</span>
-        <h1 className="mt-2 text-2xl font-bold tracking-tight">{typedCourt.name}</h1>
+        <h1 className="font-heading mt-2 text-2xl font-bold tracking-tight">{typedCourt.name}</h1>
         <p className="mt-1 text-sm text-muted-foreground">
           {typedCourt.sport_type} · {typedCourt.booking_mode === 'fixed_slot' ? `${typedCourt.slot_duration_minutes}min slots` : 'Flexible duration'}
         </p>
@@ -46,7 +46,7 @@ export default async function CourtDetailPage({
 
       <Card>
         <CardContent className="p-4 md:p-6">
-          <span className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
+          <span className="text-sm font-medium text-muted-foreground">
             Operating Hours
           </span>
           <div className="mt-4">
@@ -61,7 +61,7 @@ export default async function CourtDetailPage({
 
       <Card>
         <CardContent className="p-4 md:p-6">
-          <span className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
+          <span className="text-sm font-medium text-muted-foreground">
             Closure Dates
           </span>
           <div className="mt-4">

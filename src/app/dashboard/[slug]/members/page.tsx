@@ -32,7 +32,7 @@ export default async function MembersPage({
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold tracking-tight">Members</h1>
+      <h1 className="font-heading text-3xl font-bold tracking-tight">Members</h1>
 
       <Card>
         <CardContent className="p-0">

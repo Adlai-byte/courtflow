@@ -75,7 +75,7 @@ export function ScheduleGridWrapper({
 
         {/* Recurring toggle */}
         <div className="flex items-center gap-3 rounded-lg border border-border bg-muted/30 px-3 py-1.5">
-          <label className="flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-muted-foreground cursor-pointer">
+          <label className="flex items-center gap-2 text-sm font-medium text-muted-foreground cursor-pointer">
             <input
               type="checkbox"
               checked={recurring}
@@ -85,7 +85,7 @@ export function ScheduleGridWrapper({
             Repeat weekly
           </label>
           {recurring && (
-            <label className="flex items-center gap-2 font-mono text-xs text-muted-foreground">
+            <label className="flex items-center gap-2 text-xs text-muted-foreground">
               for
               <input
                 type="number"
@@ -93,7 +93,7 @@ export function ScheduleGridWrapper({
                 max={52}
                 value={totalWeeks}
                 onChange={(e) => setTotalWeeks(Number(e.target.value))}
-                className="w-14 rounded border border-border bg-background px-2 py-0.5 text-center font-mono text-xs"
+                className="w-14 rounded border border-border bg-background px-2 py-0.5 text-center text-xs"
               />
               weeks
             </label>
@@ -113,7 +113,7 @@ export function ScheduleGridWrapper({
       />
 
       {/* Legend */}
-      <div className="flex flex-wrap items-center gap-4 font-mono text-xs text-muted-foreground">
+      <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
         <span className="flex items-center gap-1">
           <div className="h-3 w-3 rounded border border-emerald-400 bg-emerald-50" /> Available
         </span>

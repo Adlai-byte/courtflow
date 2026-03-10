@@ -18,7 +18,7 @@ export default async function AdminPartnersPage() {
       <div className="flex items-start justify-between">
         <div>
           <span className="section-label mb-2 block">[ PARTNERS ]</span>
-          <h1 className="text-2xl font-bold tracking-tight">Partner Logos</h1>
+          <h1 className="font-heading text-2xl font-bold tracking-tight">Partner Logos</h1>
           <p className="mt-1 text-sm text-muted-foreground">
             {partners?.length ?? 0} {(partners?.length ?? 0) === 1 ? 'partner' : 'partners'} — displayed on the landing page carousel
           </p>
@@ -38,7 +38,7 @@ export default async function AdminPartnersPage() {
             <p className="text-sm text-muted-foreground">No partners yet.</p>
             <Link
               href="/admin/partners/new"
-              className="mt-4 font-mono text-xs text-primary transition-colors hover:text-primary/80"
+              className="mt-4 text-xs text-primary transition-colors hover:text-primary/80"
             >
               Add your first partner
             </Link>
@@ -59,7 +59,7 @@ export default async function AdminPartnersPage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <h3 className="text-sm font-medium">{partner.name}</h3>
-                    <p className="font-mono text-xs text-muted-foreground">
+                    <p className="text-xs text-muted-foreground">
                       Order: {partner.sort_order}
                     </p>
                   </div>
@@ -68,7 +68,7 @@ export default async function AdminPartnersPage() {
                 <div className="mt-3 flex items-center gap-3">
                   <Link
                     href={`/admin/partners/${partner.id}`}
-                    className="font-mono text-xs text-primary transition-colors hover:text-primary/80"
+                    className="text-xs text-primary transition-colors hover:text-primary/80"
                   >
                     Edit
                   </Link>
@@ -77,7 +77,7 @@ export default async function AdminPartnersPage() {
                       href={partner.website_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="font-mono text-xs text-muted-foreground transition-colors hover:text-foreground"
+                      className="text-xs text-muted-foreground transition-colors hover:text-foreground"
                     >
                       Website
                     </a>

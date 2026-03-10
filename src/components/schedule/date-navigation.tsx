@@ -26,7 +26,7 @@ export function DateNavigation({ selectedDate, onDateChange }: DateNavigationPro
       </Button>
       <Popover>
         <PopoverTrigger asChild>
-          <Button variant="outline" size="sm" className="min-w-[160px] font-mono text-sm font-medium">
+          <Button variant="outline" size="sm" className="min-w-[160px] text-sm font-medium">
             <CalendarDays className="mr-2 h-4 w-4" />
             {selectedDate.toLocaleDateString('en-US', {
               weekday: 'short',

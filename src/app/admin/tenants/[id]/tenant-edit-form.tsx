@@ -27,7 +27,7 @@ export function TenantEditForm({ tenant }: { tenant: any }) {
     <form action={handleSubmit} className="space-y-4">
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="name" className="font-mono text-xs uppercase tracking-wider">
+          <Label htmlFor="name" className="text-sm font-medium">
             Name
           </Label>
           <Input
@@ -38,7 +38,7 @@ export function TenantEditForm({ tenant }: { tenant: any }) {
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="cancellation_hours" className="font-mono text-xs uppercase tracking-wider">
+          <Label htmlFor="cancellation_hours" className="text-sm font-medium">
             Cancellation Hours
           </Label>
           <Input
@@ -51,7 +51,7 @@ export function TenantEditForm({ tenant }: { tenant: any }) {
         </div>
       </div>
       <div className="space-y-2">
-        <Label htmlFor="description" className="font-mono text-xs uppercase tracking-wider">
+        <Label htmlFor="description" className="text-sm font-medium">
           Description
         </Label>
         <Input
@@ -63,7 +63,7 @@ export function TenantEditForm({ tenant }: { tenant: any }) {
       </div>
 
       {message && (
-        <p className={`font-mono text-xs ${message.type === 'error' ? 'text-destructive' : 'text-green'}`}>
+        <p className={`text-xs ${message.type === 'error' ? 'text-destructive' : 'text-green'}`}>
           {message.text}
         </p>
       )}

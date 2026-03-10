@@ -39,7 +39,7 @@ export function MembershipRequestActions({ requestId, slug }: MembershipRequestA
 
   if (done) {
     return (
-      <span className={`font-mono text-xs ${done === 'approved' ? 'text-green' : 'text-destructive'}`}>
+      <span className={`text-xs ${done === 'approved' ? 'text-green' : 'text-destructive'}`}>
         {done}
       </span>
     )
@@ -52,7 +52,7 @@ export function MembershipRequestActions({ requestId, slug }: MembershipRequestA
         size="sm"
         disabled={processing}
         onClick={handleApprove}
-        className="font-mono text-xs text-green hover:bg-green/10"
+        className="text-xs text-green hover:bg-green/10"
       >
         Approve
       </Button>
@@ -61,7 +61,7 @@ export function MembershipRequestActions({ requestId, slug }: MembershipRequestA
         size="sm"
         disabled={processing}
         onClick={handleReject}
-        className="font-mono text-xs text-destructive hover:bg-destructive/10"
+        className="text-xs text-destructive hover:bg-destructive/10"
       >
         Reject
       </Button>

@@ -46,7 +46,7 @@ export function CancelBookingButton({ bookingId }: { bookingId: string }) {
           </DialogDescription>
         </DialogHeader>
         {error && (
-          <p className="font-mono text-xs text-destructive">{error}</p>
+          <p className="text-xs text-destructive">{error}</p>
         )}
         <DialogFooter>
           <Button variant="outline" onClick={() => setOpen(false)} disabled={isPending}>

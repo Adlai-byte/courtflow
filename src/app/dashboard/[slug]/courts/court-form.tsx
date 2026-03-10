@@ -127,7 +127,7 @@ export function CourtForm({ tenantId, slug, court, onSuccess }: CourtFormProps) 
 
       {/* Amenities */}
       <div className="space-y-3 rounded-lg border border-border p-3">
-        <span className="font-mono text-xs uppercase tracking-wider text-muted-foreground">Amenities</span>
+        <span className="text-sm font-medium text-muted-foreground">Amenities</span>
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label>Venue Type</Label>
@@ -212,7 +212,7 @@ export function CourtForm({ tenantId, slug, court, onSuccess }: CourtFormProps) 
           min="0"
           step="0.01"
           defaultValue={court?.price_per_hour || 0}
-          className="w-40 font-mono"
+          className="w-40"
         />
       </div>
       {court && <input type="hidden" name="is_active" value={String(court.is_active)} />}

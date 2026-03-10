@@ -23,7 +23,7 @@ export default function MarketingError({
           </button>
           <Link
             href="/"
-            className="font-mono text-xs uppercase tracking-wider text-muted-foreground transition-colors hover:text-foreground"
+            className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
           >
             Back to home
           </Link>

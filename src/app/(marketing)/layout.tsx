@@ -80,54 +80,47 @@ export default async function MarketingLayout({
         Skip to main content
       </a>
       {/* Nav */}
-      <header className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
-        <Link href="/" className="font-mono text-sm font-medium tracking-tight">
-          CourtFLOW
+      <header className="sticky top-0 z-50 mx-auto flex h-16 max-w-7xl items-center justify-between px-6 backdrop-blur-sm bg-background/80 transition-colors duration-300">
+        <Link href="/" className="text-base font-bold tracking-tight">
+          Court<span className="text-primary">FLOW</span>
         </Link>
         {/* Desktop nav: customer links for logged-in customers, marketing links otherwise */}
         {user && !isOwner && !isAdmin ? (
           <nav className="hidden items-center gap-6 lg:flex">
-            <ActiveNavLink href="/explore" className="flex items-center gap-1.5 font-mono text-xs uppercase tracking-wider text-muted-foreground transition-colors hover:text-foreground">
+            <ActiveNavLink href="/explore" className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
               <CalendarDays className="h-3.5 w-3.5" />
               Book Courts
             </ActiveNavLink>
-            <ActiveNavLink href={customerSlug ? `/${customerSlug}/my-bookings` : '/explore'} className="flex items-center gap-1.5 font-mono text-xs uppercase tracking-wider text-muted-foreground transition-colors hover:text-foreground">
+            <ActiveNavLink href={customerSlug ? `/${customerSlug}/my-bookings` : '/explore'} className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
               <BookOpen className="h-3.5 w-3.5" />
               My Bookings
             </ActiveNavLink>
-            <ActiveNavLink href={customerSlug ? `/${customerSlug}/my-membership` : '/explore'} className="flex items-center gap-1.5 font-mono text-xs uppercase tracking-wider text-muted-foreground transition-colors hover:text-foreground">
+            <ActiveNavLink href={customerSlug ? `/${customerSlug}/my-membership` : '/explore'} className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
               <CreditCard className="h-3.5 w-3.5" />
               My Membership
             </ActiveNavLink>
-            <ActiveNavLink href={customerSlug ? `/${customerSlug}/my-waitlist` : '/explore'} className="flex items-center gap-1.5 font-mono text-xs uppercase tracking-wider text-muted-foreground transition-colors hover:text-foreground">
+            <ActiveNavLink href={customerSlug ? `/${customerSlug}/my-waitlist` : '/explore'} className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
               <Clock className="h-3.5 w-3.5" />
               My Waitlist
             </ActiveNavLink>
-            <ActiveNavLink href={customerSlug ? `/${customerSlug}/profile` : '/explore'} className="flex items-center gap-1.5 font-mono text-xs uppercase tracking-wider text-muted-foreground transition-colors hover:text-foreground">
+            <ActiveNavLink href={customerSlug ? `/${customerSlug}/profile` : '/explore'} className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
               <User className="h-3.5 w-3.5" />
               Profile
             </ActiveNavLink>
           </nav>
         ) : (
           <nav className="hidden items-center gap-8 lg:flex">
-            <ActiveNavLink href="#features" className="font-mono text-xs uppercase tracking-wider text-muted-foreground transition-colors hover:text-foreground">
-              Features
-            </ActiveNavLink>
-            <ActiveNavLink href="/explore" className="font-mono text-xs uppercase tracking-wider text-muted-foreground transition-colors hover:text-foreground">
-              Explore
-            </ActiveNavLink>
-            <ActiveNavLink href="#how-it-works" className="font-mono text-xs uppercase tracking-wider text-muted-foreground transition-colors hover:text-foreground">
-              How it works
-            </ActiveNavLink>
+            <ActiveNavLink href="#features" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">Features</ActiveNavLink>
+            <ActiveNavLink href="/explore" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">Explore</ActiveNavLink>
+            <ActiveNavLink href="#how-it-works" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">How it works</ActiveNavLink>
+            <ActiveNavLink href="#faq" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">FAQ</ActiveNavLink>
           </nav>
         )}
         <div className="flex items-center gap-4">
           <MobileMarketingNav isLoggedIn={!!user} isOwner={isOwner} isAdmin={isAdmin} dashboardHref={dashboardHref} customerSlug={customerSlug} signOutAction={user ? signOut : undefined} />
           {!user ? (
             <>
-              <Link href="/login" className="hidden font-mono text-xs uppercase tracking-wider text-muted-foreground transition-colors hover:text-foreground lg:inline">
-                Sign in
-              </Link>
+              <Link href="/login" className="btn-ghost hidden px-4 py-2 text-sm lg:inline-flex">Sign in</Link>
               <Link
                 href="/signup"
                 className="btn-primary hidden px-5 py-2.5 text-xs lg:flex"
@@ -145,7 +138,7 @@ export default async function MarketingLayout({
               <form action={signOut}>
                 <button
                   type="submit"
-                  className="hidden items-center gap-1.5 font-mono text-xs uppercase tracking-wider text-muted-foreground transition-colors hover:text-destructive lg:flex"
+                  className="hidden items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-destructive lg:flex"
                 >
                   <LogOut className="h-3.5 w-3.5" />
                   Sign out

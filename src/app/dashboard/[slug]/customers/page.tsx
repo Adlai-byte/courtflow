@@ -78,7 +78,7 @@ export default async function CustomersPage({
   return (
     <div className="space-y-6">
       <span className="section-label block">[ CUSTOMERS ]</span>
-      <h1 className="text-2xl font-bold tracking-tight">Customers</h1>
+      <h1 className="font-heading text-2xl font-bold tracking-tight">Customers</h1>
 
       {/* Search */}
       <form className="max-w-sm">
@@ -89,7 +89,7 @@ export default async function CustomersPage({
             type="text"
             placeholder="Search by name or phone..."
             defaultValue={searchQuery}
-            className="h-9 w-full rounded-md border border-input bg-background pl-9 pr-3 font-mono text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+            className="h-9 w-full rounded-md border border-input bg-background pl-9 pr-3 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
           />
         </div>
       </form>
@@ -108,10 +108,10 @@ export default async function CustomersPage({
                 <table className="w-full">
                   <thead>
                     <tr className="border-b text-left">
-                      <th className="p-4 font-mono text-xs uppercase tracking-wider text-muted-foreground font-medium">Name</th>
-                      <th className="p-4 font-mono text-xs uppercase tracking-wider text-muted-foreground font-medium">Phone</th>
-                      <th className="p-4 font-mono text-xs uppercase tracking-wider text-muted-foreground font-medium">Bookings</th>
-                      <th className="p-4 font-mono text-xs uppercase tracking-wider text-muted-foreground font-medium">Tier</th>
+                      <th className="p-4 text-sm font-medium text-muted-foreground font-medium">Name</th>
+                      <th className="p-4 text-sm font-medium text-muted-foreground font-medium">Phone</th>
+                      <th className="p-4 text-sm font-medium text-muted-foreground font-medium">Bookings</th>
+                      <th className="p-4 text-sm font-medium text-muted-foreground font-medium">Tier</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -122,8 +122,8 @@ export default async function CustomersPage({
                             {customer.full_name || 'Unknown'}
                           </Link>
                         </td>
-                        <td className="p-4 font-mono text-sm text-muted-foreground">{customer.phone || '—'}</td>
-                        <td className="p-4 font-mono text-sm">{customer.total_bookings}</td>
+                        <td className="p-4 text-sm text-muted-foreground">{customer.phone || '—'}</td>
+                        <td className="p-4 text-sm">{customer.total_bookings}</td>
                         <td className="p-4">
                           {tierMap.has(customer.id) ? (
                             <span className="inline-flex rounded-full border border-green/20 bg-green/10 px-2.5 py-0.5 text-xs font-medium text-green">
@@ -144,9 +144,9 @@ export default async function CustomersPage({
                     <div className="rounded-lg border bg-card p-3 space-y-1 transition-colors hover:bg-muted/30">
                       <div className="flex items-center justify-between">
                         <span className="text-sm font-medium">{customer.full_name || 'Unknown'}</span>
-                        <span className="font-mono text-xs text-muted-foreground">{customer.total_bookings} bookings</span>
+                        <span className="text-xs text-muted-foreground">{customer.total_bookings} bookings</span>
                       </div>
-                      <p className="font-mono text-xs text-muted-foreground">{customer.phone || 'No phone'}</p>
+                      <p className="text-xs text-muted-foreground">{customer.phone || 'No phone'}</p>
                       {tierMap.has(customer.id) && (
                         <span className="inline-flex rounded-full border border-green/20 bg-green/10 px-2 py-0.5 text-xs font-medium text-green">
                           {tierMap.get(customer.id)}

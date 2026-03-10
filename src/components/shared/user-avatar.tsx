@@ -36,7 +36,7 @@ export function UserAvatar({ avatarUrl, fullName, size = 'default', className }:
   return (
     <Avatar className={cn(sizeClasses[size], className)}>
       {avatarUrl && <AvatarImage src={avatarUrl} alt={fullName || 'User'} />}
-      <AvatarFallback className={cn('bg-primary/10 text-primary font-mono', textClasses[size])}>
+      <AvatarFallback className={cn('bg-primary/10 text-primary', textClasses[size])}>
         {getInitials(fullName)}
       </AvatarFallback>
     </Avatar>

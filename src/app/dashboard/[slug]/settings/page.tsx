@@ -30,7 +30,7 @@ export default async function SettingsPage({
   return (
     <div className="space-y-6">
       <span className="section-label mb-2 block">[ SETTINGS ]</span>
-      <h1 className="text-2xl font-bold tracking-tight">Settings</h1>
+      <h1 className="font-heading text-2xl font-bold tracking-tight">Settings</h1>
 
       {sp.success && (
         <div className="rounded-md bg-green/10 px-4 py-3 text-sm text-green">
@@ -93,7 +93,7 @@ export default async function SettingsPage({
                 min="0"
                 max="168"
                 defaultValue={tenant.cancellation_hours ?? 24}
-                className="w-32 font-mono"
+                className="w-32"
               />
             </div>
             <div className="flex items-center justify-between rounded-lg border p-4">
@@ -133,7 +133,7 @@ export default async function SettingsPage({
           </CardContent>
         </Card>
 
-        <SubmitButton pendingText="Saving..."><span className="font-mono text-xs uppercase tracking-wider">Save Changes</span></SubmitButton>
+        <SubmitButton pendingText="Saving..."><span className="text-sm font-medium">Save Changes</span></SubmitButton>
       </form>
     </div>
   )

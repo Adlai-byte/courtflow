@@ -46,7 +46,7 @@ export default async function ExplorePage() {
     <main className="mx-auto max-w-7xl px-6 py-16">
       <Link
         href="/"
-        className="group mb-8 inline-flex items-center gap-1.5 font-mono text-xs text-muted-foreground transition-colors hover:text-foreground"
+        className="group mb-8 inline-flex items-center gap-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground"
       >
         <ArrowLeft className="h-3.5 w-3.5 transition-transform group-hover:-translate-x-0.5" />
         Back to home
@@ -54,7 +54,7 @@ export default async function ExplorePage() {
       <div className="mb-12">
         <span className="section-label">[ EXPLORE ]</span>
       </div>
-      <h1 className="mb-4 text-3xl font-bold tracking-tight sm:text-4xl">
+      <h1 className="font-heading mb-4 text-3xl font-bold tracking-tight sm:text-4xl">
         Browse Facilities
       </h1>
       <p className="mb-10 max-w-xl text-muted-foreground">

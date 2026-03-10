@@ -67,21 +67,21 @@ export function OperatingHoursEditor({ courtId, slug, initialHours }: Props) {
         return (
           <div key={key} className="flex items-center gap-4">
             <Switch checked={enabled} onCheckedChange={() => toggleDay(key)} />
-            <span className="w-24 font-mono text-sm">{label}</span>
+            <span className="w-24 text-sm">{label}</span>
             {enabled ? (
               <div className="flex items-center gap-2">
                 <Input
                   type="time"
                   value={hours[key].open}
                   onChange={(e) => updateTime(key, 'open', e.target.value)}
-                  className="w-32 font-mono text-sm"
+                  className="w-32 text-sm"
                 />
                 <span className="text-xs text-muted-foreground">to</span>
                 <Input
                   type="time"
                   value={hours[key].close}
                   onChange={(e) => updateTime(key, 'close', e.target.value)}
-                  className="w-32 font-mono text-sm"
+                  className="w-32 text-sm"
                 />
               </div>
             ) : (
@@ -92,7 +92,7 @@ export function OperatingHoursEditor({ courtId, slug, initialHours }: Props) {
       })}
       <div className="flex items-center gap-3 pt-2">
         <Button onClick={handleSave} disabled={saving} size="sm">
-          <span className="font-mono text-xs uppercase tracking-wider">
+          <span className="text-sm font-medium">
             {saving ? 'Saving...' : 'Save Hours'}
           </span>
         </Button>

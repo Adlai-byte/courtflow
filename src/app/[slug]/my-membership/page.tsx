@@ -54,7 +54,7 @@ export default async function MyMembershipPage({
   return (
     <div className="space-y-6">
       <span className="section-label block">[ MY MEMBERSHIP ]</span>
-      <h1 className="text-2xl font-bold tracking-tight">My Membership</h1>
+      <h1 className="font-heading text-2xl font-bold tracking-tight">My Membership</h1>
 
       {/* Active Subscriptions */}
       {activeSubscriptions.length > 0 && (
@@ -66,7 +66,7 @@ export default async function MyMembershipPage({
                 <div className="flex items-center justify-between">
                   <div>
                     <h3 className="font-medium">{tier?.name}</h3>
-                    <p className="font-mono text-lg font-bold text-primary">
+                    <p className="text-lg font-bold text-primary">
                       {tier?.price > 0 ? `₱${tier.price}` : 'Free'}
                     </p>
                   </div>
@@ -76,14 +76,14 @@ export default async function MyMembershipPage({
                 </div>
                 {tier?.perks && (
                   <ul className="space-y-1">
-                    {tier.perks.priority_booking && <li className="font-mono text-xs text-muted-foreground">+ Priority booking</li>}
-                    {tier.perks.discount_pct > 0 && <li className="font-mono text-xs text-muted-foreground">+ {tier.perks.discount_pct}% discount</li>}
-                    {tier.perks.free_hours > 0 && <li className="font-mono text-xs text-muted-foreground">+ {tier.perks.free_hours} free hours/month</li>}
-                    {tier.perks.waitlist_priority && <li className="font-mono text-xs text-muted-foreground">+ Waitlist priority</li>}
+                    {tier.perks.priority_booking && <li className="text-xs text-muted-foreground">+ Priority booking</li>}
+                    {tier.perks.discount_pct > 0 && <li className="text-xs text-muted-foreground">+ {tier.perks.discount_pct}% discount</li>}
+                    {tier.perks.free_hours > 0 && <li className="text-xs text-muted-foreground">+ {tier.perks.free_hours} free hours/month</li>}
+                    {tier.perks.waitlist_priority && <li className="text-xs text-muted-foreground">+ Waitlist priority</li>}
                   </ul>
                 )}
                 {sub.free_hours_remaining > 0 && (
-                  <p className="font-mono text-xs text-primary">
+                  <p className="text-xs text-primary">
                     {sub.free_hours_remaining} free hours remaining
                   </p>
                 )}
@@ -103,9 +103,9 @@ export default async function MyMembershipPage({
               <table className="w-full">
                 <thead>
                   <tr className="border-b text-left">
-                    <th className="p-4 font-mono text-xs uppercase tracking-wider text-muted-foreground font-medium">Tier</th>
-                    <th className="p-4 font-mono text-xs uppercase tracking-wider text-muted-foreground font-medium">Status</th>
-                    <th className="p-4 font-mono text-xs uppercase tracking-wider text-muted-foreground font-medium">Date</th>
+                    <th className="p-4 text-sm font-medium text-muted-foreground font-medium">Tier</th>
+                    <th className="p-4 text-sm font-medium text-muted-foreground font-medium">Status</th>
+                    <th className="p-4 text-sm font-medium text-muted-foreground font-medium">Date</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -117,7 +117,7 @@ export default async function MyMembershipPage({
                           {req.status}
                         </span>
                       </td>
-                      <td className="p-4 font-mono text-sm">{req.created_at?.split('T')[0]}</td>
+                      <td className="p-4 text-sm">{req.created_at?.split('T')[0]}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -132,7 +132,7 @@ export default async function MyMembershipPage({
                       {req.status}
                     </span>
                   </div>
-                  <p className="font-mono text-xs text-muted-foreground">{req.created_at?.split('T')[0]}</p>
+                  <p className="text-xs text-muted-foreground">{req.created_at?.split('T')[0]}</p>
                 </div>
               ))}
             </div>
@@ -149,9 +149,9 @@ export default async function MyMembershipPage({
               <table className="w-full">
                 <thead>
                   <tr className="border-b text-left">
-                    <th className="p-4 font-mono text-xs uppercase tracking-wider text-muted-foreground font-medium">Tier</th>
-                    <th className="p-4 font-mono text-xs uppercase tracking-wider text-muted-foreground font-medium">Status</th>
-                    <th className="p-4 font-mono text-xs uppercase tracking-wider text-muted-foreground font-medium">Started</th>
+                    <th className="p-4 text-sm font-medium text-muted-foreground font-medium">Tier</th>
+                    <th className="p-4 text-sm font-medium text-muted-foreground font-medium">Status</th>
+                    <th className="p-4 text-sm font-medium text-muted-foreground font-medium">Started</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -163,7 +163,7 @@ export default async function MyMembershipPage({
                           {sub.status}
                         </span>
                       </td>
-                      <td className="p-4 font-mono text-sm">{sub.start_date}</td>
+                      <td className="p-4 text-sm">{sub.start_date}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -178,7 +178,7 @@ export default async function MyMembershipPage({
                       {sub.status}
                     </span>
                   </div>
-                  <p className="font-mono text-xs text-muted-foreground">Started {sub.start_date}</p>
+                  <p className="text-xs text-muted-foreground">Started {sub.start_date}</p>
                 </div>
               ))}
             </div>
@@ -191,7 +191,7 @@ export default async function MyMembershipPage({
         <div className="flex flex-col items-center justify-center rounded-lg border border-border bg-card py-12">
           <p className="text-sm text-muted-foreground">You don&apos;t have any memberships yet.</p>
           <Link href={`/${slug}`} className="mt-3">
-            <Button variant="outline" size="sm" className="font-mono text-xs">
+            <Button variant="outline" size="sm" className="text-xs">
               Browse Plans
             </Button>
           </Link>

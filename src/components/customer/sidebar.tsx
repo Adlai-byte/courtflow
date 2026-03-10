@@ -49,7 +49,7 @@ function NavContent({ slug, pathname, isAuthenticated, signOutAction, onNavigate
         <Link
           href="/explore"
           onClick={onNavigate}
-          className="flex items-center gap-3 rounded-lg border border-primary/20 bg-primary/5 px-3 py-2 font-mono text-xs uppercase tracking-wider text-primary transition-colors hover:bg-primary/10"
+          className="flex items-center gap-3 rounded-lg border border-primary/20 bg-primary/5 px-3 py-2 text-sm font-medium text-primary transition-colors hover:bg-primary/10"
         >
           <Compass className="h-4 w-4" />
           Explore Facilities
@@ -67,7 +67,7 @@ function NavContent({ slug, pathname, isAuthenticated, signOutAction, onNavigate
               href={href}
               onClick={onNavigate}
               className={cn(
-                'flex items-center gap-3 rounded-lg px-3 py-2 font-mono text-xs uppercase tracking-wider transition-colors',
+                'flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
                 isActive
                   ? 'bg-primary/10 text-primary font-medium'
                   : 'text-muted-foreground hover:bg-accent hover:text-foreground'
@@ -83,7 +83,7 @@ function NavContent({ slug, pathname, isAuthenticated, signOutAction, onNavigate
       {!isAuthenticated && (
         <div className="border-t border-border p-3">
           <Link href={`/login?redirect=/${slug}`} onClick={onNavigate}>
-            <Button className="w-full font-mono text-xs uppercase tracking-wider" size="sm">
+            <Button className="w-full text-sm font-medium" size="sm">
               Sign In
             </Button>
           </Link>
@@ -96,7 +96,7 @@ function NavContent({ slug, pathname, isAuthenticated, signOutAction, onNavigate
             <button
               type="submit"
               onClick={onNavigate}
-              className="flex w-full items-center gap-3 rounded-lg px-3 py-2 font-mono text-xs uppercase tracking-wider text-destructive transition-colors hover:bg-accent"
+              className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-destructive transition-colors hover:bg-accent"
             >
               <LogOut className="h-4 w-4" />
               Sign Out
@@ -121,7 +121,7 @@ export function CustomerSidebar({ slug, tenantName, isAuthenticated, signOutActi
   return (
     <aside className="hidden h-full w-64 flex-col border-r bg-card md:flex">
       <div className="flex h-14 items-center border-b px-4">
-        <Link href={`/${slug}`} className="font-mono text-sm font-medium tracking-tight">
+        <Link href={`/${slug}`} className="text-sm font-medium tracking-tight">
           {tenantName}
         </Link>
       </div>
@@ -148,7 +148,7 @@ export function CustomerMobileSidebar({ slug, tenantName, isAuthenticated, signO
       </SheetTrigger>
       <SheetContent side="left" className="w-64 p-0" aria-describedby={undefined}>
         <SheetHeader className="flex h-14 flex-row items-center border-b px-4 space-y-0">
-          <SheetTitle className="font-mono text-sm font-medium tracking-tight">
+          <SheetTitle className="text-sm font-medium tracking-tight">
             {tenantName}
           </SheetTitle>
         </SheetHeader>

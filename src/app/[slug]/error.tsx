@@ -26,7 +26,7 @@ export default function TenantError({
           </button>
           <Link
             href={`/${params.slug}`}
-            className="font-mono text-xs uppercase tracking-wider text-muted-foreground transition-colors hover:text-foreground"
+            className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
           >
             Back to facility
           </Link>

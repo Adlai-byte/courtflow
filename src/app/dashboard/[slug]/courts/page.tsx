@@ -29,11 +29,11 @@ export default async function CourtsPage({
       <div className="flex items-center justify-between">
         <div>
           <span className="section-label mb-2 block">[ COURTS ]</span>
-          <h1 className="text-2xl font-bold tracking-tight">Courts</h1>
+          <h1 className="font-heading text-2xl font-bold tracking-tight">Courts</h1>
         </div>
         <Dialog>
           <DialogTrigger asChild>
-            <Button className="font-mono text-xs uppercase tracking-wider">
+            <Button className="text-sm font-medium">
               <Plus className="mr-2 h-4 w-4" />
               Add Court
             </Button>
@@ -68,8 +68,8 @@ export default async function CourtsPage({
                 </CardHeader>
                 <CardContent className="pt-0">
                   <div className="flex items-center gap-2 text-xs">
-                    <Badge variant="outline" className="font-mono text-xs">{court.sport_type}</Badge>
-                    <Badge variant="outline" className="font-mono text-xs">
+                    <Badge variant="outline" className="text-xs">{court.sport_type}</Badge>
+                    <Badge variant="outline" className="text-xs">
                       {court.booking_mode === 'fixed_slot'
                         ? `${court.slot_duration_minutes}min`
                         : `${court.min_duration_minutes}-${court.max_duration_minutes}min`}

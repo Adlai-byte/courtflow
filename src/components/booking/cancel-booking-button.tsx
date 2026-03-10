@@ -42,7 +42,7 @@ export function CancelBookingButton({ bookingId, slug, bookingDate, bookingStart
         size="sm"
         disabled={isPastDeadline || cancelling}
         onClick={handleCancel}
-        className="font-mono text-xs text-destructive hover:text-destructive"
+        className="text-xs text-destructive hover:text-destructive"
         title={isPastDeadline ? `Cancellation deadline passed (${cancellationHours}h before start)` : undefined}
       >
         {cancelling ? 'Cancelling...' : 'Cancel'}

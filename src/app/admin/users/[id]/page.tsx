@@ -66,7 +66,7 @@ export default async function AdminUserDetailPage({
       <div>
         <Link
           href="/admin/users"
-          className="mb-4 inline-flex items-center gap-1 font-mono text-xs text-muted-foreground transition-colors hover:text-foreground"
+          className="mb-4 inline-flex items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
         >
           <ArrowLeft className="h-3 w-3" /> Back to Users
         </Link>
@@ -75,8 +75,8 @@ export default async function AdminUserDetailPage({
             <UserAvatar avatarUrl={profile.avatar_url} fullName={profile.full_name} size="xl" />
             <div>
               <span className="section-label mb-2 block">[ USER DETAIL ]</span>
-              <h1 className="text-2xl font-bold tracking-tight">{profile.full_name ?? 'Unnamed User'}</h1>
-              <p className="mt-1 font-mono text-sm text-muted-foreground">
+              <h1 className="font-heading text-2xl font-bold tracking-tight">{profile.full_name ?? 'Unnamed User'}</h1>
+              <p className="mt-1 text-sm text-muted-foreground">
                 {email} &middot; Joined {new Date(profile.created_at).toLocaleDateString()}
               </p>
             </div>
@@ -105,11 +105,11 @@ export default async function AdminUserDetailPage({
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium">{tenant.name}</p>
-                    <p className="font-mono text-xs text-muted-foreground">/{tenant.slug} &middot; Created {new Date(tenant.created_at).toLocaleDateString()}</p>
+                    <p className="text-xs text-muted-foreground">/{tenant.slug} &middot; Created {new Date(tenant.created_at).toLocaleDateString()}</p>
                   </div>
                   <Link
                     href={`/admin/tenants/${tenant.id}`}
-                    className="font-mono text-xs text-primary transition-colors hover:text-primary/80"
+                    className="text-xs text-primary transition-colors hover:text-primary/80"
                   >
                     Manage
                   </Link>
@@ -133,7 +133,7 @@ export default async function AdminUserDetailPage({
                   <div key={m.id} className="flex items-center justify-between px-4 py-3">
                     <div>
                       <p className="text-sm font-medium">{(m.membership_tiers as any)?.name ?? '—'}</p>
-                      <p className="font-mono text-xs text-muted-foreground">
+                      <p className="text-xs text-muted-foreground">
                         {(m.tenants as any)?.name ?? '—'} &middot; {m.start_date}{m.end_date ? ` → ${m.end_date}` : ''}
                       </p>
                     </div>
@@ -156,11 +156,11 @@ export default async function AdminUserDetailPage({
                 <table className="w-full">
                   <thead>
                     <tr className="border-b text-left">
-                      <th className="px-4 py-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">Tenant</th>
-                      <th className="px-4 py-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">Court</th>
-                      <th className="px-4 py-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">Date</th>
-                      <th className="px-4 py-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">Time</th>
-                      <th className="px-4 py-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">Status</th>
+                      <th className="px-4 py-3 text-sm font-medium text-muted-foreground">Tenant</th>
+                      <th className="px-4 py-3 text-sm font-medium text-muted-foreground">Court</th>
+                      <th className="px-4 py-3 text-sm font-medium text-muted-foreground">Date</th>
+                      <th className="px-4 py-3 text-sm font-medium text-muted-foreground">Time</th>
+                      <th className="px-4 py-3 text-sm font-medium text-muted-foreground">Status</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -168,8 +168,8 @@ export default async function AdminUserDetailPage({
                       <tr key={b.id} className="border-b last:border-0">
                         <td className="px-4 py-3 text-sm">{(b.tenants as any)?.name ?? '—'}</td>
                         <td className="px-4 py-3 text-sm">{(b.courts as any)?.name ?? '—'}</td>
-                        <td className="px-4 py-3 text-sm font-mono">{b.date}</td>
-                        <td className="px-4 py-3 text-sm font-mono">{b.start_time?.slice(0, 5)}–{b.end_time?.slice(0, 5)}</td>
+                        <td className="px-4 py-3 text-sm">{b.date}</td>
+                        <td className="px-4 py-3 text-sm">{b.start_time?.slice(0, 5)}–{b.end_time?.slice(0, 5)}</td>
                         <td className="px-4 py-3">
                           <StatusBadge status={b.status} />
                         </td>
@@ -191,7 +191,7 @@ export default async function AdminUserDetailPage({
                     <div>
                       <p className="text-sm font-medium">{(b.courts as any)?.name ?? '—'}</p>
                       <p className="text-xs text-muted-foreground">{(b.tenants as any)?.name ?? '—'}</p>
-                      <p className="font-mono text-xs text-muted-foreground">{b.date} {b.start_time?.slice(0, 5)}–{b.end_time?.slice(0, 5)}</p>
+                      <p className="text-xs text-muted-foreground">{b.date} {b.start_time?.slice(0, 5)}–{b.end_time?.slice(0, 5)}</p>
                     </div>
                     <StatusBadge status={b.status} />
                   </div>
@@ -217,7 +217,7 @@ function StatusBadge({ status }: { status: string }) {
   }
 
   return (
-    <span className={`inline-flex rounded-full px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider ${styles[status] ?? styles.no_show}`}>
+    <span className={`inline-flex rounded-full px-2 py-0.5 text-[10px] uppercase tracking-wider ${styles[status] ?? styles.no_show}`}>
       {status}
     </span>
   )
@@ -231,7 +231,7 @@ function SubscriptionBadge({ status }: { status: string }) {
   }
 
   return (
-    <span className={`inline-flex rounded-full px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider ${styles[status] ?? styles.expired}`}>
+    <span className={`inline-flex rounded-full px-2 py-0.5 text-[10px] uppercase tracking-wider ${styles[status] ?? styles.expired}`}>
       {status}
     </span>
   )

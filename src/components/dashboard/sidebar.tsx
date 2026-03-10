@@ -66,7 +66,7 @@ function NavContent({ slug, pathname, signOutAction, onNavigate }: NavContentPro
               href={href}
               onClick={onNavigate}
               className={cn(
-                'flex items-center gap-3 rounded-lg px-3 py-2 font-mono text-xs uppercase tracking-wider transition-colors',
+                'flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
                 isActive
                   ? 'bg-primary/10 text-primary font-medium'
                   : 'text-muted-foreground hover:bg-accent hover:text-foreground'
@@ -85,7 +85,7 @@ function NavContent({ slug, pathname, signOutAction, onNavigate }: NavContentPro
           target="_blank"
           rel="noopener noreferrer"
           onClick={onNavigate}
-          className="flex items-center gap-3 rounded-lg px-3 py-2 font-mono text-xs uppercase tracking-wider text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+          className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
         >
           <ExternalLink className="h-4 w-4" />
           View Public Page
@@ -98,7 +98,7 @@ function NavContent({ slug, pathname, signOutAction, onNavigate }: NavContentPro
             <button
               type="submit"
               onClick={onNavigate}
-              className="flex w-full items-center gap-3 rounded-lg px-3 py-2 font-mono text-xs uppercase tracking-wider text-destructive transition-colors hover:bg-accent"
+              className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-destructive transition-colors hover:bg-accent"
             >
               <LogOut className="h-4 w-4" />
               Sign Out
@@ -122,7 +122,7 @@ export function Sidebar({ slug, tenantName, signOutAction }: SidebarProps) {
   return (
     <aside className="hidden h-full w-64 flex-col border-r bg-card md:flex">
       <div className="flex h-14 items-center border-b px-4">
-        <Link href={`/dashboard/${slug}`} className="font-mono text-sm font-medium tracking-tight">
+        <Link href={`/dashboard/${slug}`} className="text-sm font-medium tracking-tight">
           {tenantName}
         </Link>
       </div>
@@ -144,7 +144,7 @@ export function MobileSidebar({ slug, tenantName, signOutAction }: SidebarProps)
       </SheetTrigger>
       <SheetContent side="left" className="w-64 p-0" aria-describedby={undefined}>
         <SheetHeader className="flex h-14 flex-row items-center border-b px-4 space-y-0">
-          <SheetTitle className="font-mono text-sm font-medium tracking-tight">
+          <SheetTitle className="text-sm font-medium tracking-tight">
             {tenantName}
           </SheetTitle>
         </SheetHeader>

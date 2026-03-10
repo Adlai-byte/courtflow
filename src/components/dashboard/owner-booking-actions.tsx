@@ -47,7 +47,7 @@ export function OwnerBookingActions({ bookingId, slug, status }: Props) {
           size="sm"
           disabled={loading !== null}
           onClick={handleApprove}
-          className="h-7 bg-green text-white font-mono text-xs hover:bg-green/90"
+          className="h-7 bg-green text-white text-xs hover:bg-green/90"
         >
           {loading === 'approve' ? '...' : 'Approve'}
         </Button>
@@ -56,7 +56,7 @@ export function OwnerBookingActions({ bookingId, slug, status }: Props) {
           size="sm"
           disabled={loading !== null}
           onClick={handleReject}
-          className="h-7 font-mono text-xs text-destructive hover:text-destructive"
+          className="h-7 text-xs text-destructive hover:text-destructive"
         >
           {loading === 'reject' ? '...' : 'Reject'}
         </Button>

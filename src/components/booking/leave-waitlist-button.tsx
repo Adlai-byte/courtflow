@@ -31,7 +31,7 @@ export function LeaveWaitlistButton({ entryId, slug }: Props) {
         size="sm"
         disabled={leaving}
         onClick={handleLeave}
-        className="font-mono text-xs text-destructive hover:text-destructive"
+        className="text-xs text-destructive hover:text-destructive"
       >
         {leaving ? 'Leaving...' : 'Leave'}
       </Button>

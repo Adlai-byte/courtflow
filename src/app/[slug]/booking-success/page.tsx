@@ -32,7 +32,7 @@ export default async function BookingSuccessPage({
     <div className="mx-auto max-w-lg px-4 py-16">
       <div className="mb-8 text-center">
         <CheckCircle className="mx-auto mb-4 h-16 w-16 text-green-500" />
-        <h1 className="mb-2 text-2xl font-bold">Booking Confirmed!</h1>
+        <h1 className="font-heading mb-2 text-2xl font-bold">Booking Confirmed!</h1>
         <p className="text-muted-foreground">
           {bookings.length > 0
             ? `Your ${bookings.length} booking(s) have been processed.`
@@ -47,12 +47,12 @@ export default async function BookingSuccessPage({
               <div key={b.id} className="flex items-center justify-between border-b last:border-0 pb-2 last:pb-0">
                 <div>
                   <p className="text-sm font-medium">{b.courts?.name}</p>
-                  <p className="font-mono text-xs text-muted-foreground">
+                  <p className="text-xs text-muted-foreground">
                     {formatDate(b.date)} &middot; {toSlotLabel(b.start_time, b.end_time)}
                   </p>
                 </div>
                 <div className="text-right">
-                  <span className="font-mono text-sm">{'\u20B1'}{b.amount}</span>
+                  <span className="text-sm">{'\u20B1'}{b.amount}</span>
                   <p className="text-[10px] text-muted-foreground">{b.payment_status}</p>
                 </div>
               </div>
@@ -64,13 +64,13 @@ export default async function BookingSuccessPage({
       <div className="flex gap-3">
         <Link
           href={`/${slug}/my-bookings`}
-          className="flex-1 rounded-lg bg-primary px-4 py-2.5 text-center font-mono text-xs uppercase tracking-wider text-primary-foreground"
+          className="flex-1 rounded-lg bg-primary px-4 py-2.5 text-center text-sm font-medium text-primary-foreground"
         >
           View My Bookings
         </Link>
         <Link
           href={`/${slug}`}
-          className="flex-1 rounded-lg border px-4 py-2.5 text-center font-mono text-xs uppercase tracking-wider"
+          className="flex-1 rounded-lg border px-4 py-2.5 text-center text-sm font-medium"
         >
           Book More
         </Link>

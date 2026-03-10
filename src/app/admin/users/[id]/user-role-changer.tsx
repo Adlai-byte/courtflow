@@ -42,7 +42,7 @@ export function UserRoleChanger({ userId, currentRole }: { userId: string; curre
     <div className="space-y-4">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end">
         <div className="space-y-2 sm:min-w-[200px]">
-          <Label className="font-mono text-xs uppercase tracking-wider">
+          <Label className="text-sm font-medium">
             User Role
           </Label>
           <Select value={role} onValueChange={(v) => setRole(v as UserRole)}>
@@ -68,7 +68,7 @@ export function UserRoleChanger({ userId, currentRole }: { userId: string; curre
         </Button>
       </div>
       {message && (
-        <p className={`font-mono text-xs ${message.type === 'error' ? 'text-destructive' : 'text-green'}`}>
+        <p className={`text-xs ${message.type === 'error' ? 'text-destructive' : 'text-green'}`}>
           {message.text}
         </p>
       )}

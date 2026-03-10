@@ -26,10 +26,10 @@ export default async function MembershipRequestsPage({
   return (
     <div className="space-y-6">
       <div>
-        <span className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
+        <span className="text-sm font-medium text-muted-foreground">
           Members / Requests
         </span>
-        <h1 className="text-2xl font-bold tracking-tight">Membership Requests</h1>
+        <h1 className="font-heading text-2xl font-bold tracking-tight">Membership Requests</h1>
       </div>
 
       <div className="rounded-lg border border-border bg-card">
@@ -43,11 +43,11 @@ export default async function MembershipRequestsPage({
               <table className="w-full">
                 <thead>
                   <tr className="border-b text-left">
-                    <th className="p-4 font-mono text-xs uppercase tracking-wider text-muted-foreground font-medium">Player</th>
-                    <th className="p-4 font-mono text-xs uppercase tracking-wider text-muted-foreground font-medium">Tier</th>
-                    <th className="p-4 font-mono text-xs uppercase tracking-wider text-muted-foreground font-medium">Date</th>
-                    <th className="p-4 font-mono text-xs uppercase tracking-wider text-muted-foreground font-medium">Status</th>
-                    <th className="p-4 font-mono text-xs uppercase tracking-wider text-muted-foreground font-medium">Actions</th>
+                    <th className="p-4 text-sm font-medium text-muted-foreground font-medium">Player</th>
+                    <th className="p-4 text-sm font-medium text-muted-foreground font-medium">Tier</th>
+                    <th className="p-4 text-sm font-medium text-muted-foreground font-medium">Date</th>
+                    <th className="p-4 text-sm font-medium text-muted-foreground font-medium">Status</th>
+                    <th className="p-4 text-sm font-medium text-muted-foreground font-medium">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -55,7 +55,7 @@ export default async function MembershipRequestsPage({
                     <tr key={req.id} className={i % 2 === 1 ? 'bg-muted/30' : ''}>
                       <td className="p-4 text-sm">{req.profiles?.full_name || 'Unknown'}</td>
                       <td className="p-4 text-sm">{req.membership_tiers?.name || '—'}</td>
-                      <td className="p-4 font-mono text-sm">{new Date(req.created_at).toLocaleDateString()}</td>
+                      <td className="p-4 text-sm">{new Date(req.created_at).toLocaleDateString()}</td>
                       <td className="p-4">
                         <span className={`inline-flex rounded-full border px-2.5 py-0.5 text-xs font-medium ${statusColors[req.status] || ''}`}>
                           {req.status}
@@ -83,7 +83,7 @@ export default async function MembershipRequestsPage({
                       {req.status}
                     </span>
                   </div>
-                  <p className="font-mono text-xs text-muted-foreground">
+                  <p className="text-xs text-muted-foreground">
                     {req.membership_tiers?.name || '—'} · {new Date(req.created_at).toLocaleDateString()}
                   </p>
                   {req.status === 'pending' && (

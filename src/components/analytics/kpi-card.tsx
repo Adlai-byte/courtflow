@@ -14,7 +14,7 @@ export function KpiCard({ label, value, icon: Icon, trend }: KpiCardProps) {
     <Card>
       <CardContent className="p-4 md:p-6">
         <div className="flex items-center justify-between">
-          <span className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
+          <span className="text-sm font-medium text-muted-foreground">
             {label}
           </span>
           <Icon className="h-4 w-4 text-muted-foreground" />

@@ -37,11 +37,11 @@ export function CourtRowHeader({ court }: CourtRowHeaderProps) {
       <div className="min-w-0 flex-1">
         <p className="line-clamp-2 leading-tight text-sm font-semibold tracking-tight">{court.name}</p>
         <div className="flex items-center gap-1.5 mt-0.5">
-          <span className="font-mono text-[10px] text-muted-foreground">
+          <span className="text-[10px] text-muted-foreground">
             {sportLabels[court.sport_type] || court.sport_type}
           </span>
           <span className="text-muted-foreground/30">·</span>
-          <span className="font-mono text-[10px] text-muted-foreground">{duration}</span>
+          <span className="text-[10px] text-muted-foreground">{duration}</span>
         </div>
       </div>
       <Dialog>
@@ -67,10 +67,10 @@ export function CourtRowHeader({ court }: CourtRowHeaderProps) {
               </div>
             )}
             <div className="flex flex-wrap items-center gap-2">
-              <span className="inline-flex rounded border border-border px-2 py-0.5 font-mono text-xs text-muted-foreground">
+              <span className="inline-flex rounded border border-border px-2 py-0.5 text-xs text-muted-foreground">
                 {sportLabels[court.sport_type] || court.sport_type}
               </span>
-              <span className="inline-flex rounded border border-border px-2 py-0.5 font-mono text-xs text-muted-foreground">
+              <span className="inline-flex rounded border border-border px-2 py-0.5 text-xs text-muted-foreground">
                 {duration}
               </span>
             </div>

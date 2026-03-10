@@ -23,12 +23,12 @@ export default function AuthLayout({
 
         {/* Top: logo + back link */}
         <div className="relative z-10">
-          <Link href="/" className="group inline-flex items-center gap-2 font-mono text-sm tracking-tight text-background/70 transition-colors hover:text-background">
+          <Link href="/" className="group inline-flex items-center gap-2 text-sm tracking-tight text-background/70 transition-colors hover:text-background">
             <ArrowLeft className="h-3.5 w-3.5 transition-transform group-hover:-translate-x-0.5" />
             Back to home
           </Link>
           <div className="mt-10">
-            <span className="font-mono text-2xl font-medium tracking-tight">CourtFLOW</span>
+            <span className="text-2xl font-medium tracking-tight">CourtFLOW</span>
           </div>
         </div>
 
@@ -48,7 +48,7 @@ export default function AuthLayout({
         {/* Bottom: accent bar */}
         <div className="relative z-10">
           <div className="h-1 w-16 rounded-full bg-primary" />
-          <p className="mt-4 font-mono text-[10px] uppercase tracking-widest text-background/30">
+          <p className="mt-4 text-[10px] uppercase tracking-widest text-background/30">
             Court booking made simple
           </p>
         </div>
@@ -58,10 +58,10 @@ export default function AuthLayout({
       <div className="flex flex-1 flex-col">
         {/* Mobile header */}
         <div className="flex items-center justify-between border-b border-border px-6 py-4 lg:hidden">
-          <Link href="/" className="font-mono text-sm font-medium tracking-tight">
+          <Link href="/" className="text-sm font-medium tracking-tight">
             CourtFLOW
           </Link>
-          <Link href="/" className="inline-flex items-center gap-1.5 font-mono text-xs text-muted-foreground transition-colors hover:text-foreground">
+          <Link href="/" className="inline-flex items-center gap-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground">
             <ArrowLeft className="h-3 w-3" />
             Home
           </Link>

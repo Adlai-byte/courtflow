@@ -243,7 +243,7 @@ export function ScheduleGrid({
           {timeColumns.map((col, i) => (
             <div
               key={col.time}
-              className={`sticky top-0 z-20 flex items-center justify-center border-b border-border bg-muted/50 px-1 py-2 font-mono text-[10px] text-muted-foreground ${
+              className={`sticky top-0 z-20 flex items-center justify-center border-b border-border bg-muted/50 px-1 py-2 text-[10px] text-muted-foreground ${
                 i < timeColumns.length - 1 ? 'border-r' : ''
               }`}
             >

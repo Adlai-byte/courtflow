@@ -125,7 +125,7 @@ export default async function AnalyticsPage({
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <span className="section-label mb-2 block">[ ANALYTICS ]</span>
-          <h1 className="text-2xl font-bold tracking-tight">Analytics</h1>
+          <h1 className="font-heading text-2xl font-bold tracking-tight">Analytics</h1>
         </div>
         <div className="flex gap-1 rounded-lg border bg-card p-1">
           {RANGES.map((r) => (
@@ -133,7 +133,7 @@ export default async function AnalyticsPage({
               key={r.value}
               href={`/dashboard/${slug}/analytics?range=${r.value}`}
               className={cn(
-                'rounded-md px-3 py-1.5 font-mono text-xs transition-colors',
+                'rounded-md px-3 py-1.5 text-xs transition-colors',
                 (range || '30') === r.value
                   ? 'bg-primary text-primary-foreground'
                   : 'text-muted-foreground hover:text-foreground'

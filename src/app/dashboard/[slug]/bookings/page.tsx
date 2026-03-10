@@ -52,7 +52,7 @@ export default async function BookingsPage({
   return (
     <div className="space-y-6">
       <span className="section-label block">[ BOOKINGS ]</span>
-      <h1 className="text-2xl font-bold tracking-tight">Bookings</h1>
+      <h1 className="font-heading text-2xl font-bold tracking-tight">Bookings</h1>
 
       {/* Filter tabs */}
       <div className="flex gap-1 rounded-lg border bg-card p-1 w-fit">
@@ -65,7 +65,7 @@ export default async function BookingsPage({
               key={f.value}
               href={href}
               className={cn(
-                'rounded-md px-3 py-1.5 font-mono text-xs transition-colors',
+                'rounded-md px-3 py-1.5 text-xs transition-colors',
                 activeFilter === f.value
                   ? 'bg-primary text-primary-foreground'
                   : 'text-muted-foreground hover:text-foreground'
@@ -89,19 +89,19 @@ export default async function BookingsPage({
                 <table className="w-full">
                   <thead>
                     <tr className="border-b text-left">
-                      <th className="p-4 font-mono text-xs uppercase tracking-wider text-muted-foreground font-medium">Date</th>
-                      <th className="p-4 font-mono text-xs uppercase tracking-wider text-muted-foreground font-medium">Time</th>
-                      <th className="p-4 font-mono text-xs uppercase tracking-wider text-muted-foreground font-medium">Court</th>
-                      <th className="p-4 font-mono text-xs uppercase tracking-wider text-muted-foreground font-medium">Customer</th>
-                      <th className="p-4 font-mono text-xs uppercase tracking-wider text-muted-foreground font-medium">Status</th>
-                      <th className="p-4 font-mono text-xs uppercase tracking-wider text-muted-foreground font-medium">Actions</th>
+                      <th className="p-4 text-sm font-medium text-muted-foreground font-medium">Date</th>
+                      <th className="p-4 text-sm font-medium text-muted-foreground font-medium">Time</th>
+                      <th className="p-4 text-sm font-medium text-muted-foreground font-medium">Court</th>
+                      <th className="p-4 text-sm font-medium text-muted-foreground font-medium">Customer</th>
+                      <th className="p-4 text-sm font-medium text-muted-foreground font-medium">Status</th>
+                      <th className="p-4 text-sm font-medium text-muted-foreground font-medium">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
                     {bookings.map((booking: any, i: number) => (
                       <tr key={booking.id} className={i % 2 === 1 ? 'bg-muted/30' : ''}>
-                        <td className="p-4 font-mono text-sm">{formatDate(booking.date)}</td>
-                        <td className="p-4 font-mono text-sm">{toSlotLabel(booking.start_time, booking.end_time)}</td>
+                        <td className="p-4 text-sm">{formatDate(booking.date)}</td>
+                        <td className="p-4 text-sm">{toSlotLabel(booking.start_time, booking.end_time)}</td>
                         <td className="p-4 text-sm">{booking.courts?.name}</td>
                         <td className="p-4 text-sm">{booking.profiles?.full_name || 'Unknown'}</td>
                         <td className="p-4">
@@ -144,7 +144,7 @@ export default async function BookingsPage({
                       </div>
                     </div>
                     <p className="text-xs text-muted-foreground">{booking.courts?.name}</p>
-                    <p className="font-mono text-xs text-muted-foreground">{formatDate(booking.date)} · {toSlotLabel(booking.start_time, booking.end_time)}</p>
+                    <p className="text-xs text-muted-foreground">{formatDate(booking.date)} · {toSlotLabel(booking.start_time, booking.end_time)}</p>
                     <div className="flex items-center gap-1">
                       <OwnerBookingActions bookingId={booking.id} slug={slug} status={booking.status} />
                       {booking.status === 'pending' && booking.recurring_series_id && (

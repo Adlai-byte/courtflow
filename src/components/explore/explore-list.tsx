@@ -74,7 +74,7 @@ export function ExploreList({ tenants }: { tenants: TenantCard[] }) {
             placeholder="Search facilities..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-9 font-mono text-sm"
+            className="pl-9 text-sm"
           />
         </div>
         <div className="flex flex-wrap gap-1.5">
@@ -82,7 +82,7 @@ export function ExploreList({ tenants }: { tenants: TenantCard[] }) {
             <button
               key={opt.value}
               onClick={() => setSportFilter(opt.value)}
-              className={`rounded-md border px-3 py-1.5 font-mono text-xs transition-colors ${
+              className={`rounded-md border px-3 py-1.5 text-xs transition-colors ${
                 sportFilter === opt.value
                   ? 'border-primary bg-primary text-primary-foreground'
                   : 'border-border bg-background text-muted-foreground hover:border-primary/30 hover:text-foreground'
@@ -97,7 +97,7 @@ export function ExploreList({ tenants }: { tenants: TenantCard[] }) {
             <button
               onClick={() => setSelectedCity(null)}
               className={cn(
-                'rounded-full border px-3 py-1 font-mono text-xs transition-colors',
+                'rounded-full border px-3 py-1 text-xs transition-colors',
                 !selectedCity
                   ? 'bg-primary text-primary-foreground'
                   : 'text-muted-foreground hover:text-foreground'
@@ -110,7 +110,7 @@ export function ExploreList({ tenants }: { tenants: TenantCard[] }) {
                 key={city}
                 onClick={() => setSelectedCity(city)}
                 className={cn(
-                  'rounded-full border px-3 py-1 font-mono text-xs transition-colors',
+                  'rounded-full border px-3 py-1 text-xs transition-colors',
                   selectedCity === city
                     ? 'bg-primary text-primary-foreground'
                     : 'text-muted-foreground hover:text-foreground'
@@ -125,7 +125,7 @@ export function ExploreList({ tenants }: { tenants: TenantCard[] }) {
 
       {/* Card grid */}
       {filtered.length === 0 ? (
-        <p className="py-12 text-center font-mono text-sm text-muted-foreground">
+        <p className="py-12 text-center text-sm text-muted-foreground">
           No facilities found.
         </p>
       ) : (
@@ -156,7 +156,7 @@ function TenantCardItem({ tenant }: { tenant: TenantCard }) {
               className="rounded-md object-cover"
             />
           ) : (
-            <div className="flex h-10 w-10 items-center justify-center rounded-md border border-border bg-muted font-mono text-sm font-semibold text-muted-foreground">
+            <div className="flex h-10 w-10 items-center justify-center rounded-md border border-border bg-muted text-sm font-semibold text-muted-foreground">
               {tenant.name.charAt(0).toUpperCase()}
             </div>
           )}
@@ -180,7 +180,7 @@ function TenantCardItem({ tenant }: { tenant: TenantCard }) {
           {tenant.sportTypes.map((sport) => (
             <span
               key={sport}
-              className="inline-flex items-center gap-1 rounded-md border border-border px-2 py-0.5 font-mono text-xs text-muted-foreground"
+              className="inline-flex items-center gap-1 rounded-md border border-border px-2 py-0.5 text-xs text-muted-foreground"
             >
               {sportEmoji[sport]} {sport.charAt(0).toUpperCase() + sport.slice(1)}
             </span>
@@ -190,13 +190,13 @@ function TenantCardItem({ tenant }: { tenant: TenantCard }) {
 
       {/* Court count + venue pills */}
       <div className="mt-auto flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-        <span className="font-mono">
+        <span className="">
           {tenant.courtCount} {tenant.courtCount === 1 ? 'court' : 'courts'}
         </span>
         {tenant.venueTypes.map((v) => (
           <span
             key={v}
-            className="rounded-md border border-border px-2 py-0.5 font-mono capitalize"
+            className="rounded-md border border-border px-2 py-0.5 capitalize"
           >
             {v}
           </span>

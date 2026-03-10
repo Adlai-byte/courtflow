@@ -158,7 +158,7 @@ export function CartDrawer({ slug }: CartDrawerProps) {
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetContent side="right" className="flex flex-col">
           <SheetHeader>
-            <SheetTitle className="font-mono text-sm uppercase tracking-wider">
+            <SheetTitle className="text-sm font-medium">
               Your Cart
             </SheetTitle>
             <SheetDescription>
@@ -170,7 +170,7 @@ export function CartDrawer({ slug }: CartDrawerProps) {
           <div className="flex-1 overflow-y-auto px-4" aria-live="polite">
             {Object.entries(grouped).map(([courtName, courtItems]) => (
               <div key={courtName} className="mb-4">
-                <h3 className="mb-2 font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                   {courtName}
                 </h3>
                 <div className="space-y-2">
@@ -186,7 +186,7 @@ export function CartDrawer({ slug }: CartDrawerProps) {
                         }`}
                       >
                         <div className="flex-1 min-w-0">
-                          <p className="font-mono text-sm">
+                          <p className="text-sm">
                             {toSlotLabel(item.startTime, item.endTime)}
                           </p>
                           <p className="text-xs text-muted-foreground">
@@ -197,7 +197,7 @@ export function CartDrawer({ slug }: CartDrawerProps) {
                             })}
                           </p>
                           {item.price > 0 && (
-                            <p className="font-mono text-xs font-medium text-primary">{'\u20B1'}{item.price.toFixed(2)}</p>
+                            <p className="text-xs font-medium text-primary">{'\u20B1'}{item.price.toFixed(2)}</p>
                           )}
                           <div className="flex items-center gap-1 mt-0.5">
                             {item.recurring && (
@@ -239,8 +239,8 @@ export function CartDrawer({ slug }: CartDrawerProps) {
 
           {/* Total */}
           <div className="border-t px-4 py-2 flex items-center justify-between">
-            <span className="font-mono text-xs uppercase tracking-wider text-muted-foreground">Total</span>
-            <span className="font-mono text-sm font-bold">{'\u20B1'}{items.reduce((s, i) => s + i.price, 0).toFixed(2)}</span>
+            <span className="text-sm font-medium text-muted-foreground">Total</span>
+            <span className="text-sm font-bold">{'\u20B1'}{items.reduce((s, i) => s + i.price, 0).toFixed(2)}</span>
           </div>
 
           {/* Footer */}
@@ -258,7 +258,7 @@ export function CartDrawer({ slug }: CartDrawerProps) {
               Clear All
             </Button>
             <Button
-              className="w-full font-mono text-xs uppercase tracking-wider"
+              className="w-full text-sm font-medium"
               disabled={confirming || itemCount === 0}
               onClick={handleConfirm}
             >

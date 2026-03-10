@@ -48,7 +48,7 @@ export default async function AdminUsersPage({
     <div className="space-y-8">
       <div>
         <span className="section-label mb-2 block">[ USERS ]</span>
-        <h1 className="text-2xl font-bold tracking-tight">All Users</h1>
+        <h1 className="font-heading text-2xl font-bold tracking-tight">All Users</h1>
         <p className="mt-1 text-sm text-muted-foreground">
           {profiles?.length ?? 0} {(profiles?.length ?? 0) === 1 ? 'user' : 'users'}
           {activeFilter !== 'all' && ` (${ROLE_FILTERS.find(r => r.value === activeFilter)?.label})`}
@@ -64,7 +64,7 @@ export default async function AdminUsersPage({
             type="text"
             placeholder="Search by name..."
             defaultValue={searchQuery}
-            className="h-9 w-full rounded-md border border-input bg-background pl-9 pr-3 font-mono text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+            className="h-9 w-full rounded-md border border-input bg-background pl-9 pr-3 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
           />
           {activeFilter !== 'all' && (
             <input type="hidden" name="role" value={activeFilter} />
@@ -84,7 +84,7 @@ export default async function AdminUsersPage({
               key={r.value}
               href={href}
               className={cn(
-                'rounded-md px-3 py-1.5 font-mono text-xs transition-colors',
+                'rounded-md px-3 py-1.5 text-xs transition-colors',
                 activeFilter === r.value
                   ? 'bg-primary text-primary-foreground'
                   : 'text-muted-foreground hover:text-foreground'
@@ -103,10 +103,10 @@ export default async function AdminUsersPage({
             <table className="w-full">
               <thead>
                 <tr className="border-b text-left">
-                  <th className="px-4 py-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">Name</th>
-                  <th className="px-4 py-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">Email</th>
-                  <th className="px-4 py-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">Role</th>
-                  <th className="px-4 py-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">Joined</th>
+                  <th className="px-4 py-3 text-sm font-medium text-muted-foreground">Name</th>
+                  <th className="px-4 py-3 text-sm font-medium text-muted-foreground">Email</th>
+                  <th className="px-4 py-3 text-sm font-medium text-muted-foreground">Role</th>
+                  <th className="px-4 py-3 text-sm font-medium text-muted-foreground">Joined</th>
                   <th className="px-4 py-3"></th>
                 </tr>
               </thead>
@@ -118,13 +118,13 @@ export default async function AdminUsersPage({
                     <td className="px-4 py-3">
                       <RoleBadge role={p.role} />
                     </td>
-                    <td className="px-4 py-3 text-sm font-mono text-muted-foreground">
+                    <td className="px-4 py-3 text-sm text-muted-foreground">
                       {new Date(p.created_at).toLocaleDateString()}
                     </td>
                     <td className="px-4 py-3">
                       <Link
                         href={`/admin/users/${p.id}`}
-                        className="font-mono text-xs text-primary transition-colors hover:text-primary/80"
+                        className="text-xs text-primary transition-colors hover:text-primary/80"
                       >
                         Manage
                       </Link>
@@ -152,14 +152,14 @@ export default async function AdminUsersPage({
                     <RoleBadge role={p.role} />
                     <Link
                       href={`/admin/users/${p.id}`}
-                      className="font-mono text-xs text-primary transition-colors hover:text-primary/80"
+                      className="text-xs text-primary transition-colors hover:text-primary/80"
                     >
                       Manage
                     </Link>
                   </div>
                 </div>
                 <p className="mt-0.5 text-xs text-muted-foreground">{emailMap.get(p.id) ?? '—'}</p>
-                <p className="mt-0.5 font-mono text-xs text-muted-foreground">
+                <p className="mt-0.5 text-xs text-muted-foreground">
                   Joined {new Date(p.created_at).toLocaleDateString()}
                 </p>
               </div>
@@ -190,7 +190,7 @@ function RoleBadge({ role }: { role: UserRole }) {
   }
 
   return (
-    <span className={`inline-flex rounded-full px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider ${styles[role] ?? styles.customer}`}>
+    <span className={`inline-flex rounded-full px-2 py-0.5 text-[10px] uppercase tracking-wider ${styles[role] ?? styles.customer}`}>
       {labels[role] ?? role}
     </span>
   )

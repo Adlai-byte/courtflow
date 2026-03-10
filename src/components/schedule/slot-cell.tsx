@@ -15,7 +15,7 @@ export function SlotCell({ slot, onAddToCart, onRemoveFromCart }: SlotCellProps)
 
   if (slot.state === 'closed') {
     return (
-      <div className="flex h-full w-full items-center justify-center bg-muted/30 font-mono text-[10px] text-muted-foreground/40" />
+      <div className="flex h-full w-full items-center justify-center bg-muted/30 text-[10px] text-muted-foreground/40" />
     )
   }
 
@@ -24,7 +24,7 @@ export function SlotCell({ slot, onAddToCart, onRemoveFromCart }: SlotCellProps)
       <button
         disabled
         aria-label={`${label} — Past`}
-        className="flex h-full w-full items-center justify-center border-r border-border bg-muted/40 font-mono text-[10px] text-muted-foreground/40 line-through"
+        className="flex h-full w-full items-center justify-center border-r border-border bg-muted/40 text-[10px] text-muted-foreground/40 line-through"
       >
         {label}
       </button>
@@ -36,7 +36,7 @@ export function SlotCell({ slot, onAddToCart, onRemoveFromCart }: SlotCellProps)
       <button
         disabled
         aria-label={`${label} — Your booking`}
-        className="flex h-full w-full items-center justify-center gap-0.5 border-r border-primary/20 bg-primary/15 font-mono text-[10px] font-semibold text-primary"
+        className="flex h-full w-full items-center justify-center gap-0.5 border-r border-primary/20 bg-primary/15 text-[10px] font-semibold text-primary"
       >
         <Star className="h-2.5 w-2.5 fill-current" />
         <span className="hidden sm:inline">{label}</span>
@@ -48,7 +48,7 @@ export function SlotCell({ slot, onAddToCart, onRemoveFromCart }: SlotCellProps)
     return (
       <button
         disabled
-        className="flex h-full w-full items-center justify-center gap-0.5 border-r border-amber-300 bg-amber-50 font-mono text-[10px] font-semibold text-amber-600"
+        className="flex h-full w-full items-center justify-center gap-0.5 border-r border-amber-300 bg-amber-50 text-[10px] font-semibold text-amber-600"
         title={`${label} — Pending approval`}
       >
         <Hourglass className="h-2.5 w-2.5" />
@@ -61,7 +61,7 @@ export function SlotCell({ slot, onAddToCart, onRemoveFromCart }: SlotCellProps)
     return (
       <button
         disabled
-        className="flex h-full w-full items-center justify-center gap-0.5 border-r border-border bg-muted font-mono text-[10px] text-muted-foreground"
+        className="flex h-full w-full items-center justify-center gap-0.5 border-r border-border bg-muted text-[10px] text-muted-foreground"
         title={`${label} — Booked`}
       >
         <Clock className="h-2.5 w-2.5" />
@@ -74,7 +74,7 @@ export function SlotCell({ slot, onAddToCart, onRemoveFromCart }: SlotCellProps)
     return (
       <button
         aria-label={`${label} — In cart, click to remove`}
-        className="flex h-full w-full items-center justify-center gap-0.5 border-r border-primary bg-primary/10 font-mono text-[10px] text-primary transition-colors hover:bg-primary/20 active:scale-95"
+        className="flex h-full w-full items-center justify-center gap-0.5 border-r border-primary bg-primary/10 text-[10px] text-primary transition-colors hover:bg-primary/20 active:scale-95"
         onClick={() => onRemoveFromCart(slot.courtId, slot.start)}
         title={`${label} — In cart (click to remove)`}
       >
@@ -92,7 +92,7 @@ export function SlotCell({ slot, onAddToCart, onRemoveFromCart }: SlotCellProps)
   return (
     <button
       aria-label={`${label} — Available, click to add to cart`}
-      className="flex h-full w-full flex-col items-center justify-center border-r border-emerald-200 bg-emerald-50 font-mono text-[10px] text-emerald-700 transition-colors hover:bg-emerald-500 hover:text-white active:scale-95"
+      className="flex h-full w-full flex-col items-center justify-center border-r border-emerald-200 bg-emerald-50 text-[10px] text-emerald-700 transition-colors hover:bg-emerald-500 hover:text-white active:scale-95"
       onClick={() => onAddToCart(slot.courtId, slot.start, slot.end)}
       title={`${label} — Available`}
     >

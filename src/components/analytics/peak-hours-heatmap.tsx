@@ -24,7 +24,7 @@ export function PeakHoursHeatmap({ data, maxCount }: PeakHoursHeatmapProps) {
   return (
     <Card>
       <CardContent className="p-4 md:p-6">
-        <span className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
+        <span className="text-sm font-medium text-muted-foreground">
           Peak Hours
         </span>
         <div className="mt-4 overflow-x-auto">
@@ -32,14 +32,14 @@ export function PeakHoursHeatmap({ data, maxCount }: PeakHoursHeatmapProps) {
             <div className="flex">
               <div className="w-10 shrink-0" />
               {HOURS.map((h) => (
-                <div key={h} className="flex-1 text-center font-mono text-[10px] text-muted-foreground">
+                <div key={h} className="flex-1 text-center text-[10px] text-muted-foreground">
                   {h}:00
                 </div>
               ))}
             </div>
             {DAYS.map((day) => (
               <div key={day} className="flex items-center gap-0">
-                <div className="w-10 shrink-0 font-mono text-xs text-muted-foreground">
+                <div className="w-10 shrink-0 text-xs text-muted-foreground">
                   {day}
                 </div>
                 {HOURS.map((hour) => {

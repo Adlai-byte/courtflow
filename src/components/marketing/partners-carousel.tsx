@@ -17,7 +17,7 @@ export async function PartnersCarousel() {
   return (
     <section className="mx-auto max-w-7xl px-6 py-16">
       <div className="mb-8 text-center">
-        <span className="section-label">[ TRUSTED BY ]</span>
+        <span className="section-label">TRUSTED BY FACILITIES ACROSS THE PHILIPPINES</span>
       </div>
       <div className="relative overflow-hidden">
         {/* Fade edges */}

@@ -87,7 +87,7 @@ export function AvatarUpload({ userId, currentAvatarUrl, fullName, onUploaded }:
           )}
         </div>
       </button>
-      <span className="font-mono text-xs text-muted-foreground">
+      <span className="text-xs text-muted-foreground">
         {uploading ? 'Uploading...' : 'Click to change photo'}
       </span>
       <input

@@ -29,7 +29,7 @@ export default async function AdminOverviewPage() {
     <div className="space-y-8">
       <div>
         <span className="section-label mb-2 block">[ PLATFORM OVERVIEW ]</span>
-        <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
+        <h1 className="font-heading text-2xl font-bold tracking-tight">Dashboard</h1>
       </div>
 
       {/* KPIs */}
@@ -50,12 +50,12 @@ export default async function AdminOverviewPage() {
               <table className="w-full">
                 <thead>
                   <tr className="border-b text-left">
-                    <th className="px-4 py-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">Tenant</th>
-                    <th className="px-4 py-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">Customer</th>
-                    <th className="px-4 py-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">Court</th>
-                    <th className="px-4 py-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">Date</th>
-                    <th className="px-4 py-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">Time</th>
-                    <th className="px-4 py-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">Status</th>
+                    <th className="px-4 py-3 text-sm font-medium text-muted-foreground">Tenant</th>
+                    <th className="px-4 py-3 text-sm font-medium text-muted-foreground">Customer</th>
+                    <th className="px-4 py-3 text-sm font-medium text-muted-foreground">Court</th>
+                    <th className="px-4 py-3 text-sm font-medium text-muted-foreground">Date</th>
+                    <th className="px-4 py-3 text-sm font-medium text-muted-foreground">Time</th>
+                    <th className="px-4 py-3 text-sm font-medium text-muted-foreground">Status</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -64,8 +64,8 @@ export default async function AdminOverviewPage() {
                       <td className="px-4 py-3 text-sm">{b.tenants?.name ?? '—'}</td>
                       <td className="px-4 py-3 text-sm">{b.profiles?.full_name ?? '—'}</td>
                       <td className="px-4 py-3 text-sm">{b.courts?.name ?? '—'}</td>
-                      <td className="px-4 py-3 text-sm font-mono">{formatDate(b.date)}</td>
-                      <td className="px-4 py-3 text-sm font-mono">{toSlotLabel(b.start_time, b.end_time)}</td>
+                      <td className="px-4 py-3 text-sm">{formatDate(b.date)}</td>
+                      <td className="px-4 py-3 text-sm">{toSlotLabel(b.start_time, b.end_time)}</td>
                       <td className="px-4 py-3">
                         <StatusBadge status={b.status} />
                       </td>
@@ -91,7 +91,7 @@ export default async function AdminOverviewPage() {
                     <p className="text-xs text-muted-foreground">
                       {b.tenants?.name} &middot; {b.profiles?.full_name ?? '—'}
                     </p>
-                    <p className="font-mono text-xs text-muted-foreground">
+                    <p className="text-xs text-muted-foreground">
                       {formatDate(b.date)} {toSlotLabel(b.start_time, b.end_time)}
                     </p>
                   </div>
@@ -121,7 +121,7 @@ function StatusBadge({ status }: { status: string }) {
   }
 
   return (
-    <span className={`inline-flex rounded-full px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider ${styles[status] ?? styles.no_show}`}>
+    <span className={`inline-flex rounded-full px-2 py-0.5 text-[10px] uppercase tracking-wider ${styles[status] ?? styles.no_show}`}>
       {status}
     </span>
   )

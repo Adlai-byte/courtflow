@@ -48,23 +48,23 @@ export function MobileMarketingNav({
         <nav className="flex flex-col gap-4 mt-8" onClick={() => setOpen(false)}>
           {isCustomer ? (
             <>
-              <Link href="/explore" className={linkClass('/explore', 'flex items-center gap-2 font-mono text-sm uppercase tracking-wider text-muted-foreground hover:text-foreground')}>
+              <Link href="/explore" className={linkClass('/explore', 'flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground')}>
                 <CalendarDays className="h-4 w-4" />
                 Book Courts
               </Link>
-              <Link href={customerSlug ? `/${customerSlug}/my-bookings` : '/explore'} className={linkClass(customerSlug ? `/${customerSlug}/my-bookings` : '/explore', 'flex items-center gap-2 font-mono text-sm uppercase tracking-wider text-muted-foreground hover:text-foreground')}>
+              <Link href={customerSlug ? `/${customerSlug}/my-bookings` : '/explore'} className={linkClass(customerSlug ? `/${customerSlug}/my-bookings` : '/explore', 'flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground')}>
                 <BookOpen className="h-4 w-4" />
                 My Bookings
               </Link>
-              <Link href={customerSlug ? `/${customerSlug}/my-membership` : '/explore'} className={linkClass(customerSlug ? `/${customerSlug}/my-membership` : '/explore', 'flex items-center gap-2 font-mono text-sm uppercase tracking-wider text-muted-foreground hover:text-foreground')}>
+              <Link href={customerSlug ? `/${customerSlug}/my-membership` : '/explore'} className={linkClass(customerSlug ? `/${customerSlug}/my-membership` : '/explore', 'flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground')}>
                 <CreditCard className="h-4 w-4" />
                 My Membership
               </Link>
-              <Link href={customerSlug ? `/${customerSlug}/my-waitlist` : '/explore'} className={linkClass(customerSlug ? `/${customerSlug}/my-waitlist` : '/explore', 'flex items-center gap-2 font-mono text-sm uppercase tracking-wider text-muted-foreground hover:text-foreground')}>
+              <Link href={customerSlug ? `/${customerSlug}/my-waitlist` : '/explore'} className={linkClass(customerSlug ? `/${customerSlug}/my-waitlist` : '/explore', 'flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground')}>
                 <Clock className="h-4 w-4" />
                 My Waitlist
               </Link>
-              <Link href={customerSlug ? `/${customerSlug}/profile` : '/explore'} className={linkClass(customerSlug ? `/${customerSlug}/profile` : '/explore', 'flex items-center gap-2 font-mono text-sm uppercase tracking-wider text-muted-foreground hover:text-foreground')}>
+              <Link href={customerSlug ? `/${customerSlug}/profile` : '/explore'} className={linkClass(customerSlug ? `/${customerSlug}/profile` : '/explore', 'flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground')}>
                 <User className="h-4 w-4" />
                 Profile
               </Link>
@@ -73,7 +73,7 @@ export function MobileMarketingNav({
                 <form action={signOutAction}>
                   <button
                     type="submit"
-                    className="flex w-full items-center gap-2 font-mono text-sm uppercase tracking-wider text-muted-foreground hover:text-destructive"
+                    className="flex w-full items-center gap-2 text-sm font-medium text-muted-foreground hover:text-destructive"
                   >
                     <LogOut className="h-4 w-4" />
                     Sign out
@@ -83,19 +83,19 @@ export function MobileMarketingNav({
             </>
           ) : (
             <>
-              <Link href="#features" className="font-mono text-sm uppercase tracking-wider text-muted-foreground hover:text-foreground">
+              <Link href="#features" className="text-sm font-medium text-muted-foreground hover:text-foreground">
                 Features
               </Link>
-              <Link href="/explore" className={linkClass('/explore', 'font-mono text-sm uppercase tracking-wider text-muted-foreground hover:text-foreground')}>
+              <Link href="/explore" className={linkClass('/explore', 'text-sm font-medium text-muted-foreground hover:text-foreground')}>
                 Explore
               </Link>
-              <Link href="#how-it-works" className="font-mono text-sm uppercase tracking-wider text-muted-foreground hover:text-foreground">
+              <Link href="#how-it-works" className="text-sm font-medium text-muted-foreground hover:text-foreground">
                 How it works
               </Link>
               <hr className="border-border" />
               {!isLoggedIn ? (
                 <>
-                  <Link href="/login" className="font-mono text-sm uppercase tracking-wider text-muted-foreground hover:text-foreground">
+                  <Link href="/login" className="text-sm font-medium text-muted-foreground hover:text-foreground">
                     Sign in
                   </Link>
                   <Link href="/signup" className="btn-primary px-5 py-2.5 text-xs justify-center">
@@ -113,7 +113,7 @@ export function MobileMarketingNav({
                     <form action={signOutAction}>
                       <button
                         type="submit"
-                        className="flex w-full items-center gap-2 font-mono text-sm uppercase tracking-wider text-muted-foreground hover:text-destructive"
+                        className="flex w-full items-center gap-2 text-sm font-medium text-muted-foreground hover:text-destructive"
                       >
                         <LogOut className="h-4 w-4" />
                         Sign out

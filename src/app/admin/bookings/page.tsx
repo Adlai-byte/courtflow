@@ -52,7 +52,7 @@ export default async function AdminBookingsPage({
     <div className="space-y-8">
       <div>
         <span className="section-label mb-2 block">[ BOOKINGS ]</span>
-        <h1 className="text-2xl font-bold tracking-tight">All Bookings</h1>
+        <h1 className="font-heading text-2xl font-bold tracking-tight">All Bookings</h1>
         <p className="mt-1 text-sm text-muted-foreground">
           {bookings.length} {bookings.length === 1 ? 'booking' : 'bookings'}
           {activeFilter !== 'all' && ` (${STATUS_FILTERS.find(f => f.value === activeFilter)?.label})`}
@@ -68,7 +68,7 @@ export default async function AdminBookingsPage({
             type="text"
             placeholder="Search customer, court, tenant..."
             defaultValue={searchQuery}
-            className="h-9 w-full rounded-md border border-input bg-background pl-9 pr-3 font-mono text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+            className="h-9 w-full rounded-md border border-input bg-background pl-9 pr-3 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
           />
           {activeFilter !== 'all' && (
             <input type="hidden" name="status" value={activeFilter} />
@@ -88,7 +88,7 @@ export default async function AdminBookingsPage({
               key={f.value}
               href={href}
               className={cn(
-                'rounded-md px-3 py-1.5 font-mono text-xs transition-colors',
+                'rounded-md px-3 py-1.5 text-xs transition-colors',
                 activeFilter === f.value
                   ? 'bg-primary text-primary-foreground'
                   : 'text-muted-foreground hover:text-foreground'
@@ -107,12 +107,12 @@ export default async function AdminBookingsPage({
             <table className="w-full">
               <thead>
                 <tr className="border-b text-left">
-                  <th className="px-4 py-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">Tenant</th>
-                  <th className="px-4 py-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">Customer</th>
-                  <th className="px-4 py-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">Court</th>
-                  <th className="px-4 py-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">Date</th>
-                  <th className="px-4 py-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">Time</th>
-                  <th className="px-4 py-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">Status</th>
+                  <th className="px-4 py-3 text-sm font-medium text-muted-foreground">Tenant</th>
+                  <th className="px-4 py-3 text-sm font-medium text-muted-foreground">Customer</th>
+                  <th className="px-4 py-3 text-sm font-medium text-muted-foreground">Court</th>
+                  <th className="px-4 py-3 text-sm font-medium text-muted-foreground">Date</th>
+                  <th className="px-4 py-3 text-sm font-medium text-muted-foreground">Time</th>
+                  <th className="px-4 py-3 text-sm font-medium text-muted-foreground">Status</th>
                   <th className="px-4 py-3"></th>
                 </tr>
               </thead>
@@ -122,8 +122,8 @@ export default async function AdminBookingsPage({
                     <td className="px-4 py-3 text-sm">{b.tenants?.name ?? '—'}</td>
                     <td className="px-4 py-3 text-sm">{b.profiles?.full_name ?? '—'}</td>
                     <td className="px-4 py-3 text-sm">{b.courts?.name ?? '—'}</td>
-                    <td className="px-4 py-3 text-sm font-mono">{b.date}</td>
-                    <td className="px-4 py-3 text-sm font-mono">{b.start_time?.slice(0, 5)}–{b.end_time?.slice(0, 5)}</td>
+                    <td className="px-4 py-3 text-sm">{b.date}</td>
+                    <td className="px-4 py-3 text-sm">{b.start_time?.slice(0, 5)}–{b.end_time?.slice(0, 5)}</td>
                     <td className="px-4 py-3">
                       <StatusBadge status={b.status} />
                     </td>
@@ -155,7 +155,7 @@ export default async function AdminBookingsPage({
                     <p className="text-xs text-muted-foreground">
                       {b.tenants?.name} &middot; {b.profiles?.full_name ?? '—'}
                     </p>
-                    <p className="font-mono text-xs text-muted-foreground">
+                    <p className="text-xs text-muted-foreground">
                       {b.date} {b.start_time?.slice(0, 5)}–{b.end_time?.slice(0, 5)}
                     </p>
                   </div>
@@ -190,7 +190,7 @@ function StatusBadge({ status }: { status: string }) {
   }
 
   return (
-    <span className={`inline-flex rounded-full px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider ${styles[status] ?? styles.no_show}`}>
+    <span className={`inline-flex rounded-full px-2 py-0.5 text-[10px] uppercase tracking-wider ${styles[status] ?? styles.no_show}`}>
       {status}
     </span>
   )

@@ -23,7 +23,7 @@ export function MembershipRequestButton({
 
   if (hasActiveSubscription) {
     return (
-      <Button variant="secondary" size="sm" disabled className="font-mono text-xs">
+      <Button variant="secondary" size="sm" disabled className="text-xs">
         Active Member
       </Button>
     )
@@ -31,7 +31,7 @@ export function MembershipRequestButton({
 
   if (submitted) {
     return (
-      <Button variant="secondary" size="sm" disabled className="font-mono text-xs">
+      <Button variant="secondary" size="sm" disabled className="text-xs">
         Request Pending
       </Button>
     )
@@ -56,7 +56,7 @@ export function MembershipRequestButton({
       size="sm"
       disabled={submitting}
       onClick={handleRequest}
-      className="font-mono text-xs hover:bg-primary hover:text-primary-foreground"
+      className="text-xs hover:bg-primary hover:text-primary-foreground"
     >
       {submitting ? 'Requesting...' : 'Request Membership'}
     </Button>

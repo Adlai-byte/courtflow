@@ -31,7 +31,7 @@ export function CancelMembershipButton({ subscriptionId, slug }: Props) {
       size="sm"
       disabled={cancelling}
       onClick={handleCancel}
-      className="font-mono text-xs text-destructive hover:text-destructive"
+      className="text-xs text-destructive hover:text-destructive"
     >
       {cancelling ? 'Cancelling...' : 'Cancel Membership'}
     </Button>

@@ -39,7 +39,7 @@ export function CustomerTopbar({
           isAuthenticated={isAuthenticated}
           signOutAction={signOutAction}
         />
-        <span className="font-mono text-sm font-medium tracking-tight md:hidden">
+        <span className="text-sm font-medium tracking-tight md:hidden">
           {tenantName}
         </span>
       </div>
@@ -86,7 +86,7 @@ export function CustomerTopbar({
       ) : (
         <Link
           href={`/login?redirect=/${slug}`}
-          className="font-mono text-xs uppercase tracking-wider text-muted-foreground hover:text-foreground"
+          className="text-sm font-medium text-muted-foreground hover:text-foreground"
         >
           Sign in
         </Link>

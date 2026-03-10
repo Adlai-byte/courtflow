@@ -11,7 +11,7 @@ export function RevenueByCourtChart({ data }: RevenueByCourtProps) {
   return (
     <Card>
       <CardContent className="p-4 md:p-6">
-        <span className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
+        <span className="text-sm font-medium text-muted-foreground">
           Revenue by Court
         </span>
         <div className="mt-4 h-[300px]">
@@ -25,7 +25,7 @@ export function RevenueByCourtChart({ data }: RevenueByCourtProps) {
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" horizontal={false} />
                 <XAxis
                   type="number"
-                  tick={{ fontSize: 11, fontFamily: 'var(--font-mono)', fill: 'var(--muted-foreground)' }}
+                  tick={{ fontSize: 11, fontFamily: 'var(--font-sans)', fill: 'var(--muted-foreground)' }}
                   tickFormatter={(v) => `₱${v}`}
                   axisLine={{ stroke: 'var(--border)' }}
                   tickLine={false}
@@ -43,7 +43,7 @@ export function RevenueByCourtChart({ data }: RevenueByCourtProps) {
                     background: 'var(--card)',
                     border: '1px solid var(--border)',
                     borderRadius: '8px',
-                    fontFamily: 'var(--font-mono)',
+                    fontFamily: 'var(--font-sans)',
                     fontSize: '12px',
                   }}
                   formatter={(value) => [`₱${Number(value).toFixed(2)}`, 'Revenue']}

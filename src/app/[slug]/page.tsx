@@ -85,7 +85,7 @@ export default async function BusinessPage({
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">{tenant.name}</h1>
+        <h1 className="font-heading text-3xl font-bold tracking-tight">{tenant.name}</h1>
         {tenant.description && (
           <p className="mt-2 text-muted-foreground">{tenant.description}</p>
         )}
@@ -114,7 +114,7 @@ export default async function BusinessPage({
               <div key={tier.id} className="rounded-lg border border-border bg-card p-4 space-y-3">
                 <div>
                   <h3 className="font-medium">{tier.name}</h3>
-                  <p className="font-mono text-lg font-bold text-primary">
+                  <p className="text-lg font-bold text-primary">
                     {tier.price > 0 ? `₱${tier.price}` : 'Free'}
                   </p>
                 </div>
@@ -123,10 +123,10 @@ export default async function BusinessPage({
                 )}
                 {tier.perks && (
                   <ul className="space-y-1">
-                    {tier.perks.priority_booking && <li className="font-mono text-xs text-muted-foreground">+ Priority booking</li>}
-                    {tier.perks.discount_pct > 0 && <li className="font-mono text-xs text-muted-foreground">+ {tier.perks.discount_pct}% discount</li>}
-                    {tier.perks.free_hours > 0 && <li className="font-mono text-xs text-muted-foreground">+ {tier.perks.free_hours} free hours/month</li>}
-                    {tier.perks.waitlist_priority && <li className="font-mono text-xs text-muted-foreground">+ Waitlist priority</li>}
+                    {tier.perks.priority_booking && <li className="text-xs text-muted-foreground">+ Priority booking</li>}
+                    {tier.perks.discount_pct > 0 && <li className="text-xs text-muted-foreground">+ {tier.perks.discount_pct}% discount</li>}
+                    {tier.perks.free_hours > 0 && <li className="text-xs text-muted-foreground">+ {tier.perks.free_hours} free hours/month</li>}
+                    {tier.perks.waitlist_priority && <li className="text-xs text-muted-foreground">+ Waitlist priority</li>}
                   </ul>
                 )}
                 <MembershipRequestButton

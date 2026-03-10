@@ -85,10 +85,10 @@ export default async function CustomerDetailPage({
         <UserAvatar avatarUrl={customer.avatar_url} fullName={customer.full_name} size="xl" />
         <div>
           <span className="section-label mb-1 block">[ CUSTOMER ]</span>
-          <h1 className="text-2xl font-bold tracking-tight">{customer.full_name || 'Unknown'}</h1>
+          <h1 className="font-heading text-2xl font-bold tracking-tight">{customer.full_name || 'Unknown'}</h1>
           <div className="mt-1 flex flex-wrap gap-3 text-sm text-muted-foreground">
-            {customer.phone && <span className="font-mono">{customer.phone}</span>}
-            <span className="font-mono">Since {new Date(customer.created_at).toLocaleDateString()}</span>
+            {customer.phone && <span className="">{customer.phone}</span>}
+            <span className="">Since {new Date(customer.created_at).toLocaleDateString()}</span>
           </div>
           {subscription && (
             <span className="mt-2 inline-flex rounded-full border border-green/20 bg-green/10 px-3 py-0.5 text-xs font-medium text-green">
@@ -108,7 +108,7 @@ export default async function CustomerDetailPage({
           <Card key={stat.label}>
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
-                <span className="font-mono text-xs uppercase tracking-wider text-muted-foreground">{stat.label}</span>
+                <span className="text-sm font-medium text-muted-foreground">{stat.label}</span>
                 <stat.icon className="h-4 w-4 text-muted-foreground" />
               </div>
               <div className="mt-2 text-2xl font-bold tracking-tight">{stat.value}</div>
@@ -131,18 +131,18 @@ export default async function CustomerDetailPage({
                   <table className="w-full">
                     <thead>
                       <tr className="border-b text-left">
-                        <th className="p-4 font-mono text-xs uppercase tracking-wider text-muted-foreground font-medium">Date</th>
-                        <th className="p-4 font-mono text-xs uppercase tracking-wider text-muted-foreground font-medium">Court</th>
-                        <th className="p-4 font-mono text-xs uppercase tracking-wider text-muted-foreground font-medium">Time</th>
-                        <th className="p-4 font-mono text-xs uppercase tracking-wider text-muted-foreground font-medium">Status</th>
+                        <th className="p-4 text-sm font-medium text-muted-foreground font-medium">Date</th>
+                        <th className="p-4 text-sm font-medium text-muted-foreground font-medium">Court</th>
+                        <th className="p-4 text-sm font-medium text-muted-foreground font-medium">Time</th>
+                        <th className="p-4 text-sm font-medium text-muted-foreground font-medium">Status</th>
                       </tr>
                     </thead>
                     <tbody>
                       {(bookings as any[]).map((booking, i) => (
                         <tr key={booking.id} className={i % 2 === 1 ? 'bg-muted/30' : ''}>
-                          <td className="p-4 font-mono text-sm">{formatDate(booking.date)}</td>
+                          <td className="p-4 text-sm">{formatDate(booking.date)}</td>
                           <td className="p-4 text-sm">{booking.courts?.name}</td>
-                          <td className="p-4 font-mono text-sm">{toSlotLabel(booking.start_time, booking.end_time)}</td>
+                          <td className="p-4 text-sm">{toSlotLabel(booking.start_time, booking.end_time)}</td>
                           <td className="p-4">
                             <span className={`inline-flex rounded-full border px-2.5 py-0.5 text-xs font-medium ${statusColors[booking.status] || ''}`}>
                               {booking.status}
@@ -162,7 +162,7 @@ export default async function CustomerDetailPage({
                           {booking.status}
                         </span>
                       </div>
-                      <p className="font-mono text-xs text-muted-foreground">{formatDate(booking.date)} · {toSlotLabel(booking.start_time, booking.end_time)}</p>
+                      <p className="text-xs text-muted-foreground">{formatDate(booking.date)} · {toSlotLabel(booking.start_time, booking.end_time)}</p>
                     </div>
                   ))}
                 </div>
@@ -183,7 +183,7 @@ export default async function CustomerDetailPage({
                 className="min-h-[60px] flex-1 resize-none"
                 required
               />
-              <Button type="submit" className="self-end font-mono text-xs uppercase tracking-wider">
+              <Button type="submit" className="self-end text-sm font-medium">
                 Add
               </Button>
             </form>
@@ -192,7 +192,7 @@ export default async function CustomerDetailPage({
                 {(notes as any[]).map((note) => (
                   <div key={note.id} className="space-y-1">
                     <p className="text-sm">{note.note}</p>
-                    <p className="font-mono text-xs text-muted-foreground">
+                    <p className="text-xs text-muted-foreground">
                       {note.creator?.full_name || 'Unknown'} · {new Date(note.created_at).toLocaleDateString()}
                     </p>
                   </div>

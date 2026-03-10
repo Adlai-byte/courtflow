@@ -28,13 +28,13 @@ export default async function TiersPage({
       <div className="flex items-center justify-between">
         <div>
           <span className="section-label mb-2 block">[ MEMBERSHIP TIERS ]</span>
-          <h1 className="text-2xl font-bold tracking-tight">Membership Tiers</h1>
+          <h1 className="font-heading text-2xl font-bold tracking-tight">Membership Tiers</h1>
         </div>
         <Dialog>
           <DialogTrigger asChild>
             <Button>
               <Plus className="mr-2 h-4 w-4" />
-              <span className="font-mono text-xs uppercase tracking-wider">Create Tier</span>
+              <span className="text-sm font-medium">Create Tier</span>
             </Button>
           </DialogTrigger>
           <DialogContent>

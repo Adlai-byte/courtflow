@@ -59,7 +59,7 @@ export default async function MyBookingsPage({
   return (
     <div className="space-y-6">
       <span className="section-label block">[ BOOKING HISTORY ]</span>
-      <h1 className="text-2xl font-bold tracking-tight">Booking History</h1>
+      <h1 className="font-heading text-2xl font-bold tracking-tight">Booking History</h1>
 
       {/* Filter tabs */}
       <div className="flex gap-1 rounded-lg border bg-card p-1 w-fit">
@@ -68,7 +68,7 @@ export default async function MyBookingsPage({
             key={f.value}
             href={f.value === 'upcoming' ? `/${slug}/my-bookings` : `/${slug}/my-bookings?filter=${f.value}`}
             className={cn(
-              'rounded-md px-3 py-1.5 font-mono text-xs transition-colors',
+              'rounded-md px-3 py-1.5 text-xs transition-colors',
               activeFilter === f.value
                 ? 'bg-primary text-primary-foreground'
                 : 'text-muted-foreground hover:text-foreground'
@@ -86,7 +86,7 @@ export default async function MyBookingsPage({
               {activeFilter === 'upcoming' ? 'No upcoming bookings.' : activeFilter === 'past' ? 'No past bookings.' : 'You have no bookings yet.'}
             </p>
             {activeFilter !== 'past' && (
-              <Link href={`/${slug}`} className="font-mono text-xs text-primary underline underline-offset-4 hover:text-primary/80">
+              <Link href={`/${slug}`} className="text-xs text-primary underline underline-offset-4 hover:text-primary/80">
                 Book a court
               </Link>
             )}
@@ -97,18 +97,18 @@ export default async function MyBookingsPage({
               <table className="w-full">
                 <thead>
                   <tr className="border-b text-left">
-                    <th className="p-4 font-mono text-xs uppercase tracking-wider text-muted-foreground font-medium">Date</th>
-                    <th className="p-4 font-mono text-xs uppercase tracking-wider text-muted-foreground font-medium">Time</th>
-                    <th className="p-4 font-mono text-xs uppercase tracking-wider text-muted-foreground font-medium">Court</th>
-                    <th className="p-4 font-mono text-xs uppercase tracking-wider text-muted-foreground font-medium">Status</th>
-                    <th className="p-4 font-mono text-xs uppercase tracking-wider text-muted-foreground font-medium"></th>
+                    <th className="p-4 text-sm font-medium text-muted-foreground font-medium">Date</th>
+                    <th className="p-4 text-sm font-medium text-muted-foreground font-medium">Time</th>
+                    <th className="p-4 text-sm font-medium text-muted-foreground font-medium">Court</th>
+                    <th className="p-4 text-sm font-medium text-muted-foreground font-medium">Status</th>
+                    <th className="p-4 text-sm font-medium text-muted-foreground font-medium"></th>
                   </tr>
                 </thead>
                 <tbody>
                   {bookings.map((booking: any, i: number) => (
                     <tr key={booking.id} className={i % 2 === 1 ? 'bg-muted/30' : ''}>
-                      <td className="p-4 font-mono text-sm">{booking.date}</td>
-                      <td className="p-4 font-mono text-sm">{to12Hr(booking.start_time)}–{to12Hr(booking.end_time)}</td>
+                      <td className="p-4 text-sm">{booking.date}</td>
+                      <td className="p-4 text-sm">{to12Hr(booking.start_time)}–{to12Hr(booking.end_time)}</td>
                       <td className="p-4 text-sm">{booking.courts?.name}</td>
                       <td className="p-4">
                         <span className={`inline-flex rounded-full border px-2.5 py-0.5 text-xs font-medium ${statusColors[booking.status] || ''}`}>
@@ -120,7 +120,7 @@ export default async function MyBookingsPage({
                           </span>
                         )}
                         {booking.status === 'pending' && (
-                          <p className="mt-1 font-mono text-[10px] text-amber-600">Awaiting owner approval</p>
+                          <p className="mt-1 text-[10px] text-amber-600">Awaiting owner approval</p>
                         )}
                         {booking.status === 'cancelled' && booking.rejection_reason && (
                           <p className="mt-1 text-xs text-muted-foreground">Reason: {booking.rejection_reason}</p>
@@ -159,11 +159,11 @@ export default async function MyBookingsPage({
                       )}
                     </div>
                   </div>
-                  <p className="font-mono text-xs text-muted-foreground">
+                  <p className="text-xs text-muted-foreground">
                     {booking.date} · {to12Hr(booking.start_time)}–{to12Hr(booking.end_time)}
                   </p>
                   {booking.status === 'pending' && (
-                    <p className="font-mono text-[10px] text-amber-600">Awaiting owner approval</p>
+                    <p className="text-[10px] text-amber-600">Awaiting owner approval</p>
                   )}
                   {booking.status === 'cancelled' && booking.rejection_reason && (
                     <p className="text-xs text-muted-foreground">Reason: {booking.rejection_reason}</p>

@@ -95,7 +95,7 @@ export function CourtImageUpload({ tenantId, courtId, currentImageUrl, onImageUr
         >
           <div className="flex flex-col items-center gap-1">
             <ImagePlus className="h-6 w-6" />
-            <span className="font-mono text-xs">
+            <span className="text-xs">
               {uploading ? 'Uploading...' : 'Upload Image'}
             </span>
           </div>

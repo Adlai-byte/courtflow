@@ -38,13 +38,13 @@ export default async function MyWaitlistPage({
   return (
     <div className="space-y-6">
       <span className="section-label block">[ MY WAITLIST ]</span>
-      <h1 className="text-2xl font-bold tracking-tight">My Waitlist</h1>
+      <h1 className="font-heading text-2xl font-bold tracking-tight">My Waitlist</h1>
 
       <div className="rounded-lg border border-border bg-card">
         {(!entries || entries.length === 0) ? (
           <div className="flex flex-col items-center justify-center gap-3 py-12">
             <p className="text-sm text-muted-foreground">You are not on any waitlists.</p>
-            <Link href={`/${slug}`} className="font-mono text-xs text-primary underline underline-offset-4 hover:text-primary/80">
+            <Link href={`/${slug}`} className="text-xs text-primary underline underline-offset-4 hover:text-primary/80">
               Browse available courts
             </Link>
           </div>
@@ -54,21 +54,21 @@ export default async function MyWaitlistPage({
               <table className="w-full">
                 <thead>
                   <tr className="border-b text-left">
-                    <th className="p-4 font-mono text-xs uppercase tracking-wider text-muted-foreground font-medium">Date</th>
-                    <th className="p-4 font-mono text-xs uppercase tracking-wider text-muted-foreground font-medium">Time</th>
-                    <th className="p-4 font-mono text-xs uppercase tracking-wider text-muted-foreground font-medium">Court</th>
-                    <th className="p-4 font-mono text-xs uppercase tracking-wider text-muted-foreground font-medium">Position</th>
-                    <th className="p-4 font-mono text-xs uppercase tracking-wider text-muted-foreground font-medium">Status</th>
-                    <th className="p-4 font-mono text-xs uppercase tracking-wider text-muted-foreground font-medium"></th>
+                    <th className="p-4 text-sm font-medium text-muted-foreground font-medium">Date</th>
+                    <th className="p-4 text-sm font-medium text-muted-foreground font-medium">Time</th>
+                    <th className="p-4 text-sm font-medium text-muted-foreground font-medium">Court</th>
+                    <th className="p-4 text-sm font-medium text-muted-foreground font-medium">Position</th>
+                    <th className="p-4 text-sm font-medium text-muted-foreground font-medium">Status</th>
+                    <th className="p-4 text-sm font-medium text-muted-foreground font-medium"></th>
                   </tr>
                 </thead>
                 <tbody>
                   {entries.map((entry: any, i: number) => (
                     <tr key={entry.id} className={i % 2 === 1 ? 'bg-muted/30' : ''}>
-                      <td className="p-4 font-mono text-sm">{entry.date}</td>
-                      <td className="p-4 font-mono text-sm">{to12Hr(entry.start_time)}–{to12Hr(entry.end_time)}</td>
+                      <td className="p-4 text-sm">{entry.date}</td>
+                      <td className="p-4 text-sm">{to12Hr(entry.start_time)}–{to12Hr(entry.end_time)}</td>
                       <td className="p-4 text-sm">{entry.courts?.name}</td>
-                      <td className="p-4 font-mono text-sm">#{entry.position}</td>
+                      <td className="p-4 text-sm">#{entry.position}</td>
                       <td className="p-4">
                         <span className={`inline-flex rounded-full border px-2.5 py-0.5 text-xs font-medium ${statusColors[entry.status] || ''}`}>
                           {entry.status}
@@ -90,13 +90,13 @@ export default async function MyWaitlistPage({
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-medium">{entry.courts?.name}</span>
                     <div className="flex items-center gap-1">
-                      <span className="font-mono text-xs text-muted-foreground">#{entry.position}</span>
+                      <span className="text-xs text-muted-foreground">#{entry.position}</span>
                       <span className={`inline-flex rounded-full border px-2 py-0.5 text-xs font-medium ${statusColors[entry.status] || ''}`}>
                         {entry.status}
                       </span>
                     </div>
                   </div>
-                  <p className="font-mono text-xs text-muted-foreground">
+                  <p className="text-xs text-muted-foreground">
                     {entry.date} · {to12Hr(entry.start_time)}–{to12Hr(entry.end_time)}
                   </p>
                   {(entry.status === 'waiting' || entry.status === 'notified') && (

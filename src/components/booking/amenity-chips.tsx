@@ -80,7 +80,7 @@ export function AmenityChips({ amenities, compact }: AmenityChipsProps) {
         return (
           <span
             key={chip.label}
-            className="inline-flex items-center gap-1 rounded border border-primary/20 bg-primary/5 px-2 py-0.5 font-mono text-xs text-primary"
+            className="inline-flex items-center gap-1 rounded border border-primary/20 bg-primary/5 px-2 py-0.5 text-xs text-primary"
           >
             {Icon && <Icon className="h-3 w-3" />}
             {chip.label}
@@ -88,7 +88,7 @@ export function AmenityChips({ amenities, compact }: AmenityChipsProps) {
         )
       })}
       {overflow > 0 && (
-        <span className="inline-flex rounded border border-border px-2 py-0.5 font-mono text-xs text-muted-foreground">
+        <span className="inline-flex rounded border border-border px-2 py-0.5 text-xs text-muted-foreground">
           +{overflow} more
         </span>
       )}

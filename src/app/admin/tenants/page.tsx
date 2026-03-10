@@ -50,7 +50,7 @@ export default async function AdminTenantsPage() {
     <div className="space-y-8">
       <div>
         <span className="section-label mb-2 block">[ TENANTS ]</span>
-        <h1 className="text-2xl font-bold tracking-tight">All Tenants</h1>
+        <h1 className="font-heading text-2xl font-bold tracking-tight">All Tenants</h1>
         <p className="mt-1 text-sm text-muted-foreground">
           {tenants?.length ?? 0} registered {(tenants?.length ?? 0) === 1 ? 'facility' : 'facilities'}
         </p>
@@ -63,12 +63,12 @@ export default async function AdminTenantsPage() {
             <table className="w-full">
               <thead>
                 <tr className="border-b text-left">
-                  <th className="px-4 py-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">Name</th>
-                  <th className="px-4 py-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">Owner / Email</th>
-                  <th className="px-4 py-3 font-mono text-xs uppercase tracking-wider text-muted-foreground text-right">Courts</th>
-                  <th className="px-4 py-3 font-mono text-xs uppercase tracking-wider text-muted-foreground text-right">Bookings</th>
-                  <th className="px-4 py-3 font-mono text-xs uppercase tracking-wider text-muted-foreground text-right">Members</th>
-                  <th className="px-4 py-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">Created</th>
+                  <th className="px-4 py-3 text-sm font-medium text-muted-foreground">Name</th>
+                  <th className="px-4 py-3 text-sm font-medium text-muted-foreground">Owner / Email</th>
+                  <th className="px-4 py-3 text-sm font-medium text-muted-foreground text-right">Courts</th>
+                  <th className="px-4 py-3 text-sm font-medium text-muted-foreground text-right">Bookings</th>
+                  <th className="px-4 py-3 text-sm font-medium text-muted-foreground text-right">Members</th>
+                  <th className="px-4 py-3 text-sm font-medium text-muted-foreground">Created</th>
                   <th className="px-4 py-3"></th>
                 </tr>
               </thead>
@@ -78,24 +78,24 @@ export default async function AdminTenantsPage() {
                     <td className="px-4 py-3">
                       <div>
                         <p className="text-sm font-medium">{t.name}</p>
-                        <p className="font-mono text-xs text-muted-foreground">/{t.slug}</p>
+                        <p className="text-xs text-muted-foreground">/{t.slug}</p>
                       </div>
                     </td>
                     <td className="px-4 py-3">
                       <p className="text-sm">{t.profiles?.full_name ?? '—'}</p>
                       <p className="text-xs text-muted-foreground">{emailMap.get(t.owner_id) ?? ''}</p>
                     </td>
-                    <td className="px-4 py-3 text-sm text-right font-mono">{courtMap.get(t.id) ?? 0}</td>
-                    <td className="px-4 py-3 text-sm text-right font-mono">{bookingMap.get(t.id) ?? 0}</td>
-                    <td className="px-4 py-3 text-sm text-right font-mono">{memberMap.get(t.id) ?? 0}</td>
-                    <td className="px-4 py-3 text-sm font-mono text-muted-foreground">
+                    <td className="px-4 py-3 text-sm text-right">{courtMap.get(t.id) ?? 0}</td>
+                    <td className="px-4 py-3 text-sm text-right">{bookingMap.get(t.id) ?? 0}</td>
+                    <td className="px-4 py-3 text-sm text-right">{memberMap.get(t.id) ?? 0}</td>
+                    <td className="px-4 py-3 text-sm text-muted-foreground">
                       {new Date(t.created_at).toLocaleDateString()}
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
                         <Link
                           href={`/admin/tenants/${t.id}`}
-                          className="font-mono text-xs text-primary transition-colors hover:text-primary/80"
+                          className="text-xs text-primary transition-colors hover:text-primary/80"
                         >
                           Manage
                         </Link>
@@ -135,12 +135,12 @@ export default async function AdminTenantsPage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium">{t.name}</p>
-                    <p className="font-mono text-xs text-muted-foreground">/{t.slug}</p>
+                    <p className="text-xs text-muted-foreground">/{t.slug}</p>
                   </div>
                   <div className="flex items-center gap-3">
                     <Link
                       href={`/admin/tenants/${t.id}`}
-                      className="font-mono text-xs text-primary transition-colors hover:text-primary/80"
+                      className="text-xs text-primary transition-colors hover:text-primary/80"
                     >
                       Manage
                     </Link>
@@ -160,7 +160,7 @@ export default async function AdminTenantsPage() {
                     </Link>
                   </div>
                 </div>
-                <div className="mt-2 flex gap-4 font-mono text-xs text-muted-foreground">
+                <div className="mt-2 flex gap-4 text-xs text-muted-foreground">
                   <span>{courtMap.get(t.id) ?? 0} courts</span>
                   <span>{bookingMap.get(t.id) ?? 0} bookings</span>
                   <span>{memberMap.get(t.id) ?? 0} members</span>

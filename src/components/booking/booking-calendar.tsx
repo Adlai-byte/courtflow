@@ -195,14 +195,14 @@ export function BookingCalendar({ court, tenantId, slug, closureDates, currentUs
     <Card>
       <CardHeader>
         <div className="flex items-center justify-between">
-          <span className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
+          <span className="text-sm font-medium text-muted-foreground">
             Book a Slot
           </span>
           <div className="flex items-center gap-2">
             <Button variant="outline" size="icon" aria-label="Previous day" onClick={() => navigateDay(-1)}>
               <ChevronLeft className="h-4 w-4" />
             </Button>
-            <span className="min-w-[140px] text-center font-mono text-sm font-medium">
+            <span className="min-w-[140px] text-center text-sm font-medium">
               {selectedDate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
             </span>
             <Button variant="outline" size="icon" aria-label="Next day" onClick={() => navigateDay(1)}>
@@ -227,7 +227,7 @@ export function BookingCalendar({ court, tenantId, slug, closureDates, currentUs
                     key={slot.start}
                     variant="outline"
                     size="sm"
-                    className="border-emerald-400 bg-emerald-50 font-mono text-xs text-emerald-800 hover:bg-emerald-500 hover:text-white hover:border-emerald-500"
+                    className="border-emerald-400 bg-emerald-50 text-xs text-emerald-800 hover:bg-emerald-500 hover:text-white hover:border-emerald-500"
                     onClick={() => handleAddToCart(slot.start, slot.end)}
                   >
                     {label}
@@ -241,7 +241,7 @@ export function BookingCalendar({ court, tenantId, slug, closureDates, currentUs
                     key={slot.start}
                     variant="outline"
                     size="sm"
-                    className="border-primary bg-primary/10 font-mono text-xs text-primary hover:bg-primary/20"
+                    className="border-primary bg-primary/10 text-xs text-primary hover:bg-primary/20"
                     onClick={() => handleRemoveFromCart(slot.start)}
                   >
                     <ShoppingCart className="mr-1 h-3 w-3" />
@@ -257,7 +257,7 @@ export function BookingCalendar({ court, tenantId, slug, closureDates, currentUs
                     variant="outline"
                     size="sm"
                     disabled
-                    className="border-primary bg-primary/15 font-mono text-xs text-primary font-semibold"
+                    className="border-primary bg-primary/15 text-xs text-primary font-semibold"
                   >
                     <Star className="mr-1 h-3 w-3 fill-current" />
                     {label}
@@ -272,7 +272,7 @@ export function BookingCalendar({ court, tenantId, slug, closureDates, currentUs
                     variant="outline"
                     size="sm"
                     disabled
-                    className="bg-muted font-mono text-xs text-muted-foreground/60 border-border line-through"
+                    className="bg-muted text-xs text-muted-foreground/60 border-border line-through"
                   >
                     {label}
                   </Button>
@@ -297,7 +297,7 @@ export function BookingCalendar({ court, tenantId, slug, closureDates, currentUs
         )}
         {!isClosed && slots.length > 0 && (
           <div className="mt-4 flex items-center gap-4 rounded-lg border border-border bg-muted/30 p-3">
-            <label className="flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-muted-foreground cursor-pointer">
+            <label className="flex items-center gap-2 text-sm font-medium text-muted-foreground cursor-pointer">
               <input
                 type="checkbox"
                 checked={recurring}
@@ -307,7 +307,7 @@ export function BookingCalendar({ court, tenantId, slug, closureDates, currentUs
               Repeat weekly
             </label>
             {recurring && (
-              <label className="flex items-center gap-2 font-mono text-xs text-muted-foreground">
+              <label className="flex items-center gap-2 text-xs text-muted-foreground">
                 for
                 <input
                   type="number"
@@ -315,7 +315,7 @@ export function BookingCalendar({ court, tenantId, slug, closureDates, currentUs
                   max={52}
                   value={totalWeeks}
                   onChange={(e) => setTotalWeeks(Number(e.target.value))}
-                  className="w-16 rounded border border-border bg-background px-2 py-1 text-center font-mono text-sm"
+                  className="w-16 rounded border border-border bg-background px-2 py-1 text-center text-sm"
                 />
                 weeks
               </label>
@@ -323,7 +323,7 @@ export function BookingCalendar({ court, tenantId, slug, closureDates, currentUs
           </div>
         )}
 
-        <div className="mt-4 flex flex-wrap items-center gap-4 font-mono text-xs text-muted-foreground">
+        <div className="mt-4 flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
           <span className="flex items-center gap-1">
             <div className="h-3 w-3 rounded border border-emerald-400 bg-emerald-50" /> Available
           </span>

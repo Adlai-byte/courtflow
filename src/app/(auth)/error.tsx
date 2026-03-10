@@ -23,7 +23,7 @@ export default function AuthError({
           </button>
           <Link
             href="/login"
-            className="font-mono text-xs uppercase tracking-wider text-muted-foreground transition-colors hover:text-foreground"
+            className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
           >
             Back to sign in
           </Link>

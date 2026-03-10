@@ -58,15 +58,15 @@ export default async function AdminTenantDetailPage({
       <div>
         <Link
           href="/admin/tenants"
-          className="mb-4 inline-flex items-center gap-1 font-mono text-xs text-muted-foreground transition-colors hover:text-foreground"
+          className="mb-4 inline-flex items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
         >
           <ArrowLeft className="h-3 w-3" /> Back to Tenants
         </Link>
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div>
             <span className="section-label mb-2 block">[ TENANT DETAIL ]</span>
-            <h1 className="text-2xl font-bold tracking-tight">{tenant.name}</h1>
-            <p className="mt-1 font-mono text-sm text-muted-foreground">
+            <h1 className="font-heading text-2xl font-bold tracking-tight">{tenant.name}</h1>
+            <p className="mt-1 text-sm text-muted-foreground">
               /{tenant.slug} &middot; Owner: {(tenant.profiles as any)?.full_name ?? '—'} &middot; Created {new Date(tenant.created_at).toLocaleDateString()}
             </p>
           </div>
@@ -100,10 +100,10 @@ export default async function AdminTenantDetailPage({
               <table className="w-full">
                 <thead>
                   <tr className="border-b text-left">
-                    <th className="px-4 py-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">Name</th>
-                    <th className="px-4 py-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">Sport</th>
-                    <th className="px-4 py-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">Mode</th>
-                    <th className="px-4 py-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">Status</th>
+                    <th className="px-4 py-3 text-sm font-medium text-muted-foreground">Name</th>
+                    <th className="px-4 py-3 text-sm font-medium text-muted-foreground">Sport</th>
+                    <th className="px-4 py-3 text-sm font-medium text-muted-foreground">Mode</th>
+                    <th className="px-4 py-3 text-sm font-medium text-muted-foreground">Status</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -111,9 +111,9 @@ export default async function AdminTenantDetailPage({
                     <tr key={c.id} className="border-b last:border-0">
                       <td className="px-4 py-3 text-sm font-medium">{c.name}</td>
                       <td className="px-4 py-3 text-sm capitalize">{c.sport_type}</td>
-                      <td className="px-4 py-3 font-mono text-xs">{c.booking_mode}</td>
+                      <td className="px-4 py-3 text-xs">{c.booking_mode}</td>
                       <td className="px-4 py-3">
-                        <span className={`inline-flex rounded-full px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider ${c.is_active ? 'bg-green/10 text-green' : 'bg-destructive/10 text-destructive'}`}>
+                        <span className={`inline-flex rounded-full px-2 py-0.5 text-[10px] uppercase tracking-wider ${c.is_active ? 'bg-green/10 text-green' : 'bg-destructive/10 text-destructive'}`}>
                           {c.is_active ? 'active' : 'inactive'}
                         </span>
                       </td>
@@ -134,9 +134,9 @@ export default async function AdminTenantDetailPage({
                 <div key={c.id} className="flex items-center justify-between px-4 py-3">
                   <div>
                     <p className="text-sm font-medium">{c.name}</p>
-                    <p className="font-mono text-xs text-muted-foreground capitalize">{c.sport_type} &middot; {c.booking_mode}</p>
+                    <p className="text-xs text-muted-foreground capitalize">{c.sport_type} &middot; {c.booking_mode}</p>
                   </div>
-                  <span className={`inline-flex rounded-full px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider ${c.is_active ? 'bg-green/10 text-green' : 'bg-destructive/10 text-destructive'}`}>
+                  <span className={`inline-flex rounded-full px-2 py-0.5 text-[10px] uppercase tracking-wider ${c.is_active ? 'bg-green/10 text-green' : 'bg-destructive/10 text-destructive'}`}>
                     {c.is_active ? 'active' : 'inactive'}
                   </span>
                 </div>
@@ -158,11 +158,11 @@ export default async function AdminTenantDetailPage({
               <table className="w-full">
                 <thead>
                   <tr className="border-b text-left">
-                    <th className="px-4 py-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">Customer</th>
-                    <th className="px-4 py-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">Court</th>
-                    <th className="px-4 py-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">Date</th>
-                    <th className="px-4 py-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">Time</th>
-                    <th className="px-4 py-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">Status</th>
+                    <th className="px-4 py-3 text-sm font-medium text-muted-foreground">Customer</th>
+                    <th className="px-4 py-3 text-sm font-medium text-muted-foreground">Court</th>
+                    <th className="px-4 py-3 text-sm font-medium text-muted-foreground">Date</th>
+                    <th className="px-4 py-3 text-sm font-medium text-muted-foreground">Time</th>
+                    <th className="px-4 py-3 text-sm font-medium text-muted-foreground">Status</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -170,8 +170,8 @@ export default async function AdminTenantDetailPage({
                     <tr key={b.id} className="border-b last:border-0">
                       <td className="px-4 py-3 text-sm">{b.profiles?.full_name ?? '—'}</td>
                       <td className="px-4 py-3 text-sm">{b.courts?.name ?? '—'}</td>
-                      <td className="px-4 py-3 text-sm font-mono">{b.date}</td>
-                      <td className="px-4 py-3 text-sm font-mono">{b.start_time?.slice(0, 5)}–{b.end_time?.slice(0, 5)}</td>
+                      <td className="px-4 py-3 text-sm">{b.date}</td>
+                      <td className="px-4 py-3 text-sm">{b.start_time?.slice(0, 5)}–{b.end_time?.slice(0, 5)}</td>
                       <td className="px-4 py-3">
                         <StatusBadge status={b.status} />
                       </td>
@@ -193,7 +193,7 @@ export default async function AdminTenantDetailPage({
                   <div>
                     <p className="text-sm font-medium">{b.courts?.name ?? '—'}</p>
                     <p className="text-xs text-muted-foreground">{b.profiles?.full_name ?? '—'}</p>
-                    <p className="font-mono text-xs text-muted-foreground">{b.date} {b.start_time?.slice(0, 5)}–{b.end_time?.slice(0, 5)}</p>
+                    <p className="text-xs text-muted-foreground">{b.date} {b.start_time?.slice(0, 5)}–{b.end_time?.slice(0, 5)}</p>
                   </div>
                   <StatusBadge status={b.status} />
                 </div>
@@ -218,7 +218,7 @@ function StatusBadge({ status }: { status: string }) {
   }
 
   return (
-    <span className={`inline-flex rounded-full px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider ${styles[status] ?? styles.no_show}`}>
+    <span className={`inline-flex rounded-full px-2 py-0.5 text-[10px] uppercase tracking-wider ${styles[status] ?? styles.no_show}`}>
       {status}
     </span>
   )

@@ -55,7 +55,7 @@ function NavContent({ pathname, signOutAction, onNavigate }: NavContentProps) {
               href={item.href}
               onClick={onNavigate}
               className={cn(
-                'flex items-center gap-3 rounded-lg px-3 py-2 font-mono text-xs uppercase tracking-wider transition-colors',
+                'flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
                 isActive
                   ? 'bg-primary/10 text-primary font-medium'
                   : 'text-muted-foreground hover:bg-accent hover:text-foreground'
@@ -74,7 +74,7 @@ function NavContent({ pathname, signOutAction, onNavigate }: NavContentProps) {
             <button
               type="submit"
               onClick={onNavigate}
-              className="flex w-full items-center gap-3 rounded-lg px-3 py-2 font-mono text-xs uppercase tracking-wider text-destructive transition-colors hover:bg-accent"
+              className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-destructive transition-colors hover:bg-accent"
             >
               <LogOut className="h-4 w-4" />
               Sign Out
@@ -96,7 +96,7 @@ export function AdminSidebar({ signOutAction }: AdminSidebarProps) {
   return (
     <aside className="hidden h-full w-64 flex-col border-r bg-card md:flex">
       <div className="flex h-14 items-center border-b px-4">
-        <Link href="/admin" className="font-mono text-sm font-medium tracking-tight">
+        <Link href="/admin" className="text-sm font-medium tracking-tight">
           CourtFLOW Admin
         </Link>
       </div>
@@ -118,7 +118,7 @@ export function AdminMobileSidebar({ signOutAction }: AdminSidebarProps) {
       </SheetTrigger>
       <SheetContent side="left" className="w-64 p-0" aria-describedby={undefined}>
         <SheetHeader className="flex h-14 flex-row items-center border-b px-4 space-y-0">
-          <SheetTitle className="font-mono text-sm font-medium tracking-tight">
+          <SheetTitle className="text-sm font-medium tracking-tight">
             CourtFLOW Admin
           </SheetTitle>
         </SheetHeader>

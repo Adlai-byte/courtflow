@@ -29,14 +29,14 @@ export default async function PartnerDetailPage({
       <div>
         <Link
           href="/admin/partners"
-          className="mb-4 inline-flex items-center gap-1 font-mono text-xs text-muted-foreground transition-colors hover:text-foreground"
+          className="mb-4 inline-flex items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
         >
           <ArrowLeft className="h-3 w-3" /> Back to Partners
         </Link>
         <span className="section-label mb-2 block">
           {isNew ? '[ NEW PARTNER ]' : '[ EDIT PARTNER ]'}
         </span>
-        <h1 className="text-2xl font-bold tracking-tight">
+        <h1 className="font-heading text-2xl font-bold tracking-tight">
           {isNew ? 'Add Partner' : partner.name}
         </h1>
       </div>

@@ -31,7 +31,7 @@ export function ApproveSeriesButton({ seriesId, slug }: Props) {
       variant="outline"
       disabled={loading}
       onClick={handleApproveSeries}
-      className="h-7 font-mono text-xs border-primary/30 text-primary hover:bg-primary/10"
+      className="h-7 text-xs border-primary/30 text-primary hover:bg-primary/10"
     >
       {loading ? '...' : 'Approve Series'}
     </Button>
