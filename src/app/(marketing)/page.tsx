@@ -139,7 +139,7 @@ export default async function HomePage() {
           <div className="mt-10 flex items-center gap-5">
             <Link
               href={ctaHref}
-              className="cta-button rounded-none"
+              className="btn-primary"
             >
               {ctaLabel} <ArrowRight className="h-4 w-4" />
             </Link>
@@ -281,7 +281,7 @@ export default async function HomePage() {
           </div>
           <Link
             href={ctaHref}
-            className="cta-button shrink-0 rounded-none"
+            className="btn-primary shrink-0"
           >
             {ctaLabel} <ArrowRight className="h-4 w-4" />
           </Link>

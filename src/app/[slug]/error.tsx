@@ -21,7 +21,7 @@ export default function TenantError({
           An unexpected error occurred while loading this page.
         </p>
         <div className="mt-8 flex items-center justify-center gap-4">
-          <button onClick={reset} className="cta-button rounded-none px-6 py-3 text-xs">
+          <button onClick={reset} className="btn-primary px-6 py-3 text-xs">
             Try again
           </button>
           <Link

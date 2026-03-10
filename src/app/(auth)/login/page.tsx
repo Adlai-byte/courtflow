@@ -150,7 +150,7 @@ export default async function LoginPage({
         </div>
 
         {/* Submit */}
-        <button type="submit" className="cta-button w-full justify-center rounded-lg">
+        <button type="submit" className="btn-primary w-full justify-center rounded-lg">
           Sign in
         </button>
       </form>

@@ -61,7 +61,7 @@ export function UserRoleChanger({ userId, currentRole }: { userId: string; curre
         <Button
           onClick={handleSave}
           disabled={isPending || role === currentRole}
-          className="cta-button"
+          className="btn-primary"
         >
           {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           Update Role

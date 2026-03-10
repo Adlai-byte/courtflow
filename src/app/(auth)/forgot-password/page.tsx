@@ -78,7 +78,7 @@ export default function ForgotPasswordPage() {
           <button
             type="submit"
             disabled={loading}
-            className="cta-button w-full justify-center rounded-lg disabled:opacity-50"
+            className="btn-primary w-full justify-center rounded-lg disabled:opacity-50"
           >
             {loading ? 'Sending...' : 'Send reset link'}
           </button>

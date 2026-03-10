@@ -68,7 +68,7 @@ export function TenantEditForm({ tenant }: { tenant: any }) {
         </p>
       )}
 
-      <Button type="submit" disabled={isPending} className="cta-button">
+      <Button type="submit" disabled={isPending} className="btn-primary">
         {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
         Save Changes
       </Button>

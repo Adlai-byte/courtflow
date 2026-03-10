@@ -11,7 +11,7 @@ export default function TenantNotFound() {
         </p>
         <Link
           href="/explore"
-          className="cta-button mt-8 inline-flex rounded-none px-6 py-3 text-xs"
+          className="btn-primary mt-8 inline-flex px-6 py-3 text-xs"
         >
           Browse facilities
         </Link>

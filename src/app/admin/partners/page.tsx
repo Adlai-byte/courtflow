@@ -25,7 +25,7 @@ export default async function AdminPartnersPage() {
         </div>
         <Link
           href="/admin/partners/new"
-          className="cta-button rounded-none text-sm"
+          className="btn-primary text-sm"
         >
           <Plus className="h-4 w-4" />
           Add Partner

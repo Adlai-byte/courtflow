@@ -98,14 +98,14 @@ export function MobileMarketingNav({
                   <Link href="/login" className="font-mono text-sm uppercase tracking-wider text-muted-foreground hover:text-foreground">
                     Sign in
                   </Link>
-                  <Link href="/signup" className="cta-button rounded-none px-5 py-2.5 text-xs justify-center">
+                  <Link href="/signup" className="btn-primary px-5 py-2.5 text-xs justify-center">
                     Get started
                   </Link>
                 </>
               ) : (
                 <>
                   {(isOwner || isAdmin) && (
-                    <Link href={dashboardHref} className="cta-button rounded-none px-5 py-2.5 text-xs justify-center">
+                    <Link href={dashboardHref} className="btn-primary px-5 py-2.5 text-xs justify-center">
                       Dashboard
                     </Link>
                   )}

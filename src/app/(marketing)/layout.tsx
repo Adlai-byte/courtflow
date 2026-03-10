@@ -130,7 +130,7 @@ export default async function MarketingLayout({
               </Link>
               <Link
                 href="/signup"
-                className="cta-button hidden rounded-none px-5 py-2.5 text-xs lg:flex"
+                className="btn-primary hidden px-5 py-2.5 text-xs lg:flex"
               >
                 Get started <ArrowRight className="h-3.5 w-3.5" />
               </Link>
@@ -138,7 +138,7 @@ export default async function MarketingLayout({
           ) : (
             <>
               {(isOwner || isAdmin) && (
-                <Link href={dashboardHref} className="cta-button hidden rounded-none px-5 py-2.5 text-xs lg:flex">
+                <Link href={dashboardHref} className="btn-primary hidden px-5 py-2.5 text-xs lg:flex">
                   Dashboard <ArrowRight className="h-3.5 w-3.5" />
                 </Link>
               )}

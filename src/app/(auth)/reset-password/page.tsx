@@ -95,7 +95,7 @@ export default function ResetPasswordPage() {
         <button
           type="submit"
           disabled={loading}
-          className="cta-button w-full justify-center rounded-lg disabled:opacity-50"
+          className="btn-primary w-full justify-center rounded-lg disabled:opacity-50"
         >
           {loading ? 'Updating...' : 'Update password'}
         </button>

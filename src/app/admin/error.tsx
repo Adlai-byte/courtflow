@@ -15,7 +15,7 @@ export default function AdminError({
         <p className="mt-2 text-sm text-muted-foreground">
           Something went wrong in the admin panel.
         </p>
-        <button onClick={reset} className="cta-button mt-8 rounded-none px-6 py-3 text-xs">
+        <button onClick={reset} className="btn-primary mt-8 px-6 py-3 text-xs">
           Try again
         </button>
       </div>
